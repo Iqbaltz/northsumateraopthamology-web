@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# North Sumatra Ophthalmology — branded frontend
 
-## Getting Started
+A custom-branded public frontend for the OJS journal **`jnso`** ("North Sumatra
+Ophthalmology"), built with Next.js (App Router) + TypeScript + Tailwind v4.
+Design tokens are ported from the Ideko template (primary `#FFCF01`, dark
+`#151618`, Inter, pill buttons).
 
-First, run the development server:
+## Architecture (hybrid)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Next.js owns the **branded public pages** — home, issue archive, issue TOC, and
+article landing — and reads journal data from the OJS REST API **server-side**.
+Everything OJS renders itself (full-text galleys/PDF viewer, search, login,
+registration, submissions) stays on OJS via **deep links** (see `src/lib/links.ts`).
+
+```
+src/
+  app/                 routes: / · /issues · /issues/[id] · /articles/[id] · /about
+  components/          SiteHeader, SiteFooter, Button, *Card, GalleyLinks, Container
+  lib/
+    config.ts          env-driven config (server-only secrets + public deep-link URL)
+    links.ts           OJS deep links (search/login/submit/galley/...)
+    ojs/               REST data layer: client (Bearer), endpoints, types, fixtures
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Getting started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cp .env.example .env.local   # already present for local dev
+npm run dev                  # http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+With `OJS_API_TOKEN` blank, the app renders **bundled fixtures**
+(`src/lib/ojs/fixtures.ts`) so the UI works immediately.
 
-## Learn More
+## Going live
 
-To learn more about Next.js, take a look at the following resources:
+The OJS REST API rejects anonymous calls, so live data needs a token:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. In OJS `config.inc.php`, set a non-empty `api_key_secret` under `[security]`.
+2. Sign in to OJS as an editor/manager → **Profile → API key** → generate a key.
+3. Put it in `.env.local` as `OJS_API_TOKEN=...` (server-only — never `NEXT_PUBLIC_`).
+4. Publish at least one issue in `jnso` (the journal currently has none).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The data layer then hits the live, token-authed API and falls back to fixtures
+only if a request fails. Force fixtures anytime with `OJS_USE_FIXTURES=1`.
 
-## Deploy on Vercel
+## Environment variables
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable | Scope | Purpose |
+|---|---|---|
+| `OJS_BASE_URL` | server | OJS index base, e.g. `http://38.147.122.247/index.php` |
+| `OJS_JOURNAL_PATH` | server | Journal path segment (`jnso`) |
+| `OJS_API_TOKEN` | server | Bearer token for the REST API (keep secret) |
+| `NEXT_PUBLIC_OJS_PUBLIC_URL` | client | Base for deep links into OJS |
+| `OJS_USE_FIXTURES` | server | `1` to force fixtures |
+| `OJS_DEFAULT_LOCALE` | server | Locale for OJS localized fields (default `en`) |
