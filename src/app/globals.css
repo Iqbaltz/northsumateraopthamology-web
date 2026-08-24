@@ -7,8 +7,8 @@
  * e.g. --color-primary -> bg-primary / text-primary.
  */
 @theme {
-  --color-primary: #ffcf01;
-  --color-primary-light: #fff6cf;
+  --color-primary: #07868f;
+  --color-primary-light: #e8f4f4;
 
   --color-dark: #151618; /* neutral-950 */
   --color-dark-alt: #171713; /* Ideko dark-mode surface */
@@ -18,9 +18,137 @@
   --color-line: #e3e3e3; /* neutral-300 — borders */
   --color-paper: #f8f5f1; /* neutral-200 — soft surface */
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-besley), ui-serif, Georgia, serif;
+
+  --animate-hero-settle: hero-settle 1200ms cubic-bezier(.16, 1, .3, 1) both;
+  --animate-hero-fade-up: hero-fade-up 900ms cubic-bezier(.16, 1, .3, 1) both;
+  --animate-quicklinks-enter: quicklinks-card-enter 850ms cubic-bezier(.16, 1, .3, 1) both;
+  --animate-quicklink-item: quicklink-item-enter 750ms cubic-bezier(.16, 1, .3, 1) both;
+  --animate-check-pop: journal-check-pop 550ms cubic-bezier(.16, 1, .3, 1) both;
+  --animate-logo-enter: logo-enter 600ms cubic-bezier(.22, 1, .36, 1) both;
+  --animate-ambient-float: ambient-float 5.5s ease-in-out infinite;
+  --animate-menu-enter: menu-enter 260ms cubic-bezier(.22, 1, .36, 1) both;
 
   --radius-pill: 50px;
+}
+
+@keyframes hero-settle {
+  from { opacity: 0.4; transform: scale(1.035); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes quicklinks-card-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes quicklink-item-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes journal-check-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes logo-enter {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ambient-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -6px, 0); }
+}
+
+@keyframes menu-enter {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@utility animate-delay-100 { animation-delay: 100ms; }
+@utility animate-delay-150 { animation-delay: 150ms; }
+@utility animate-delay-200 { animation-delay: 200ms; }
+@utility animate-delay-250 { animation-delay: 250ms; }
+@utility animate-delay-300 { animation-delay: 300ms; }
+@utility animate-delay-350 { animation-delay: 350ms; }
+@utility animate-delay-400 { animation-delay: 400ms; }
+@utility animate-delay-450 { animation-delay: 450ms; }
+@utility animate-delay-500 { animation-delay: 500ms; }
+@utility animate-delay-550 { animation-delay: 550ms; }
+@utility animate-delay-600 { animation-delay: 600ms; }
+@utility animate-delay-650 { animation-delay: 650ms; }
+@utility animate-delay-700 { animation-delay: 700ms; }
+@utility animate-delay-750 { animation-delay: 750ms; }
+@utility animate-delay-800 { animation-delay: 800ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-reveal],
+  [data-reveal-item] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+[data-reveal],
+[data-reveal-item] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition-property: opacity, transform;
+  transition-duration: 800ms;
+  transition-timing-function: cubic-bezier(.16, 1, .3, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal].is-revealed,
+[data-reveal-item].is-revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
 }
 
 @layer base {
