@@ -8,14 +8,20 @@ export function AboutJournalSection() {
 
   return (
     <section className="bg-white py-16 sm:py-24">
-      <div className={`${shell} grid grid-cols-[470px_1fr] items-start gap-12 max-[1200px]:grid-cols-1 max-[1200px]:gap-16`}>
+      <div
+        className={`${shell} grid grid-cols-[470px_1fr] items-start gap-12 max-[1200px]:grid-cols-1 max-[1200px]:gap-16`}
+      >
         <div className="w-full" data-reveal>
           <p className={kicker}>{content.kicker}</p>
           <h2 className="my-5 font-serif text-2xl sm:text-[32px] leading-tight font-semibold text-[#0c0c0c]">
             {content.title}
           </h2>
-          <p className="mb-4 text-base leading-[25px] text-[#0c0c0c]">{content.p1}</p>
-          <p className="mb-4 text-base leading-[25px] text-[#0c0c0c]">{content.p2}</p>
+          <p className="mb-4 text-base leading-[25px] text-[#0c0c0c]">
+            {content.p1}
+          </p>
+          <p className="mb-4 text-base leading-[25px] text-[#0c0c0c]">
+            {content.p2}
+          </p>
           <ul className="my-6 grid gap-3.5">
             {content.values.map((item, index) => (
               <li
@@ -31,12 +37,21 @@ export function AboutJournalSection() {
                   width={32}
                   height={32}
                 />
-                <span className="font-semibold text-[#0c0c0c]">{item}</span>
+                <span className="font-semibold text-[#0c0c0c]">
+                  {item.split("–")[0]}
+                  <span className="font-normal">–{item.split("–")[1]}</span>
+                </span>
               </li>
             ))}
           </ul>
           <Link className={textLink} href="#">
-            {content.learnMore} <Image src="/figma/arrow-up-right.svg" alt="Arrow pointing up right" width={24} height={24} />
+            {content.learnMore}{" "}
+            <Image
+              src="/figma/arrow-up-right.svg"
+              alt="Arrow pointing up right"
+              width={24}
+              height={24}
+            />
           </Link>
         </div>
 
@@ -57,13 +72,20 @@ export function AboutJournalSection() {
             </div>
             <div className="flex flex-col justify-center">
               <p className={kicker}>{content.issueKicker}</p>
-              <h3 className="mt-2 mb-1 font-serif text-xl sm:text-[32px] font-bold leading-tight whitespace-pre-line text-[#0c0c0c]">
+              <h3 className="mt-2 mb-1 font-sans text-xl sm:text-[32px] font-bold leading-tight whitespace-pre-line text-[#0c0c0c]">
                 {content.volumeTitle}
               </h3>
-              <h4 className="mb-2 text-base sm:text-2xl font-semibold leading-tight text-[#07868f]">{content.publishDate}</h4>
-              <p className="mb-4 text-xs sm:text-base leading-relaxed text-[#0c0c0c]">{content.issueDescription}</p>
+              <h4 className="mb-2 text-base sm:text-2xl font-semibold leading-tight text-[#07868f]">
+                {content.publishDate}
+              </h4>
+              <p className="mb-4 text-xs sm:text-base leading-relaxed text-[#0c0c0c]">
+                {content.issueDescription}
+              </p>
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
-                <Link href="#" className={`${button} max-[700px]:px-2.5 max-[700px]:py-1.5 max-[700px]:text-[10px] max-[700px]:min-h-0 max-[700px]:w-fit`}>
+                <Link
+                  href="#"
+                  className={`${button} max-[700px]:px-2.5 max-[700px]:py-1.5 max-[700px]:text-[10px] max-[700px]:min-h-0 max-[700px]:w-fit`}
+                >
                   {content.viewIssueButton}
                 </Link>
                 <small className="text-xs leading-tight text-[#666]">
@@ -76,14 +98,27 @@ export function AboutJournalSection() {
           </div>
           <div className="flex min-h-[64px] sm:min-h-[92px] items-center justify-between gap-4 border-t border-[#d5e0e2] bg-white px-6 sm:px-8 py-4 sm:py-5 max-[700px]:gap-2 max-[700px]:px-4 max-[700px]:py-3">
             <span className="flex items-center gap-3 sm:gap-6 text-xs sm:text-sm font-semibold text-[#07868f]">
-              <Image src="/figma/file-doc.svg" alt="Document icon" width={44} height={44} className="shrink-0 size-8 sm:size-11" />
+              <Image
+                src="/figma/file-doc.svg"
+                alt="Document icon"
+                width={44}
+                height={44}
+                className="shrink-0 size-8 sm:size-11"
+              />
               {content.submitBanner}
             </span>
             <a
               className="flex items-center gap-1.5 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
               href="#"
             >
-              {content.downloadTemplate} <Image src="/figma/download.svg" alt="Download icon" width={18} height={18} className="sm:size-6" />
+              {content.downloadTemplate}{" "}
+              <Image
+                src="/figma/download.svg"
+                alt="Download icon"
+                width={18}
+                height={18}
+                className="sm:size-6"
+              />
             </a>
           </div>
         </div>
@@ -101,7 +136,9 @@ export function IndexingSection() {
         className={`${shell} flex min-h-[127px] items-center gap-8 rounded-xl border border-[#d5e0e2] bg-white p-8 shadow-[0_24px_45px_-30px_rgba(0,0,0,0.12)] max-[1200px]:flex-col max-[1200px]:items-center max-[1200px]:gap-6 max-[700px]:min-h-[541px] max-[700px]:px-5 max-[700px]:py-8`}
         data-reveal
       >
-        <strong className="shrink-0 font-sans text-sm uppercase tracking-wider font-bold text-[#0c0c0c] max-[1200px]:text-center">{content.title}</strong>
+        <strong className="shrink-0 font-sans text-sm uppercase tracking-wider font-bold text-[#0c0c0c] max-[1200px]:text-center">
+          {content.title}
+        </strong>
         <div className="flex w-full min-w-0 flex-1 items-center justify-around gap-7 max-[1200px]:flex-wrap max-[1200px]:justify-center max-[1200px]:gap-x-8 max-[1200px]:gap-y-6 max-[1200px]:max-w-[585px] max-[700px]:flex-col max-[700px]:gap-10">
           {indexingPartners.map((partner) => (
             <Image
@@ -111,7 +148,11 @@ export function IndexingSection() {
               alt={`Indeksasi JONSON pada ${partner.name}`}
               width={partner.width}
               height={partner.height}
-              style={{ width: `${partner.width}px`, height: `${partner.height}px`, maxWidth: "100%" }}
+              style={{
+                width: `${partner.width}px`,
+                height: `${partner.height}px`,
+                maxWidth: "100%",
+              }}
             />
           ))}
         </div>
