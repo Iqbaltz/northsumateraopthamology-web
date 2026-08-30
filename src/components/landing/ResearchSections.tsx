@@ -9,13 +9,25 @@ export function LatestArticlesSection() {
   return (
     <section className="bg-white py-12 sm:py-24">
       <div className={shell}>
-        <div className="mb-8 sm:mb-12 flex flex-wrap items-center justify-between gap-4" data-reveal>
-          <h2 className="text-2xl sm:text-[32px] font-bold leading-tight uppercase text-[#0c0c0c]">{content.title}</h2>
+        <div
+          className="mb-8 sm:mb-12 flex flex-wrap items-center justify-between gap-4"
+          data-reveal
+        >
+          <h2 className="text-2xl sm:text-[32px] font-bold leading-tight uppercase text-[#0c0c0c]">
+            {content.title}
+          </h2>
           <Link
             className="group hidden sm:flex items-center gap-2 sm:gap-3 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] focus-visible:ring-offset-2 [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-x-1"
             href="#"
           >
-            {content.viewAll} <Image src="/figma/caret-right.svg" alt="Right caret icon" width={20} height={20} className="sm:size-6" />
+            {content.viewAll}{" "}
+            <Image
+              src="/figma/caret-right.svg"
+              alt="Right caret icon"
+              width={20}
+              height={20}
+              className="sm:size-6"
+            />
           </Link>
         </div>
         <div className="grid grid-cols-4 gap-6 lg:gap-8 max-[1200px]:grid-cols-1 max-[1200px]:gap-8 max-[700px]:gap-8">
@@ -47,7 +59,9 @@ export function LatestArticlesSection() {
                       {article.title}
                     </Link>
                   </h3>
-                  <p className="text-xs sm:text-sm leading-relaxed text-[#0c0c0c]">{article.author}</p>
+                  <p className="text-xs sm:text-sm leading-relaxed text-[#0c0c0c]">
+                    {article.author}
+                  </p>
                 </div>
                 <div className="mt-4 flex items-center justify-between text-xs sm:text-sm text-[#8d8d8d]">
                   <time>{article.date}</time>
@@ -68,7 +82,13 @@ export function LatestArticlesSection() {
             className="group flex items-center gap-2 text-sm font-bold text-[#07868f] uppercase"
             href="#"
           >
-            {content.viewAll} <Image src="/figma/caret-right.svg" alt="Right caret icon" width={20} height={20} />
+            {content.viewAll}{" "}
+            <Image
+              src="/figma/caret-right.svg"
+              alt="Right caret icon"
+              width={20}
+              height={20}
+            />
           </Link>
         </div>
       </div>
@@ -81,28 +101,51 @@ export function ScopeSection() {
 
   return (
     <section className="bg-white py-16 sm:py-24">
-      <div className={`${shell} grid grid-cols-[1fr_1.08fr] gap-8 lg:gap-24 max-[1200px]:grid-cols-1`}>
-        <div className="group flex items-start gap-4 sm:gap-6" data-reveal>
-          <div className="flex-1">
+      <div className={shell}>
+        {/*
+          Above 1200px: illustration owns a left column, divider, all copy stacked on the right.
+          Below 1200px: illustration sits beside the heading, body copy spans the full width under both.
+        */}
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-6 gap-y-6 min-[1201px]:grid-cols-[minmax(160px,260px)_minmax(0,1fr)] min-[1201px]:gap-x-0 min-[1201px]:gap-y-0">
+          <div
+            className="group col-start-2 row-start-1 flex items-start justify-end min-[1201px]:col-start-1 min-[1201px]:row-span-2 min-[1201px]:items-center min-[1201px]:justify-center min-[1201px]:pr-12"
+            data-reveal
+          >
+            <Image
+              className="size-28 sm:size-36 lg:size-[200px] shrink-0 object-contain transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.035] motion-safe:group-hover:rotate-1"
+              src="/figma/aims-scope.webp"
+              alt={content.scopeAlt}
+              width={200}
+              height={200}
+            />
+          </div>
+          <div
+            className="col-start-1 row-start-1 min-[1201px]:col-start-2 min-[1201px]:max-w-[840px] min-[1201px]:border-l min-[1201px]:border-[#d5e0e2] min-[1201px]:pl-12"
+            data-reveal
+          >
             <p className={kicker}>{content.kicker}</p>
-            <h2 className="mt-3 sm:mt-5 font-serif text-2xl sm:text-[32px] leading-tight font-semibold text-[#0c0c0c]">
+            <h2 className="mt-3 sm:mt-4 text-2xl sm:text-[32px] leading-tight font-bold text-[#0c0c0c]">
               {content.title}
             </h2>
           </div>
-          <Image
-            className="size-28 sm:size-36 lg:size-[156px] shrink-0 object-cover transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.035] motion-safe:group-hover:rotate-1"
-            src="/figma/aims-scope.webp"
-            alt={content.scopeAlt}
-            width={156}
-            height={156}
-          />
-        </div>
-        <div className="flex flex-col gap-4 sm:gap-6 text-base leading-[25px] text-[#0c0c0c]" data-reveal>
-          <p>{content.p1}</p>
-          <p>{content.p2}</p>
-          <Link className={`${textLink} mt-2 sm:mt-auto`} href="#">
-            {content.cta} <Image src="/figma/arrow-up-right.svg" alt="Arrow pointing right" width={24} height={24} />
-          </Link>
+          <div
+            className="col-span-2 row-start-2 min-[1201px]:col-span-1 min-[1201px]:col-start-2 min-[1201px]:max-w-[840px] min-[1201px]:border-l min-[1201px]:border-[#d5e0e2] min-[1201px]:pt-6 min-[1201px]:pl-12"
+            data-reveal
+          >
+            <div className="flex flex-col gap-4 sm:gap-6 text-base leading-[25px] text-[#0c0c0c]">
+              <p>{content.p1}</p>
+              <p>{content.p2}</p>
+            </div>
+            <Link className={`${textLink} mt-6 sm:mt-8`} href="#">
+              {content.cta}{" "}
+              <Image
+                src="/figma/arrow-up-right.svg"
+                alt="Arrow pointing right"
+                width={24}
+                height={24}
+              />
+            </Link>
+          </div>
         </div>
       </div>
     </section>

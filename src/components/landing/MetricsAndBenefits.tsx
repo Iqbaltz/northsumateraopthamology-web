@@ -77,13 +77,13 @@ export function MetricsSection() {
 
         {/* Mobile Layout (<=700px: 1 column centered) */}
         <div
-          className="mx-auto flex w-[220px] flex-col items-center gap-6 min-[701px]:hidden"
+          className="mx-auto flex w-[220px] flex-col items-center gap-5 min-[701px]:hidden"
           data-reveal
         >
           {items.map((metric) => (
             <div
               key={metric.label}
-              className="w-full border-b border-[#d5e0e2] pb-6 text-center last:border-b-0 last:pb-0"
+              className="w-full border-b border-[#d5e0e2] pb-8 text-center last:border-b-0 last:pb-0"
             >
               <AnimatedMetric value={metric.value} />
               <span className="mt-1 block text-base leading-snug font-medium text-[#0c0c0c]">
@@ -95,7 +95,7 @@ export function MetricsSection() {
       </div>
 
       <Image
-        className="pointer-events-none absolute top-[-100px] right-[-60px] size-[460px] object-contain opacity-40 motion-safe:animate-ambient-float sm:opacity-100 xl:top-[-110px] xl:right-[-20px] xl:size-[500px] max-[1200px]:top-[-110px] max-[1200px]:right-[-120px] max-[1200px]:size-[460px] max-[700px]:top-[350px] max-[700px]:right-[-100px] max-[700px]:size-[260px]"
+        className="pointer-events-none absolute top-[-100px] right-[-60px] size-[460px] object-contain motion-safe:animate-ambient-float xl:top-[-110px] xl:right-[-20px] xl:size-[500px] max-[1200px]:top-[-110px] max-[1200px]:right-[-120px] max-[1200px]:size-[460px] max-[700px]:top-[350px] max-[700px]:right-[-100px] max-[700px]:size-[260px]"
         src="/figma/metrics-decoration.webp"
         alt={content.decorationAlt}
         width={500}

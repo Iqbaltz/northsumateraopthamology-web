@@ -231,7 +231,7 @@ export const landingContent = {
     email: "halo@jonson.org",
     nav: [
       { label: "Home", href: "/" },
-      { label: "Issues", href: "#" },
+      { label: "Issues", href: "/issues" },
       { label: "For Authors", href: "#" },
       { label: "Editorial Board", href: "#" },
       { label: "Policies", href: "#" },
