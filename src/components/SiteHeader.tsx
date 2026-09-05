@@ -3,14 +3,39 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { button, outlineButton, shell } from "@/components/landing/styles";
-import { landingContent } from "@/components/landing/content";
+import { landingContent, type NavItem } from "@/components/landing/content";
 import { ojsLinks } from "@/lib/links";
+
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg
+      className={`size-3.5 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
+const navItemClass =
+  "relative rounded-md px-2.5 py-1.5 text-sm xl:text-base leading-[19px] font-semibold transition-colors duration-200 after:absolute after:right-2.5 after:bottom-0 after:left-2.5 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#07868f] after:transition-transform after:duration-200 hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] focus-visible:ring-offset-2 motion-safe:hover:after:scale-x-100";
+
+const dropdownItemClass =
+  "block px-4 py-2.5 text-sm leading-snug font-medium text-[#0c0c0c] transition-colors duration-200 hover:bg-[#e8f4f4] hover:text-[#07868f] focus-visible:outline-none focus-visible:bg-[#e8f4f4] focus-visible:text-[#07868f]";
 
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  /** Label of the dropdown currently expanded (desktop hover/click and mobile accordion). */
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const content = landingContent.header;
 
   const isActive = (href: string) => {
@@ -19,6 +44,25 @@ export function SiteHeader() {
     }
     return href !== "#" && pathname.startsWith(href);
   };
+
+  /** A dropdown parent is highlighted when the current page is one of its children. */
+  const isItemActive = (item: NavItem) =>
+    isActive(item.href) || (item.children?.some((child) => isActive(child.href)) ?? false);
+
+  const closeMenus = () => {
+    setOpen(false);
+    setOpenMenu(null);
+  };
+
+  // Escape dismisses an open dropdown.
+  useEffect(() => {
+    if (!openMenu) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpenMenu(null);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [openMenu]);
 
   return (
     <header className="relative z-50 bg-white text-[#0c0c0c]">
@@ -29,7 +73,7 @@ export function SiteHeader() {
         >
           <div className="flex flex-col justify-center min-w-0 pr-2">
             <span className="text-xs sm:text-sm lg:text-base leading-tight tracking-tight">
-              Peer-reviewed. Open access. Advancing eye care worldwide
+              {content.tagline}
             </span>
           </div>
           <div className="flex shrink-0 items-center gap-4 lg:gap-8 font-sans font-semibold text-xs lg:text-sm">
@@ -63,7 +107,7 @@ export function SiteHeader() {
       >
         <Link
           href="/"
-          onClick={() => setOpen(false)}
+          onClick={closeMenus}
           aria-label="JONSON Homepage"
           className="relative h-[40px] w-[265px] shrink-0 motion-safe:animate-logo-enter max-[1200px]:h-[34.14px] max-[1200px]:w-[151px]"
         >
@@ -86,19 +130,61 @@ export function SiteHeader() {
         </Link>
 
         <nav className="flex flex-1 items-center justify-end gap-3 xl:gap-4 max-[1200px]:hidden">
-          {content.nav.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className={`relative rounded-md px-2.5 py-1.5 text-sm xl:text-base leading-[19px] font-semibold transition-colors duration-200 after:absolute after:right-2.5 after:bottom-0 after:left-2.5 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#07868f] after:transition-transform after:duration-200 hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] focus-visible:ring-offset-2 motion-safe:hover:after:scale-x-100 ${
-                isActive(item.href)
-                  ? "text-[#07868f] after:scale-x-100"
-                  : "text-[#0c0c0c]"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {content.nav.map((item) => {
+            const active = isItemActive(item);
+            const activeClass = active ? "text-[#07868f] after:scale-x-100" : "text-[#0c0c0c]";
+
+            if (!item.children) {
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={closeMenus}
+                  className={`${navItemClass} ${activeClass}`}
+                >
+                  {item.label}
+                </Link>
+              );
+            }
+
+            const expanded = openMenu === item.label;
+
+            return (
+              <div
+                key={item.label}
+                className="relative"
+                onMouseEnter={() => setOpenMenu(item.label)}
+                onMouseLeave={() => setOpenMenu((value) => (value === item.label ? null : value))}
+              >
+                <button
+                  type="button"
+                  aria-haspopup="true"
+                  aria-expanded={expanded}
+                  onClick={() => setOpenMenu((value) => (value === item.label ? null : item.label))}
+                  className={`${navItemClass} ${activeClass} flex items-center gap-1.5`}
+                >
+                  {item.label}
+                  <Chevron open={expanded} />
+                </button>
+                {expanded && (
+                  <div className="absolute top-full left-0 z-50 min-w-[210px] overflow-hidden rounded-lg border border-[#d5e0e2] bg-white py-2 shadow-[0_18px_35px_-20px_rgb(0_0_0/0.28)] motion-safe:animate-menu-enter">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.label}
+                        href={child.href}
+                        onClick={() => setOpenMenu(null)}
+                        className={`${dropdownItemClass} ${
+                          isActive(child.href) ? "bg-[#e8f4f4] text-[#07868f]" : ""
+                        }`}
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-2 max-[1200px]:hidden">
@@ -132,18 +218,60 @@ export function SiteHeader() {
       {open && (
         <div className="absolute right-0 left-0 border-t border-[#d5e0e2] bg-white px-[58px] py-5 shadow-[0_15px_30px_rgb(0_0_0/0.08)] motion-safe:animate-menu-enter min-[1201px]:hidden max-[700px]:px-5">
           <nav className="grid gap-1">
-            {content.nav.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className={`rounded-lg px-3 py-[9px] font-semibold transition-[color,background-color,transform] duration-300 hover:bg-[#eff4f7] hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] motion-safe:hover:translate-x-1 ${
-                  isActive(item.href) ? "bg-[#eff4f7] text-[#07868f]" : ""
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {content.nav.map((item) => {
+              const active = isItemActive(item);
+
+              if (!item.children) {
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    onClick={closeMenus}
+                    className={`rounded-lg px-3 py-[9px] font-semibold transition-[color,background-color,transform] duration-300 hover:bg-[#eff4f7] hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] motion-safe:hover:translate-x-1 ${
+                      active ? "bg-[#eff4f7] text-[#07868f]" : ""
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              }
+
+              const expanded = openMenu === item.label;
+
+              return (
+                <div key={item.label}>
+                  <button
+                    type="button"
+                    aria-expanded={expanded}
+                    onClick={() =>
+                      setOpenMenu((value) => (value === item.label ? null : item.label))
+                    }
+                    className={`flex w-full items-center justify-between gap-2 rounded-lg px-3 py-[9px] text-left font-semibold transition-[color,background-color] duration-300 hover:bg-[#eff4f7] hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] ${
+                      active ? "bg-[#eff4f7] text-[#07868f]" : ""
+                    }`}
+                  >
+                    {item.label}
+                    <Chevron open={expanded} />
+                  </button>
+                  {expanded && (
+                    <div className="mt-1 ml-3 grid gap-1 border-l border-[#d5e0e2] pl-3">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.label}
+                          href={child.href}
+                          onClick={closeMenus}
+                          className={`rounded-lg px-3 py-2 text-sm transition-[color,background-color,transform] duration-300 hover:bg-[#eff4f7] hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] motion-safe:hover:translate-x-1 ${
+                            isActive(child.href) ? "bg-[#eff4f7] text-[#07868f]" : ""
+                          }`}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
             <div className="mt-3 flex gap-3">
               <a
                 href={ojsLinks.login}

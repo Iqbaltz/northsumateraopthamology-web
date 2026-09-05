@@ -23,6 +23,13 @@ export type PublishingBenefit = {
   alt: string;
 };
 
+/** A top-level nav entry. `children` turns it into a dropdown trigger. */
+export type NavItem = {
+  label: string;
+  href: string;
+  children?: { label: string; href: string }[];
+};
+
 export type IndexingPartner = {
   image: string;
   name: string;
@@ -231,11 +238,29 @@ export const landingContent = {
     email: "halo@jonson.org",
     nav: [
       { label: "Home", href: "/" },
-      { label: "Issues", href: "/issues" },
+      {
+        label: "Issues",
+        href: "/issues",
+        children: [
+          { label: "Current Issue", href: "/issues" },
+          { label: "Archives", href: "/archive" },
+        ],
+      },
+      {
+        label: "About",
+        href: "#",
+        children: [
+          { label: "About the Journal", href: "#" },
+          { label: "Submissions", href: "#" },
+          { label: "Editorial Masthead", href: "#" },
+          { label: "Privacy Statement", href: "#" },
+          { label: "Reviewer Acknowledgement", href: "#" },
+        ],
+      },
       { label: "For Authors", href: "#" },
       { label: "Editorial Board", href: "#" },
       { label: "Policies", href: "#" },
-    ],
+    ] as NavItem[],
     login: "Login",
     submit: "Submit Manuscript",
   },

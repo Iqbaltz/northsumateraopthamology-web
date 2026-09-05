@@ -1,2 +1,11 @@
 export { ArchiveCatalogSection } from "./ArchiveSections";
-export { archiveContent } from "./content";
+export {
+  archiveContent,
+  archiveIssueArticles,
+  archiveIssueCard,
+  archiveIssueHero,
+  archiveIssues,
+  findArchiveIssue,
+  issueIdentifier,
+  type ArchiveIssue,
+} from "./content";

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { archiveIssues } from "@/components/archive/content";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://jonson.org";
@@ -23,5 +24,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    ...archiveIssues.map((issue) => ({
+      url: `${baseUrl}/archive/${issue.slug}`,
+      lastModified: now,
+      changeFrequency: "yearly" as const,
+      priority: 0.6,
+    })),
   ];
 }

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import {
-  CurrentIssueSection,
   IssueArticlesSection,
+  IssueHeroSection,
   VolumeCatalogSection,
+  issuesContent,
 } from "@/components/issues";
 import { MotionEffects } from "@/components/landing";
 
@@ -26,8 +27,11 @@ export default function IssuesPage() {
   return (
     <div className="overflow-hidden text-[#0c0c0c]">
       <MotionEffects />
-      <CurrentIssueSection />
-      <IssueArticlesSection />
+      <IssueHeroSection issue={issuesContent.hero} />
+      <IssueArticlesSection
+        title={issuesContent.articles.title}
+        items={issuesContent.articles.items}
+      />
       <VolumeCatalogSection />
     </div>
   );

@@ -1,17 +1,39 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Breadcrumb } from "@/components/Breadcrumb";
+import { Breadcrumb, type BreadcrumbItem } from "@/components/Breadcrumb";
 import { VolumeCard } from "@/components/VolumeCard";
 import { button, shell, textLink } from "@/components/landing/styles";
+import type { IssueArticle } from "./journal";
 import { issuesContent } from "./content";
 
-export function CurrentIssueSection() {
-  const content = issuesContent.currentIssue;
+/** Everything the issue hero renders, for the current issue or an archived one. */
+export type IssueHero = {
+  breadcrumb: BreadcrumbItem[];
+  kicker: string;
+  volumeTitle: string;
+  publishMonth: string;
+  description: string;
+  /** Omitted for archived issues — the reader is already on the issue. */
+  viewIssue?: { label: string; href: string };
+  cover: string;
+  coverAlt: string;
+  issnOnline: string;
+  issnPrint: string;
+  downloadLabel: string;
+  publishedOn: string;
+  heading: string;
+  p1: string;
+  p2: string;
+  facts: { title: string; text: string }[];
+};
+
+export function IssueHeroSection({ issue }: { issue: IssueHero }) {
+  const content = issue;
 
   return (
     <section className="bg-[linear-gradient(180deg,#eef3f5_0%,#f8fbfb_100%)] pt-8 pb-14 sm:pb-20">
       <div className={shell}>
-        <Breadcrumb items={issuesContent.breadcrumb} />
+        <Breadcrumb items={content.breadcrumb} />
 
         <div className="mt-6 sm:mt-8 grid grid-cols-[minmax(0,1.62fr)_minmax(0,1fr)] items-start gap-8 lg:gap-14 max-[1200px]:grid-cols-1 max-[1200px]:gap-10">
           <div
@@ -22,7 +44,7 @@ export function CurrentIssueSection() {
               <div className="relative h-[300px] lg:h-[390px] overflow-hidden rounded-lg max-[700px]:h-[170px]">
                 <Image
                   className="object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
-                  src="/figma/journal-cover.webp"
+                  src={`/figma/${content.cover}`}
                   alt={content.coverAlt}
                   fill
                   loading="eager"
@@ -42,12 +64,14 @@ export function CurrentIssueSection() {
                 <p className="mb-5 max-w-[300px] text-xs sm:text-sm leading-relaxed text-[#4a4a4a]">
                   {content.description}
                 </p>
-                <Link
-                  href="#"
-                  className={`${button} w-fit max-[700px]:min-h-0 max-[700px]:px-2.5 max-[700px]:py-1.5 max-[700px]:text-[10px]`}
-                >
-                  {content.viewIssueButton}
-                </Link>
+                {content.viewIssue && (
+                  <Link
+                    href={content.viewIssue.href}
+                    className={`${button} w-fit max-[700px]:min-h-0 max-[700px]:px-2.5 max-[700px]:py-1.5 max-[700px]:text-[10px]`}
+                  >
+                    {content.viewIssue.label}
+                  </Link>
+                )}
               </div>
             </div>
             <div className="flex items-center justify-between gap-4 border-t border-[#e3eaef] bg-[#f7f9fa] px-5 sm:px-6 py-4 max-[700px]:gap-2 max-[700px]:px-4 max-[700px]:py-3">
@@ -105,9 +129,13 @@ export function CurrentIssueSection() {
   );
 }
 
-export function IssueArticlesSection() {
-  const content = issuesContent.articles;
-
+export function IssueArticlesSection({
+  title,
+  items,
+}: {
+  title: string;
+  items: IssueArticle[];
+}) {
   return (
     <section className="bg-white py-14 sm:py-20">
       <div className={shell}>
@@ -115,10 +143,10 @@ export function IssueArticlesSection() {
           className="mb-8 sm:mb-10 text-2xl sm:text-[32px] font-bold leading-tight uppercase text-[#0c0c0c]"
           data-reveal
         >
-          {content.title}
+          {title}
         </h2>
         <div className="grid grid-cols-4 gap-6 max-[1200px]:grid-cols-2 max-[700px]:grid-cols-1">
-          {content.items.map((article) => (
+          {items.map((article) => (
             <article
               className="group flex flex-col overflow-hidden rounded-lg border border-[#e3e9eb] bg-white transition-[border-color,box-shadow,transform] duration-200 hover:shadow-[0_18px_30px_-24px_rgba(0,0,0,0.25)] motion-safe:hover:-translate-y-1 motion-safe:hover:border-[#a9cacc]"
               key={article.title}
