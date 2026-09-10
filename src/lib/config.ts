@@ -8,7 +8,8 @@
 
 // --- Server-only (do not import into client components) ---
 export const OJS_BASE_URL =
-  process.env.OJS_BASE_URL ?? "http://38.147.122.247/index.php";
+  process.env.OJS_BASE_URL ??
+  "https://journal.northsumateraophthalmology.com/index.php";
 
 export const OJS_JOURNAL_PATH = process.env.OJS_JOURNAL_PATH ?? "jnso";
 
@@ -31,7 +32,7 @@ export const USE_FIXTURES =
 // --- Safe for the browser (deep links to the existing OJS server) ---
 export const OJS_PUBLIC_URL =
   process.env.NEXT_PUBLIC_OJS_PUBLIC_URL ??
-  "http://38.147.122.247/index.php/jnso";
+  "https://journal.northsumateraophthalmology.com/index.php/jnso";
 
 /** Locale used to resolve OJS localized fields when no explicit locale is given. */
 export const DEFAULT_LOCALE = process.env.OJS_DEFAULT_LOCALE ?? "en";
