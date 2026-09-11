@@ -3,27 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { Chevron, MagnifyingGlass } from "@/components/icons";
+import { SearchDeck } from "@/components/SearchDeck";
 import { button, outlineButton, shell } from "@/components/landing/styles";
 import { landingContent, type NavItem } from "@/components/landing/content";
 import { ojsLinks } from "@/lib/links";
-
-function Chevron({ open }: { open: boolean }) {
-  return (
-    <svg
-      className={`size-3.5 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
 
 const navItemClass =
   "relative rounded-md px-2.5 py-1.5 text-sm xl:text-base leading-[19px] font-semibold transition-colors duration-200 after:absolute after:right-2.5 after:bottom-0 after:left-2.5 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#07868f] after:transition-transform after:duration-200 hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] focus-visible:ring-offset-2 motion-safe:hover:after:scale-x-100";
@@ -36,7 +21,10 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   /** Label of the dropdown currently expanded (desktop hover/click and mobile accordion). */
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
   const content = landingContent.header;
+
+  const closeSearch = useCallback(() => setSearchOpen(false), []);
 
   const isActive = (href: string) => {
     if (href === "/") {
@@ -185,6 +173,21 @@ export function SiteHeader() {
               </div>
             );
           })}
+
+          <button
+            type="button"
+            aria-label={content.search.open}
+            aria-expanded={searchOpen}
+            onClick={() => {
+              setOpenMenu(null);
+              setSearchOpen((value) => !value);
+            }}
+            className={`ml-1 rounded-md p-2 transition-colors duration-200 hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] focus-visible:ring-offset-2 ${
+              searchOpen ? "text-[#07868f]" : "text-[#0c0c0c]"
+            }`}
+          >
+            <MagnifyingGlass />
+          </button>
         </nav>
 
         <div className="flex items-center gap-2 max-[1200px]:hidden">
@@ -214,10 +217,24 @@ export function SiteHeader() {
         </button>
       </div>
 
+      <SearchDeck open={searchOpen} onClose={closeSearch} />
+
       {/* Mobile drawer */}
       {open && (
         <div className="absolute right-0 left-0 border-t border-[#d5e0e2] bg-white px-[58px] py-5 shadow-[0_15px_30px_rgb(0_0_0/0.08)] motion-safe:animate-menu-enter min-[1201px]:hidden max-[700px]:px-5">
           <nav className="grid gap-1">
+            <button
+              type="button"
+              onClick={() => {
+                closeMenus();
+                setSearchOpen(true);
+              }}
+              className="flex items-center gap-2.5 rounded-lg px-3 py-[9px] text-left font-semibold transition-[color,background-color] duration-300 hover:bg-[#eff4f7] hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f]"
+            >
+              <MagnifyingGlass className="size-[18px]" />
+              {content.search.submit}
+            </button>
+
             {content.nav.map((item) => {
               const active = isItemActive(item);
 

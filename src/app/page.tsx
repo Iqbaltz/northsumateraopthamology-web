@@ -9,6 +9,7 @@ import {
   MotionEffects,
   QuickLinksSection,
   ScopeSection,
+  SubmissionGuideSection,
 } from "@/components/landing";
 import { StructuredData } from "@/components/StructuredData";
 
@@ -41,6 +42,7 @@ export default function HomePage() {
       <ScopeSection />
       <MetricsSection />
       <BenefitsSection />
+      <SubmissionGuideSection />
     </div>
   );
 }

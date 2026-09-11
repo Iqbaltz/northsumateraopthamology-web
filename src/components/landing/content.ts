@@ -23,6 +23,17 @@ export type PublishingBenefit = {
   alt: string;
 };
 
+/** One titled block of copy inside an accordion panel. */
+export type GuideBlock = {
+  heading?: string;
+  paragraphs: string[];
+};
+
+export type GuideSection = {
+  title: string;
+  blocks: GuideBlock[];
+};
+
 /** A top-level nav entry. `children` turns it into a dropdown trigger. */
 export type NavItem = {
   label: string;
@@ -202,6 +213,58 @@ export const landingContent = {
       },
     ] as PublishingBenefit[],
   },
+  submissionGuide: {
+    kicker: "GENERAL SUBMISSION GUIDE",
+    title: "Submission Preparation Guideline",
+    cta: "SUBMISSION DETAILS FOR AUTHOR",
+    /** Shown until the copy for a section arrives; delete once every panel is filled. */
+    placeholder: "Guidance for this section is being finalised.",
+    sections: [
+      {
+        title: "Publishing fees and open access",
+        blocks: [
+          {
+            heading: "Open Access Policy",
+            paragraphs: [
+              "The journal is committed to making published research widely accessible to the ophthalmology community and the public. All articles published by the journal are made available through an open-access model, allowing readers to access, read, and share published research without subscription barriers.",
+              "Open access supports the dissemination of scientific knowledge and enables clinicians, researchers, educators, and healthcare professionals to benefit from current developments in ophthalmology.",
+            ],
+          },
+          {
+            heading: "Article Processing Charges",
+            paragraphs: [
+              "To support the editorial, peer-review, production, hosting, and long-term preservation of published articles, the journal may apply an Article Processing Charge (APC) to accepted manuscripts.",
+              'Current Article Processing Charge: [Insert APC / "No APC"]',
+              "Any applicable publication fee will be communicated clearly to authors before publication. Payment of an APC does not guarantee acceptance and has no influence on the editorial or peer-review process.",
+              "Authors who are unable to cover the applicable publication fee may contact the editorial office to discuss available waiver or discount options.",
+            ],
+          },
+          {
+            heading: "Waivers and Discounts",
+            paragraphs: [
+              "To support the editorial, peer-review, production, hosting, and long-term preservation of published articles, the journal may apply an Article Processing Charge (APC) to accepted manuscripts.",
+              'Current Article Processing Charge: [Insert APC / "No APC"]',
+              "Any applicable publication fee will be communicated clearly to authors before publication. Payment of an APC does not guarantee acceptance and has no influence on the editorial or peer-review process.",
+              "Authors who are unable to cover the applicable publication fee may contact the editorial office to discuss available waiver or discount options.",
+            ],
+          },
+          {
+            heading: "Copyright and Licensing",
+            paragraphs: [
+              "Authors retain the appropriate rights to their work in accordance with the journal's publishing agreement. Published articles are distributed under the journal's designated open-access license.",
+              "License: [Insert Creative Commons license, e.g. CC BY 4.0]",
+              "Authors are responsible for ensuring that any third-party material included in their manuscript is appropriately credited and permitted for use.",
+            ],
+          },
+        ],
+      },
+      { title: "Preparing your manuscript for submission", blocks: [] },
+      { title: "Submitting your manuscript", blocks: [] },
+      { title: "Peer review policy", blocks: [] },
+      { title: "Publication Ethics", blocks: [] },
+      { title: "After Acceptance", blocks: [] },
+    ] as GuideSection[],
+  },
   footer: {
     address: "Jl. Sei Mencirim No.77, Babura, Medan Baru, Medan City, North Sumatera 20154, Indonesia",
     copyright: "JONSON: Journal of North Sumatera Ophthalmology Nexus",
@@ -263,5 +326,15 @@ export const landingContent = {
     ] as NavItem[],
     login: "Login",
     submit: "Submit Manuscript",
+    search: {
+      open: "Open search",
+      label: "Search:",
+      query: "Title/Keyword",
+      publishedAfter: "Published After",
+      publishedBefore: "Published Before",
+      author: "By Author",
+      submit: "Search",
+      close: "Close",
+    },
   },
 };
