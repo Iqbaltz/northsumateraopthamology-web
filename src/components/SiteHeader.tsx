@@ -191,12 +191,12 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2 max-[1200px]:hidden">
-          <a
-            href={ojsLinks.login}
+          <Link
+            href="/login"
             className={`${button} ${outlineButton} !min-h-5 px-4 py-[7px] text-xs font-semibold`}
           >
             {content.login}
-          </a>
+          </Link>
           <a
             href={ojsLinks.submit}
             className={`${button} !min-h-5 px-4 py-[7px] text-xs font-semibold`}
@@ -290,12 +290,13 @@ export function SiteHeader() {
               );
             })}
             <div className="mt-3 flex gap-3">
-              <a
-                href={ojsLinks.login}
+              <Link
+                href="/login"
+                onClick={closeMenus}
                 className={`${button} ${outlineButton} flex-1 text-center justify-center`}
               >
                 {content.login}
-              </a>
+              </Link>
               <a
                 href={ojsLinks.submit}
                 className={`${button} flex-1 text-center justify-center`}
