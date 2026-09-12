@@ -23,10 +23,16 @@ export type PublishingBenefit = {
   alt: string;
 };
 
+/** A paragraph (plain string), a list, or term/description pairs — rendered in order. */
+export type GuideNode =
+  | string
+  | { list: string[]; ordered?: boolean }
+  | { terms: { term: string; description: string }[] };
+
 /** One titled block of copy inside an accordion panel. */
 export type GuideBlock = {
   heading?: string;
-  paragraphs: string[];
+  body: GuideNode[];
 };
 
 export type GuideSection = {
@@ -225,14 +231,14 @@ export const landingContent = {
         blocks: [
           {
             heading: "Open Access Policy",
-            paragraphs: [
+            body: [
               "The journal is committed to making published research widely accessible to the ophthalmology community and the public. All articles published by the journal are made available through an open-access model, allowing readers to access, read, and share published research without subscription barriers.",
               "Open access supports the dissemination of scientific knowledge and enables clinicians, researchers, educators, and healthcare professionals to benefit from current developments in ophthalmology.",
             ],
           },
           {
             heading: "Article Processing Charges",
-            paragraphs: [
+            body: [
               "To support the editorial, peer-review, production, hosting, and long-term preservation of published articles, the journal may apply an Article Processing Charge (APC) to accepted manuscripts.",
               'Current Article Processing Charge: [Insert APC / "No APC"]',
               "Any applicable publication fee will be communicated clearly to authors before publication. Payment of an APC does not guarantee acceptance and has no influence on the editorial or peer-review process.",
@@ -241,7 +247,7 @@ export const landingContent = {
           },
           {
             heading: "Waivers and Discounts",
-            paragraphs: [
+            body: [
               "To support the editorial, peer-review, production, hosting, and long-term preservation of published articles, the journal may apply an Article Processing Charge (APC) to accepted manuscripts.",
               'Current Article Processing Charge: [Insert APC / "No APC"]',
               "Any applicable publication fee will be communicated clearly to authors before publication. Payment of an APC does not guarantee acceptance and has no influence on the editorial or peer-review process.",
@@ -250,7 +256,7 @@ export const landingContent = {
           },
           {
             heading: "Copyright and Licensing",
-            paragraphs: [
+            body: [
               "Authors retain the appropriate rights to their work in accordance with the journal's publishing agreement. Published articles are distributed under the journal's designated open-access license.",
               "License: [Insert Creative Commons license, e.g. CC BY 4.0]",
               "Authors are responsible for ensuring that any third-party material included in their manuscript is appropriately credited and permitted for use.",
@@ -258,8 +264,200 @@ export const landingContent = {
           },
         ],
       },
-      { title: "Preparing your manuscript for submission", blocks: [] },
-      { title: "Submitting your manuscript", blocks: [] },
+      {
+        title: "Preparing your manuscript for submission",
+        blocks: [
+          {
+            body: [
+              "Authors should prepare manuscripts according to the journal's guidelines before beginning the submission process. Following the requirements below helps ensure an efficient editorial and peer-review process.",
+            ],
+          },
+          {
+            heading: "General Requirements",
+            body: [
+              "Manuscripts should:",
+              {
+                list: [
+                  "Be written clearly and concisely in English.",
+                  "Present original work that has not been published elsewhere.",
+                  "Not be simultaneously submitted to another journal.",
+                  "Follow the appropriate manuscript structure for the selected article type.",
+                  "Include complete and accurate author information.",
+                  "Meet all applicable ethical and reporting requirements.",
+                  "Include appropriate references and citations.",
+                  "Provide clear declarations regarding conflicts of interest, funding, ethics, and other relevant matters.",
+                ],
+              },
+              "Authors should carefully proofread their manuscript before submission. Manuscripts that do not meet the journal's basic requirements may be returned to the authors for correction before entering editorial assessment.",
+            ],
+          },
+          {
+            heading: "Manuscript Structure",
+            body: [
+              "Research articles should generally include the following sections:",
+              {
+                ordered: true,
+                list: [
+                  "Title",
+                  "Abstract",
+                  "Keywords",
+                  "Introduction",
+                  "Methods",
+                  "Results",
+                  "Discussion",
+                  "Conclusion",
+                  "Acknowledgments, where applicable",
+                  "Funding Statement",
+                  "Conflict of Interest Statement",
+                  "Ethics Statement, where applicable",
+                  "Author Contributions, where applicable",
+                  "References",
+                ],
+              },
+              "The required structure may differ depending on the article type. Authors should consult the relevant article-type requirements before submission.",
+            ],
+          },
+          {
+            heading: "Keywords",
+            body: [
+              "Authors should provide 3–6 keywords that accurately represent the main topics, conditions, techniques, or concepts discussed in the manuscript. Where appropriate, authors are encouraged to use established medical terminology.",
+            ],
+          },
+          {
+            heading: "Figures and Tables",
+            body: [
+              "Figures and tables should add meaningful information to the manuscript and should not unnecessarily duplicate information presented in the main text.",
+              "Each figure and table should:",
+              {
+                list: [
+                  "Have a clear and descriptive title or caption.",
+                  "Be numbered consecutively.",
+                  "Be referenced in the main text.",
+                  "Be submitted in an appropriate format and resolution.",
+                  "Clearly identify relevant units, abbreviations, and statistical information.",
+                ],
+              },
+              "Patient photographs and other potentially identifiable images must comply with applicable consent and privacy requirements.",
+            ],
+          },
+          {
+            heading: "References",
+            body: [
+              "References should be relevant, accurate, and complete. Authors should ensure that every reference cited in the manuscript appears in the reference list and that every reference in the reference list is cited in the manuscript.",
+              "Authors should follow the journal's required reference style.",
+              "Reference style: [Insert reference style]",
+              "Authors are encouraged to verify references against the original sources and use persistent identifiers such as DOI where available.",
+            ],
+          },
+          {
+            heading: "Supplementary Materials",
+            body: [
+              "Supplementary materials may be submitted when they provide additional information that supports the manuscript but is not essential to understanding the main text.",
+              "Examples may include:",
+              {
+                list: [
+                  "Additional tables",
+                  "Additional figures",
+                  "Extended methodology",
+                  "Supplementary datasets",
+                  "Videos",
+                  "Additional statistical analyses",
+                ],
+              },
+              "Supplementary materials are subject to editorial review and should be clearly labeled and referenced within the manuscript.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Submitting Your Manuscript",
+        blocks: [
+          {
+            body: [
+              "All manuscripts should be submitted electronically through the journal's online submission system.",
+            ],
+          },
+          {
+            heading: "Before You Submit",
+            body: [
+              "Before submitting, authors should confirm that:",
+              {
+                list: [
+                  "The manuscript follows the journal's formatting requirements.",
+                  "The selected article type is appropriate.",
+                  "All authors have reviewed and approved the manuscript.",
+                  "Author names, affiliations, and contact information are complete and accurate.",
+                  "The corresponding author has been identified.",
+                  "Required figures and tables are included.",
+                  "Ethical approval and informed consent statements are provided where applicable.",
+                  "Funding information has been disclosed.",
+                  "Conflicts of interest have been declared.",
+                  "The manuscript is not under consideration elsewhere.",
+                  "Permissions have been obtained for copyrighted or third-party material where necessary.",
+                ],
+              },
+            ],
+          },
+          {
+            heading: "Submission Files",
+            body: [
+              "Depending on the article type, authors may be asked to provide:",
+              {
+                terms: [
+                  {
+                    term: "Main Manuscript",
+                    description:
+                      "The complete manuscript, including the title, abstract, main text, references, tables, and figure legends as required.",
+                  },
+                  {
+                    term: "Figures",
+                    description:
+                      "High-quality figure files prepared according to the journal's technical requirements.",
+                  },
+                  {
+                    term: "Supplementary Files",
+                    description: "Additional materials supporting the manuscript.",
+                  },
+                  {
+                    term: "Cover Letter",
+                    description:
+                      "A brief letter introducing the manuscript and explaining its relevance to the journal.",
+                  },
+                  {
+                    term: "Author Information",
+                    description:
+                      "Complete details for all contributing authors, including affiliations and contact information.",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            heading: "Cover Letter",
+            body: [
+              "The cover letter should briefly explain:",
+              {
+                list: [
+                  "The title of the manuscript.",
+                  "The article type.",
+                  "The principal contribution or significance of the work.",
+                  "Why the manuscript is relevant to the journal.",
+                  "Confirmation that the manuscript is original and not under consideration elsewhere.",
+                  "Any additional information that the editors should consider.",
+                ],
+              },
+              "The cover letter should not duplicate the full manuscript abstract.",
+            ],
+          },
+          {
+            heading: "Submission Confirmation",
+            body: [
+              "After successfully completing the submission process, the corresponding author will receive a confirmation and manuscript identification number.",
+              "Please retain this identification number for future correspondence with the editorial office.",
+            ],
+          },
+        ],
+      },
       { title: "Peer review policy", blocks: [] },
       { title: "Publication Ethics", blocks: [] },
       { title: "After Acceptance", blocks: [] },

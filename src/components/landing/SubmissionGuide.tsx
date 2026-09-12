@@ -3,8 +3,41 @@
 import { useState } from "react";
 import { Chevron } from "@/components/icons";
 import { ojsLinks } from "@/lib/links";
-import { landingContent } from "./content";
+import { landingContent, type GuideNode } from "./content";
 import { button, kicker, shell } from "./styles";
+
+const bodyTextClass = "text-sm leading-relaxed text-[#3f3f3f]";
+
+/** Renders one node of a panel's body: a paragraph, a bulleted list, or a numbered one. */
+function GuideNodeView({ node }: { node: GuideNode }) {
+  if (typeof node === "string") {
+    return <p className={`mb-3 last:mb-0 ${bodyTextClass}`}>{node}</p>;
+  }
+
+  if ("terms" in node) {
+    return (
+      <dl className="mb-3 last:mb-0">
+        {node.terms.map((entry) => (
+          <div key={entry.term}>
+            <dt className="text-sm font-bold leading-relaxed text-[#0c0c0c]">{entry.term}</dt>
+            <dd className={bodyTextClass}>{entry.description}</dd>
+          </div>
+        ))}
+      </dl>
+    );
+  }
+
+  const listClass = `mb-3 space-y-1 pl-5 last:mb-0 ${bodyTextClass} ${
+    node.ordered ? "list-decimal" : "list-disc"
+  }`;
+  const items = node.list.map((item) => <li key={item}>{item}</li>);
+
+  return node.ordered ? (
+    <ol className={listClass}>{items}</ol>
+  ) : (
+    <ul className={listClass}>{items}</ul>
+  );
+}
 
 export function SubmissionGuideSection() {
   const content = landingContent.submissionGuide;
@@ -74,20 +107,15 @@ export function SubmissionGuideSection() {
                           {content.placeholder}
                         </p>
                       ) : (
-                        section.blocks.map((block) => (
-                          <div key={block.heading ?? block.paragraphs[0]} className="mb-6 last:mb-0">
+                        section.blocks.map((block, blockIndex) => (
+                          <div key={blockIndex} className="mb-6 last:mb-0">
                             {block.heading && (
                               <h4 className="mb-2 text-base sm:text-lg font-bold leading-snug text-[#0c0c0c]">
                                 {block.heading}
                               </h4>
                             )}
-                            {block.paragraphs.map((paragraph) => (
-                              <p
-                                key={paragraph}
-                                className="mb-3 text-sm leading-relaxed text-[#3f3f3f] last:mb-0"
-                              >
-                                {paragraph}
-                              </p>
+                            {block.body.map((node, nodeIndex) => (
+                              <GuideNodeView key={nodeIndex} node={node} />
                             ))}
                           </div>
                         ))
