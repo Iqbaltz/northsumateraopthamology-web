@@ -1,3 +1,5 @@
+import { submissionAnchors } from "@/components/submission/content";
+
 export type QuickLink = {
   image: string;
   title: string;
@@ -45,6 +47,11 @@ export type NavItem = {
   label: string;
   href: string;
   children?: { label: string; href: string }[];
+};
+
+export type FooterColumn = {
+  title: string;
+  items: { label: string; href: string }[];
 };
 
 export type IndexingPartner = {
@@ -471,27 +478,51 @@ export const landingContent = {
       {
         title: "For Authors",
         items: [
-          "Author Guidelines",
-          "Submission Process",
-          "Article Types",
-          "Terms & Conditions",
-          "Article Processing Charges",
-          "Writer Resources",
+          { label: "Author Guidelines", href: `/submission#${submissionAnchors.preparation}` },
+          { label: "Submission Process", href: `/submission#${submissionAnchors.howToSubmit}` },
+          { label: "Article Types", href: `/submission#${submissionAnchors.articleTypes}` },
+          { label: "Terms & Conditions", href: "#" },
+          { label: "Article Processing Charges", href: `/submission#${submissionAnchors.fees}` },
+          { label: "Writer Resources", href: `/submission#${submissionAnchors.resources}` },
         ],
       },
       {
         title: "For Reviewers",
-        items: ["Reviewer Guidelines", "Peer Review Process", "Become a Reviewer", "Reviewer Ethics & Resources"],
+        items: [
+          { label: "Reviewer Guidelines", href: "#" },
+          { label: "Peer Review Process", href: "#" },
+          { label: "Become a Reviewer", href: "#" },
+          { label: "Reviewer Ethics & Resources", href: "#" },
+        ],
       },
       {
         title: "Journal Information",
-        items: ["About the Journal", "Editorial Board", "Aims & Scope", "Journal Metrics", "Indexing & Abstracting"],
+        items: [
+          { label: "About the Journal", href: "#" },
+          { label: "Editorial Board", href: "#" },
+          { label: "Aims & Scope", href: "/#aims-scope" },
+          { label: "Journal Metrics", href: "#" },
+          { label: "Indexing & Abstracting", href: "#" },
+        ],
       },
       {
         title: "Support",
-        items: ["Contact Us", "FAQ", "Privacy Policy", "Publication Ethics & Malpractice"],
+        items: [
+          { label: "Contact Us", href: "#" },
+          { label: "FAQ", href: "#" },
+          { label: "Privacy Policy", href: "#" },
+          { label: "Publication Ethics & Malpractice", href: "#" },
+        ],
       },
-    ],
+    ] as FooterColumn[],
+    license: {
+      journal: "JONSON: Journal of North Sumatera Ophthalmology Nexus",
+      statement: "is an open-access journal.",
+      prefix: "This work is licensed under a",
+      name: "Creative Commons Attribution-ShareAlike 4.0 International License",
+      badge: "BY-SA 4.0",
+      href: "https://creativecommons.org/licenses/by-sa/4.0/",
+    },
   },
   header: {
     tagline: "Peer-reviewed. Open access. Advancing eye care worldwide",
@@ -512,18 +543,18 @@ export const landingContent = {
         href: "#",
         children: [
           { label: "About the Journal", href: "#" },
-          { label: "Submissions", href: "#" },
+          { label: "Submissions", href: "/submission" },
           { label: "Editorial Masthead", href: "#" },
           { label: "Privacy Statement", href: "#" },
           { label: "Reviewer Acknowledgement", href: "#" },
         ],
       },
-      { label: "For Authors", href: "#" },
       { label: "Editorial Board", href: "#" },
       { label: "Policies", href: "#" },
     ] as NavItem[],
-    login: "Login",
+    login: "Sign In / Sign Up",
     submit: "Submit Manuscript",
+    submitHref: "/submission",
     search: {
       open: "Open search",
       label: "Search:",

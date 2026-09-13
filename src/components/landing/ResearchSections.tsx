@@ -100,7 +100,7 @@ export function ScopeSection() {
   const content = landingContent.scope;
 
   return (
-    <section className="bg-white py-16 sm:py-24">
+    <section id="aims-scope" className="bg-white py-16 sm:py-24">
       <div className={shell}>
         {/*
           Above 1200px: illustration owns a left column, divider, all copy stacked on the right.
