@@ -1,4 +1,5 @@
 import { aboutAnchors, aboutPath } from "@/components/about/anchors";
+import { editorialPath } from "@/components/editorial/path";
 import { articlePath } from "@/components/issues/journal";
 import { submissionAnchors } from "@/components/submission/content";
 
@@ -500,7 +501,7 @@ export const landingContent = {
         title: "Journal Information",
         items: [
           { label: "About the Journal", href: aboutPath() },
-          { label: "Editorial Board", href: "#" },
+          { label: "Editorial Board", href: editorialPath },
           { label: "Aims & Scope", href: aboutPath(aboutAnchors.aimsScope) },
           { label: "Journal Metrics", href: "#" },
           { label: "Indexing & Abstracting", href: "#" },
@@ -550,7 +551,7 @@ export const landingContent = {
           { label: "Reviewer Acknowledgement", href: "#" },
         ],
       },
-      { label: "Editorial Board", href: "#" },
+      { label: "Editorial Board", href: editorialPath },
       { label: "Policies", href: "#" },
     ] as NavItem[],
     login: "Sign In / Sign Up",

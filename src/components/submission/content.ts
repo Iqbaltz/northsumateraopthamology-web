@@ -319,6 +319,5 @@ export const submissionContent = {
     title: "Need Help With Your Submission?",
     text: "If you have questions about manuscript preparation, submission requirements, or the status of an existing submission, please contact the JONSON Editorial Office.",
     cta: "CONTACT US",
-    journalName: "JONSON – Journal of North Sumatera Ophthalmology Nexus",
   },
 };

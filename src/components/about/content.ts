@@ -95,7 +95,7 @@ export const aboutContent = {
       { label: "Publisher", value: journal.publisher },
       { label: "Language", value: journal.languages },
       { label: "Publication Frequency", value: journal.frequency },
-      { label: "Peer Review", value: "Double-blind peer review" },
+      { label: "Peer Review", value: journal.peerReview },
       { label: "Access", value: "Open Access" },
       { label: "License", value: `CC ${license.badge}`, href: license.href },
       {

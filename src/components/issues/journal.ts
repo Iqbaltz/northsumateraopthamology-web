@@ -39,6 +39,7 @@ export const journal = {
   publisher: "Rumah Sakit Khusus Mata Mencirim 77 Medan",
   languages: "English and Indonesian",
   frequency: "Biannual (February and August)",
+  peerReview: "Double-blind peer review",
   /** 10.0000 is a placeholder prefix — no DOIs are registered for the journal yet. */
   doiPrefix: "10.0000/jonson",
   downloadLabel: "Download This Journal",

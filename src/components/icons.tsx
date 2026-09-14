@@ -66,6 +66,15 @@ export function ScopeMark({ className = "" }: IconProps) {
   );
 }
 
+export function Envelope({ className = "" }: IconProps) {
+  return (
+    <svg {...strokeProps} strokeWidth={1.8} className={`size-5 shrink-0 ${className}`}>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3.5 6 8.5 7 8.5-7" />
+    </svg>
+  );
+}
+
 export function XMark({ className = "" }: IconProps) {
   return (
     <svg {...strokeProps} strokeWidth={2.2} className={`size-4 shrink-0 ${className}`}>
