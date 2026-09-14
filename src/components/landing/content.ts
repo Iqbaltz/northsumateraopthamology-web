@@ -1,6 +1,7 @@
 import { aboutAnchors, aboutPath } from "@/components/about/anchors";
 import { editorialPath } from "@/components/editorial/path";
 import { articlePath } from "@/components/issues/journal";
+import { policiesAnchors, policiesPath } from "@/components/policies/anchors";
 import { submissionAnchors } from "@/components/submission/content";
 
 export type QuickLink = {
@@ -513,7 +514,7 @@ export const landingContent = {
           { label: "Contact Us", href: "#" },
           { label: "FAQ", href: "#" },
           { label: "Privacy Policy", href: "#" },
-          { label: "Publication Ethics & Malpractice", href: "#" },
+          { label: "Publication Ethics & Malpractice", href: policiesPath(policiesAnchors.publicationEthics) },
         ],
       },
     ] as FooterColumn[],
@@ -552,7 +553,7 @@ export const landingContent = {
         ],
       },
       { label: "Editorial Board", href: editorialPath },
-      { label: "Policies", href: "#" },
+      { label: "Policies", href: policiesPath() },
     ] as NavItem[],
     login: "Sign In / Sign Up",
     submit: "Submit Manuscript",

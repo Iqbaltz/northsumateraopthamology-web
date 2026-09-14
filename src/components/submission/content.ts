@@ -1,4 +1,5 @@
 import { aboutAnchors, aboutPath } from "@/components/about/anchors";
+import { policiesAnchors, policiesPath } from "@/components/policies/anchors";
 import type { BreadcrumbItem } from "@/components/Breadcrumb";
 
 /** One pre-submission check. `link` points at the page or section that explains it. */
@@ -88,7 +89,7 @@ export const submissionContent = {
       {
         title: "Check Ethics Requirements",
         text: "Research involving human participants, patient data, human tissue, animals, or identifiable clinical information must comply with applicable ethical requirements.",
-        link: { label: "Publication Ethics", href: "#" },
+        link: { label: "Publication Ethics", href: policiesPath(policiesAnchors.publicationEthics) },
       },
       {
         title: "Review Author Responsibilities",
