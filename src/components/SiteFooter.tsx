@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CreativeCommonsBadge } from "@/components/CreativeCommonsBadge";
 import { shell } from "@/components/landing/styles";
 import {
   indexingPartners,
@@ -109,16 +110,7 @@ export function SiteFooter() {
           </a>
           .
         </p>
-        <a
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-[#c9d3d7] bg-white px-2.5 py-1.5 text-[#0c0c0c] transition-[border-color,color] duration-200 hover:border-[#07868f] hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f]"
-          href={content.license.href}
-          target="_blank"
-          rel="license noopener noreferrer"
-          aria-label={content.license.name}
-        >
-          <CreativeCommonsIcons />
-          <span className="text-[11px] font-bold tracking-[0.04em]">{content.license.badge}</span>
-        </a>
+        <CreativeCommonsBadge />
       </div>
 
       <div className="flex min-h-10 items-center justify-between gap-5 bg-[#07868f] px-[max(20px,calc((100%_-_1320px)/2))] py-2 text-sm leading-6 text-white max-[1200px]:px-[58px] max-[1200px]:text-[11px] max-[700px]:flex-col max-[700px]:items-start max-[700px]:px-4 max-[700px]:text-[11px] max-[700px]:leading-5">
@@ -148,41 +140,5 @@ function FooterColumn({ title, items, delay }: FooterColumnContent & { delay: nu
         ))}
       </ul>
     </div>
-  );
-}
-
-/** The CC, BY (attribution) and SA (share-alike) marks, drawn with currentColor. */
-function CreativeCommonsIcons() {
-  const ring = { cx: 12, cy: 12, r: 10.25, fill: "none", stroke: "currentColor", strokeWidth: 1.6 };
-
-  return (
-    <span className="flex items-center gap-1" aria-hidden>
-      <svg className="size-[18px]" viewBox="0 0 24 24">
-        <circle {...ring} />
-        <path
-          d="M10.8 10.2a2.55 2.55 0 1 0 0 3.6M16.8 10.2a2.55 2.55 0 1 0 0 3.6"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.7"
-          strokeLinecap="round"
-        />
-      </svg>
-      <svg className="size-[18px]" viewBox="0 0 24 24">
-        <circle {...ring} />
-        <circle cx="12" cy="6.9" r="1.65" fill="currentColor" />
-        <path d="M9.4 9.6h5.2v4.6h-1.4V18h-2.4v-3.8H9.4z" fill="currentColor" />
-      </svg>
-      <svg className="size-[18px]" viewBox="0 0 24 24">
-        <circle {...ring} />
-        <path
-          d="M7.6 12a4.4 4.4 0 1 1 1.3 3.1"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.7"
-          strokeLinecap="round"
-        />
-        <path d="M5.6 10.6h4l-2 2.6z" fill="currentColor" />
-      </svg>
-    </span>
   );
 }

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArticleCard } from "@/components/ArticleCard";
 import { Breadcrumb, type BreadcrumbItem } from "@/components/Breadcrumb";
 import { VolumeCard } from "@/components/VolumeCard";
 import { button, shell, textLink } from "@/components/landing/styles";
@@ -147,54 +148,7 @@ export function IssueArticlesSection({
         </h2>
         <div className="grid grid-cols-4 gap-6 max-[1200px]:grid-cols-2 max-[700px]:grid-cols-1">
           {items.map((article) => (
-            <article
-              className="group flex flex-col overflow-hidden rounded-lg border border-[#e3e9eb] bg-white transition-[border-color,box-shadow,transform] duration-200 hover:shadow-[0_18px_30px_-24px_rgba(0,0,0,0.25)] motion-safe:hover:-translate-y-1 motion-safe:hover:border-[#a9cacc]"
-              key={article.title}
-              data-reveal-item
-            >
-              <div className="relative h-[170px] shrink-0 overflow-hidden max-[700px]:h-[200px]">
-                <Image
-                  className="object-cover transition-transform duration-300 motion-safe:group-hover:scale-[1.025]"
-                  src={`/figma/${article.image}`}
-                  alt={article.alt}
-                  fill
-                  sizes="(max-width: 700px) 100vw, (max-width: 1200px) 50vw, 306px"
-                />
-              </div>
-              <div className="flex flex-1 flex-col p-4 sm:p-5">
-                <span className="mb-3 inline-block w-fit rounded-md bg-[#e9eef1] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.06em] leading-4 text-[#3f4b5b]">
-                  {article.tag}
-                </span>
-                <h3 className="mb-2 text-base leading-snug font-semibold text-[#0c0c0c]">
-                  <Link
-                    className="rounded-sm transition-colors duration-300 group-hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f]"
-                    href={article.href}
-                  >
-                    {article.title}
-                  </Link>
-                </h3>
-                <p className="text-xs sm:text-sm leading-relaxed text-[#5c5c5c]">
-                  {article.authors}
-                </p>
-                <div className="mt-5 flex items-center justify-between gap-3 border-t border-[#eef1f3] pt-3 text-xs sm:text-sm">
-                  <time className="text-[#8d8d8d]">{article.date}</time>
-                  <a
-                    className="flex items-center gap-1.5 rounded-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
-                    href={article.href}
-                    aria-label={`Download ${article.title} as ${article.format}`}
-                  >
-                    {article.format}
-                    <Image
-                      className="size-4 sm:size-[18px]"
-                      src="/figma/download.svg"
-                      alt=""
-                      width={18}
-                      height={18}
-                    />
-                  </a>
-                </div>
-              </div>
-            </article>
+            <ArticleCard key={article.slug} article={article} meta={article.date} />
           ))}
         </div>
       </div>

@@ -4,5 +4,13 @@ export {
   VolumeCatalogSection,
   type IssueHero,
 } from "./IssueSections";
-export { issuesContent } from "./content";
-export { articlesForIssue, issueArticles, journal, type IssueArticle } from "./journal";
+export { currentIssue, issuesContent } from "./content";
+export {
+  articlePath,
+  articlesForIssue,
+  authorLine,
+  issueArticles,
+  journal,
+  type ArticleAuthor,
+  type IssueArticle,
+} from "./journal";

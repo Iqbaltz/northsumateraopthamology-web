@@ -1,3 +1,4 @@
+import { aboutAnchors, aboutPath } from "@/components/about/anchors";
 import type { BreadcrumbItem } from "@/components/Breadcrumb";
 
 /** One pre-submission check. `link` points at the page or section that explains it. */
@@ -72,7 +73,7 @@ export const submissionContent = {
       {
         title: "Check the Scope",
         text: "Ensure that your manuscript falls within the aims and scope of JONSON and is relevant to ophthalmology, vision science, or related clinical and scientific disciplines.",
-        link: { label: "Read Aims & Scope", href: "/#aims-scope" },
+        link: { label: "Read Aims & Scope", href: aboutPath(aboutAnchors.aimsScope) },
       },
       {
         title: "Prepare Your Manuscript",
