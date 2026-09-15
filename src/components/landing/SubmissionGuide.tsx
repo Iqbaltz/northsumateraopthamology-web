@@ -1,43 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { GuideNodeView } from "@/components/GuideNodeView";
 import { Chevron } from "@/components/icons";
 import { ojsLinks } from "@/lib/links";
-import { landingContent, type GuideNode } from "./content";
+import { landingContent } from "./content";
 import { button, kicker, shell } from "./styles";
-
-const bodyTextClass = "text-sm leading-relaxed text-[#3f3f3f]";
-
-/** Renders one node of a panel's body: a paragraph, a bulleted list, or a numbered one. */
-function GuideNodeView({ node }: { node: GuideNode }) {
-  if (typeof node === "string") {
-    return <p className={`mb-3 last:mb-0 ${bodyTextClass}`}>{node}</p>;
-  }
-
-  if ("terms" in node) {
-    return (
-      <dl className="mb-3 last:mb-0">
-        {node.terms.map((entry) => (
-          <div key={entry.term}>
-            <dt className="text-sm font-bold leading-relaxed text-[#0c0c0c]">{entry.term}</dt>
-            <dd className={bodyTextClass}>{entry.description}</dd>
-          </div>
-        ))}
-      </dl>
-    );
-  }
-
-  const listClass = `mb-3 space-y-1 pl-5 last:mb-0 ${bodyTextClass} ${
-    node.ordered ? "list-decimal" : "list-disc"
-  }`;
-  const items = node.list.map((item) => <li key={item}>{item}</li>);
-
-  return node.ordered ? (
-    <ol className={listClass}>{items}</ol>
-  ) : (
-    <ul className={listClass}>{items}</ul>
-  );
-}
 
 export function SubmissionGuideSection() {
   const content = landingContent.submissionGuide;

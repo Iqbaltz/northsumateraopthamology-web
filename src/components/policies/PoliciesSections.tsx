@@ -1,23 +1,17 @@
-import { Breadcrumb } from "@/components/Breadcrumb";
-import { shell } from "@/components/landing/styles";
+import Image from "next/image";
+import Link from "next/link";
+import { shell, textLink } from "@/components/landing/styles";
+import { PageHero } from "@/components/PageHero";
 import { policiesContent } from "./content";
 
 export function PoliciesHeroSection() {
   const content = policiesContent.hero;
-
   return (
-    <section className="bg-[linear-gradient(180deg,#eef3f5_0%,#f8fbfb_100%)] pt-8 pb-14 sm:pb-20">
-      <div className={shell}>
-        <Breadcrumb items={policiesContent.breadcrumb} />
-
-        <div className="mt-8 sm:mt-10 max-w-[1100px]" data-reveal>
-          <h1 className="font-serif text-[32px] sm:text-[40px] lg:text-[44px] font-bold leading-[1.15] text-[#0c0c0c]">
-            {content.title}
-          </h1>
-          <p className="mt-4 sm:mt-5 text-base leading-[26px] text-[#3f3f3f]">{content.description}</p>
-        </div>
-      </div>
-    </section>
+    <PageHero
+      breadcrumb={policiesContent.breadcrumb}
+      title={content.title}
+      description={content.description}
+    />
   );
 }
 
@@ -45,6 +39,12 @@ export function PolicySectionsList() {
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
+            {section.link && (
+              <Link className={`${textLink} mt-5 text-sm`} href={section.link.href}>
+                {section.link.label}
+                <Image className="size-4" src="/figma/caret-right.svg" alt="" width={16} height={16} />
+              </Link>
+            )}
           </section>
         ))}
       </div>

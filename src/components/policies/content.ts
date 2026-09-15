@@ -1,4 +1,5 @@
 import type { BreadcrumbItem } from "@/components/Breadcrumb";
+import { ethicsAnchors, ethicsPath } from "@/components/ethics/anchors";
 import { journal } from "@/components/issues/journal";
 import { policiesAnchors, policiesPath, type PoliciesAnchor } from "./anchors";
 
@@ -6,6 +7,8 @@ export type PolicySection = {
   id: PoliciesAnchor;
   title: string;
   paragraphs: string[];
+  /** Where the full policy lives, when this section only summarises it. */
+  link?: { label: string; href: string };
 };
 
 export const policiesContent = {
@@ -41,6 +44,7 @@ export const policiesContent = {
       paragraphs: [
         `${journal.name} follows recognized principles of publication ethics and is committed to maintaining integrity throughout the publication process. Authors, editors, reviewers, and the publisher are expected to follow ethical standards and act with honesty, fairness, and transparency.`,
       ],
+      link: { label: "Read the full Publication Ethics", href: ethicsPath() },
     },
     {
       id: policiesAnchors.researchMisconduct,
@@ -71,6 +75,10 @@ export const policiesContent = {
       paragraphs: [
         `${journal.name} maintains the integrity of the published academic record. Corrections, retractions, or other post-publication notices may be issued when significant errors, ethical concerns, or research misconduct are identified after publication.`,
       ],
+      link: {
+        label: "Retraction, withdrawal and correction policy",
+        href: ethicsPath(ethicsAnchors.rwc),
+      },
     },
     {
       id: policiesAnchors.ethicalApproval,

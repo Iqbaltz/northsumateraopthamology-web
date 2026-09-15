@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { Breadcrumb } from "@/components/Breadcrumb";
 import { EditorialOfficeCard } from "@/components/EditorialOfficeCard";
 import { shell } from "@/components/landing/styles";
+import { PageHero } from "@/components/PageHero";
 import { editorialContent, profileKinds, type BoardMember, type ProfileKind } from "./content";
 
 const badgeFrameClass =
@@ -85,27 +85,20 @@ export function EditorialHeroSection() {
   const content = editorialContent.hero;
 
   return (
-    <section className="bg-[linear-gradient(180deg,#eef3f5_0%,#f8fbfb_100%)] pt-8 pb-14 sm:pb-20">
-      <div className={shell}>
-        <Breadcrumb items={editorialContent.breadcrumb} />
-
-        <div className="mt-8 sm:mt-10 max-w-[1100px]" data-reveal>
-          <h1 className="font-serif text-[32px] sm:text-[40px] lg:text-[44px] font-bold leading-[1.15] text-[#0c0c0c]">
-            {content.title}
-          </h1>
-          <p className="mt-4 sm:mt-5 text-base leading-[26px] text-[#3f3f3f]">{content.description}</p>
-
-          <dl className="mt-7 grid grid-cols-3 gap-6 border-t border-[#d5e0e2] pt-6 max-[700px]:grid-cols-1 max-[700px]:gap-4">
-            {content.stats.map((stat) => (
-              <div key={stat.label}>
-                <dt className="text-xs sm:text-sm text-[#7a8a91]">{stat.label}</dt>
-                <dd className="mt-1 text-sm sm:text-base font-semibold text-[#0c0c0c]">{stat.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </div>
-    </section>
+    <PageHero
+      breadcrumb={editorialContent.breadcrumb}
+      title={content.title}
+      description={content.description}
+    >
+      <dl className="mt-7 grid grid-cols-3 gap-6 border-t border-[#d5e0e2] pt-6 max-[700px]:grid-cols-1 max-[700px]:gap-4">
+        {content.stats.map((stat) => (
+          <div key={stat.label}>
+            <dt className="text-xs sm:text-sm text-[#7a8a91]">{stat.label}</dt>
+            <dd className="mt-1 text-sm sm:text-base font-semibold text-[#0c0c0c]">{stat.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </PageHero>
   );
 }
 

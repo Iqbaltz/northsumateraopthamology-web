@@ -1,7 +1,8 @@
 import { aboutAnchors, aboutPath } from "@/components/about/anchors";
 import { editorialPath } from "@/components/editorial/path";
+import { ethicsPath } from "@/components/ethics/anchors";
 import { articlePath } from "@/components/issues/journal";
-import { policiesAnchors, policiesPath } from "@/components/policies/anchors";
+import { policiesPath } from "@/components/policies/anchors";
 import { submissionAnchors } from "@/components/submission/content";
 
 export type QuickLink = {
@@ -514,7 +515,7 @@ export const landingContent = {
           { label: "Contact Us", href: "#" },
           { label: "FAQ", href: "#" },
           { label: "Privacy Policy", href: "#" },
-          { label: "Publication Ethics & Malpractice", href: policiesPath(policiesAnchors.publicationEthics) },
+          { label: "Publication Ethics & Malpractice", href: ethicsPath() },
         ],
       },
     ] as FooterColumn[],
