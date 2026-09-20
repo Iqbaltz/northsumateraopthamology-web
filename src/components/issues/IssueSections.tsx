@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumb, type BreadcrumbItem } from "@/components/Breadcrumb";
 import { VolumeCard } from "@/components/VolumeCard";
+import { ojsLinks } from "@/lib/links";
 import { button, shell, textLink } from "@/components/landing/styles";
 import type { IssueArticle } from "./journal";
 import { issuesContent } from "./content";
@@ -91,7 +92,7 @@ export function IssueHeroSection({ issue }: { issue: IssueHero }) {
               </span>
               <a
                 className="flex items-center gap-1.5 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
-                href="#"
+                href={ojsLinks.currentIssue}
               >
                 {content.downloadLabel}
                 <Image

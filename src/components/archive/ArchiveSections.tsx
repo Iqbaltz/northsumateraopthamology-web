@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { VolumeCard } from "@/components/VolumeCard";
+import { ojsLinks } from "@/lib/links";
 import { shell, textLink } from "@/components/landing/styles";
 import { archiveContent } from "./content";
 
@@ -20,7 +21,7 @@ export function ArchiveCatalogSection() {
           <p className="mt-4 sm:mt-5 text-base leading-[25px] text-[#0c0c0c]">
             {content.description}
           </p>
-          <Link className={`${textLink} mt-6 sm:mt-8 text-sm uppercase`} href="#">
+          <Link className={`${textLink} mt-6 sm:mt-8 text-sm uppercase`} href={ojsLinks.archive}>
             {content.viewAll}
             <Image
               className="size-5"

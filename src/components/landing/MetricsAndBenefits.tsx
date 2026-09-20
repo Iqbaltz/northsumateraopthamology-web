@@ -8,7 +8,7 @@ export function MetricsSection() {
   const items = content.items;
 
   return (
-    <section className="relative min-h-[306px] bg-[linear-gradient(231deg,#ffffff_10%,#e9eceb_100%)] py-12 max-[700px]:min-h-[560px]">
+    <section id="journal-metrics" className="relative scroll-mt-8 min-h-[306px] bg-[linear-gradient(231deg,#ffffff_10%,#e9eceb_100%)] py-12 max-[700px]:min-h-[560px]">
       <div className={`${shell} relative z-[1]`}>
         <h2
           className="mb-8 sm:mb-10 text-2xl sm:text-[32px] font-bold leading-tight uppercase text-[#0c0c0c] max-[700px]:text-center"

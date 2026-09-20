@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ojsLinks } from "@/lib/links";
 import { indexingPartners, landingContent } from "./content";
 import { button, kicker, shell, textLink } from "./styles";
 
@@ -7,7 +8,7 @@ export function AboutJournalSection() {
   const content = landingContent.aboutJournal;
 
   return (
-    <section className="bg-white py-16 sm:py-24">
+    <section id="about-journal" className="scroll-mt-8 bg-white py-16 sm:py-24">
       <div
         className={`${shell} grid grid-cols-[470px_1fr] items-start gap-12 max-[1200px]:grid-cols-1 max-[1200px]:gap-16`}
       >
@@ -44,7 +45,7 @@ export function AboutJournalSection() {
               </li>
             ))}
           </ul>
-          <Link className={textLink} href="#">
+          <Link className={textLink} href={ojsLinks.about}>
             {content.learnMore}{" "}
             <Image
               src="/figma/arrow-up-right.svg"
@@ -83,7 +84,7 @@ export function AboutJournalSection() {
               </p>
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
                 <Link
-                  href="#"
+                  href="/issues"
                   className={`${button} max-[700px]:px-2.5 max-[700px]:py-1.5 max-[700px]:text-[10px] max-[700px]:min-h-0 max-[700px]:w-fit`}
                 >
                   {content.viewIssueButton}
@@ -109,7 +110,7 @@ export function AboutJournalSection() {
             </span>
             <a
               className="flex items-center gap-1.5 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
-              href="#"
+              href={ojsLinks.submit}
             >
               {content.downloadTemplate}{" "}
               <Image
@@ -131,7 +132,7 @@ export function IndexingSection() {
   const content = landingContent.indexing;
 
   return (
-    <section className="bg-white py-12 max-[700px]:py-8">
+    <section id="indexing" className="scroll-mt-8 bg-white py-12 max-[700px]:py-8">
       <div
         className={`${shell} flex min-h-[127px] items-center gap-8 rounded-xl border border-[#d5e0e2] bg-white p-8 shadow-[0_24px_45px_-30px_rgba(0,0,0,0.12)] max-[1200px]:flex-col max-[1200px]:items-center max-[1200px]:gap-6 max-[700px]:min-h-[541px] max-[700px]:px-5 max-[700px]:py-8`}
         data-reveal

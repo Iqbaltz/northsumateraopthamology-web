@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ojsLinks } from "@/lib/links";
 import { landingContent } from "./content";
 import { kicker, shell, textLink } from "./styles";
 
@@ -18,7 +19,7 @@ export function LatestArticlesSection() {
           </h2>
           <Link
             className="group hidden sm:flex items-center gap-2 sm:gap-3 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] focus-visible:ring-offset-2 [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-x-1"
-            href="#"
+            href="/issues"
           >
             {content.viewAll}{" "}
             <Image
@@ -80,7 +81,7 @@ export function LatestArticlesSection() {
         <div className="mt-8 flex sm:hidden items-center justify-start">
           <Link
             className="group flex items-center gap-2 text-sm font-bold text-[#07868f] uppercase"
-            href="#"
+            href="/issues"
           >
             {content.viewAll}{" "}
             <Image
@@ -100,7 +101,7 @@ export function ScopeSection() {
   const content = landingContent.scope;
 
   return (
-    <section className="bg-white py-16 sm:py-24">
+    <section id="aims-scope" className="scroll-mt-8 bg-white py-16 sm:py-24">
       <div className={shell}>
         {/*
           Above 1200px: illustration owns a left column, divider, all copy stacked on the right.
@@ -136,7 +137,7 @@ export function ScopeSection() {
               <p>{content.p1}</p>
               <p>{content.p2}</p>
             </div>
-            <Link className={`${textLink} mt-6 sm:mt-8`} href="#">
+            <Link className={`${textLink} mt-6 sm:mt-8`} href={ojsLinks.about}>
               {content.cta}{" "}
               <Image
                 src="/figma/arrow-up-right.svg"

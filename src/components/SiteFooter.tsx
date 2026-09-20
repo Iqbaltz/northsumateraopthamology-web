@@ -70,18 +70,26 @@ export function SiteFooter() {
   );
 }
 
-function FooterColumn({ title, items, delay }: { title: string; items: string[]; delay: number }) {
+function FooterColumn({
+  title,
+  items,
+  delay,
+}: {
+  title: string;
+  items: { label: string; href: string }[];
+  delay: number;
+}) {
   return (
     <div data-reveal-item data-reveal-delay={String(delay)}>
       <h3 className="mb-4 text-sm sm:text-base leading-snug font-bold text-[#0c0c0c]">{title}</h3>
       <ul className="grid gap-1.5 text-xs sm:text-sm leading-relaxed">
         {items.map((item) => (
-          <li key={item}>
+          <li key={item.label}>
             <Link
-              href="#"
+              href={item.href}
               className="inline-block rounded-sm transition-[color,transform] duration-300 hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] motion-safe:hover:translate-x-1"
             >
-              {item}
+              {item.label}
             </Link>
           </li>
         ))}
