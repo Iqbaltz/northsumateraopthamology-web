@@ -1,8 +1,7 @@
 import type { BreadcrumbItem } from "@/components/Breadcrumb";
-import { ojsLinks } from "@/lib/links";
 import { archiveIssueCard, archiveIssues } from "@/components/archive/content";
 import type { IssueHero } from "./IssueSections";
-import { issueArticles, journal } from "./journal";
+import { issueArticles, issueDoiUrl, journal } from "./journal";
 
 /** The issue /issues presents. Its articles cite it on their own pages. */
 export const currentIssue = {
@@ -27,7 +26,7 @@ const hero: IssueHero = {
   volumeTitle: "VOLUME 12\nNUMBER 1",
   publishMonth: "June 2026",
   description: journal.issueDescription,
-  viewIssue: { label: "VIEW ISSUE", href: ojsLinks.currentIssue },
+  doi: issueDoiUrl(12, 1),
   cover: journal.cover,
   coverAlt: "JONSON Journal Volume 12 Number 1 cover",
   issnOnline: journal.issnOnline,

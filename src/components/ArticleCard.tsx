@@ -5,23 +5,34 @@ import { authorLine, type IssueArticle } from "@/components/issues/journal";
 /**
  * Cover tile for one article. Shared by issue tables of contents and an article's
  * similar-articles list; `meta` is the footnote beside the download link
- * (a publication date or a page range).
+ * (a publication date or a page range). Issue tables of contents pass
+ * `withImage={false}` — they list text only.
  */
-export function ArticleCard({ article, meta }: { article: IssueArticle; meta: string }) {
+export function ArticleCard({
+  article,
+  meta,
+  withImage = true,
+}: {
+  article: IssueArticle;
+  meta: string;
+  withImage?: boolean;
+}) {
   return (
     <article
       className="group flex flex-col overflow-hidden rounded-lg border border-[#e3e9eb] bg-white transition-[border-color,box-shadow,transform] duration-200 hover:shadow-[0_18px_30px_-24px_rgba(0,0,0,0.25)] motion-safe:hover:-translate-y-1 motion-safe:hover:border-[#a9cacc]"
       data-reveal-item
     >
-      <div className="relative h-[170px] shrink-0 overflow-hidden max-[700px]:h-[200px]">
-        <Image
-          className="object-cover transition-transform duration-300 motion-safe:group-hover:scale-[1.025]"
-          src={`/figma/${article.image}`}
-          alt={article.alt}
-          fill
-          sizes="(max-width: 700px) 100vw, (max-width: 1200px) 50vw, 306px"
-        />
-      </div>
+      {withImage && (
+        <div className="relative h-[170px] shrink-0 overflow-hidden max-[700px]:h-[200px]">
+          <Image
+            className="object-cover transition-transform duration-300 motion-safe:group-hover:scale-[1.025]"
+            src={`/figma/${article.image}`}
+            alt={article.alt}
+            fill
+            sizes="(max-width: 700px) 100vw, (max-width: 1200px) 50vw, 306px"
+          />
+        </div>
+      )}
       <div className="flex flex-1 flex-col p-4 sm:p-5">
         <span className="mb-3 inline-block w-fit rounded-md bg-[#e9eef1] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.06em] leading-4 text-[#3f4b5b]">
           {article.tag}

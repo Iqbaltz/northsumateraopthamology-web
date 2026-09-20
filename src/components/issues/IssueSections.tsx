@@ -4,7 +4,7 @@ import { ArticleCard } from "@/components/ArticleCard";
 import { Breadcrumb, type BreadcrumbItem } from "@/components/Breadcrumb";
 import { VolumeCard } from "@/components/VolumeCard";
 import { ojsLinks } from "@/lib/links";
-import { button, shell, textLink } from "@/components/landing/styles";
+import { shell, textLink } from "@/components/landing/styles";
 import type { IssueArticle } from "./journal";
 import { issuesContent } from "./content";
 
@@ -15,8 +15,8 @@ export type IssueHero = {
   volumeTitle: string;
   publishMonth: string;
   description: string;
-  /** Omitted for archived issues — the reader is already on the issue. */
-  viewIssue?: { label: string; href: string };
+  /** Resolvable DOI for the issue, shown under the description. */
+  doi?: string;
   cover: string;
   coverAlt: string;
   issnOnline: string;
@@ -66,13 +66,16 @@ export function IssueHeroSection({ issue }: { issue: IssueHero }) {
                 <p className="mb-5 max-w-[300px] text-xs sm:text-sm leading-relaxed text-[#4a4a4a]">
                   {content.description}
                 </p>
-                {content.viewIssue && (
-                  <Link
-                    href={content.viewIssue.href}
-                    className={`${button} w-fit max-[700px]:min-h-0 max-[700px]:px-2.5 max-[700px]:py-1.5 max-[700px]:text-[10px]`}
-                  >
-                    {content.viewIssue.label}
-                  </Link>
+                {content.doi && (
+                  <p className="text-xs sm:text-sm leading-relaxed text-[#0c0c0c]">
+                    <strong className="font-bold">DOI:</strong>{" "}
+                    <a
+                      className="rounded-sm break-all text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f]"
+                      href={content.doi}
+                    >
+                      {content.doi}
+                    </a>
+                  </p>
                 )}
               </div>
             </div>
@@ -149,7 +152,12 @@ export function IssueArticlesSection({
         </h2>
         <div className="grid grid-cols-4 gap-6 max-[1200px]:grid-cols-2 max-[700px]:grid-cols-1">
           {items.map((article) => (
-            <ArticleCard key={article.slug} article={article} meta={article.date} />
+            <ArticleCard
+              key={article.slug}
+              article={article}
+              meta={article.date}
+              withImage={false}
+            />
           ))}
         </div>
       </div>
