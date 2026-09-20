@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { aboutPath } from "@/components/about/anchors";
 import { ojsLinks } from "@/lib/links";
 import { indexingPartners, landingContent } from "./content";
 import { button, kicker, shell, textLink } from "./styles";
@@ -45,7 +46,7 @@ export function AboutJournalSection() {
               </li>
             ))}
           </ul>
-          <Link className={textLink} href={ojsLinks.about}>
+          <Link className={textLink} href={aboutPath()}>
             {content.learnMore}{" "}
             <Image
               src="/figma/arrow-up-right.svg"

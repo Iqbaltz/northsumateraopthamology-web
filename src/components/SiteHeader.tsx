@@ -8,7 +8,6 @@ import { Chevron, MagnifyingGlass } from "@/components/icons";
 import { SearchDeck } from "@/components/SearchDeck";
 import { button, outlineButton, shell } from "@/components/landing/styles";
 import { landingContent, type NavItem } from "@/components/landing/content";
-import { ojsLinks } from "@/lib/links";
 
 const navItemClass =
   "relative rounded-md px-2.5 py-1.5 text-sm xl:text-base leading-[19px] font-semibold transition-colors duration-200 after:absolute after:right-2.5 after:bottom-0 after:left-2.5 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#07868f] after:transition-transform after:duration-200 hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] focus-visible:ring-offset-2 motion-safe:hover:after:scale-x-100";
@@ -197,12 +196,13 @@ export function SiteHeader() {
           >
             {content.login}
           </Link>
-          <a
-            href={ojsLinks.submit}
+          <Link
+            href={content.submitHref}
+            onClick={closeMenus}
             className={`${button} !min-h-5 px-4 py-[7px] text-xs font-semibold`}
           >
             {content.submit}
-          </a>
+          </Link>
         </div>
 
         {/* Mobile / Tablet menu trigger */}
@@ -289,7 +289,7 @@ export function SiteHeader() {
                 </div>
               );
             })}
-            <div className="mt-3 flex gap-3">
+            <div className="mt-3 flex flex-wrap gap-3">
               <Link
                 href="/login"
                 onClick={closeMenus}
@@ -297,12 +297,13 @@ export function SiteHeader() {
               >
                 {content.login}
               </Link>
-              <a
-                href={ojsLinks.submit}
+              <Link
+                href={content.submitHref}
+                onClick={closeMenus}
                 className={`${button} flex-1 text-center justify-center`}
               >
                 {content.submit}
-              </a>
+              </Link>
             </div>
           </nav>
         </div>

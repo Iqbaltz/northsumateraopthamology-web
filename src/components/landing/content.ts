@@ -1,3 +1,9 @@
+import { aboutAnchors, aboutPath } from "@/components/about/anchors";
+import { editorialPath } from "@/components/editorial/path";
+import { ethicsPath } from "@/components/ethics/anchors";
+import { articlePath } from "@/components/issues/journal";
+import { policiesPath } from "@/components/policies/anchors";
+import { submissionAnchors } from "@/components/submission/content";
 import { ojsLinks } from "@/lib/links";
 
 export type QuickLink = {
@@ -106,7 +112,7 @@ export const landingContent = {
       image: "about-journal.webp",
       title: "About the Journal",
       text: "Aims, scope and editorial board",
-      href: ojsLinks.about,
+      href: aboutPath(),
       alt: "About JONSON aims, scope, and editorial board",
     },
   ] as QuickLink[],
@@ -140,44 +146,43 @@ export const landingContent = {
   articlesSection: {
     title: "LATEST ARTICLES",
     viewAll: "VIEW ALL ARTICLES",
-    items: [
-      {
-        image: "article-1.webp",
-        tag: "Case Study",
-        title: "Efficacy of Artificial Intelligence in Diabetic Retinopathy Screening",
-        author: "Sarah Johnson, MD, Michael Lee, PhD, Priya Shah, MD",
-        date: "May 26, 2024",
-        href: "#",
-        alt: "AI efficacy in diabetic retinopathy screening research",
-      },
-      {
-        image: "article-2.webp",
-        tag: "Literature Review",
-        title: "Advancements in Machine Learning for Early Cancer Detection",
-        author: "David Kim, PhD, Amina Yusuf, MD",
-        date: "April 15, 2024",
-        href: "#",
-        alt: "Machine learning advances for early ocular cancer detection",
-      },
-      {
-        image: "article-3.webp",
-        tag: "Original Research",
-        title: "Impact of Virtual Reality Therapy on PTSD Recovery Rates",
-        author: "Liam O’Connor, MD, Sofia Martinez, PhD",
-        date: "June 10, 2024",
-        href: "#",
-        alt: "VR therapy impact on vision-related trauma recovery",
-      },
-      {
-        image: "article-4.webp",
-        tag: "Case Study",
-        title: "Telemedicine Adoption in Rural Healthcare Facilities during COVID-19",
-        author: "Chen Wei, MD, Fatima Al-Mansouri, MPH",
-        date: "April 15, 2024",
-        href: "#",
-        alt: "Telemedicine and teleophthalmology adoption in rural clinics",
-      },
-    ] as ArticlePreview[],
+    // Each links to its page by title, so these must match an issue article's title.
+    items: (
+      [
+        {
+          image: "article-1.webp",
+          tag: "Case Study",
+          title: "Efficacy of Artificial Intelligence in Diabetic Retinopathy Screening",
+          author: "Sarah Johnson, MD, Michael Lee, PhD, Priya Shah, MD",
+          date: "May 26, 2024",
+          alt: "AI efficacy in diabetic retinopathy screening research",
+        },
+        {
+          image: "article-2.webp",
+          tag: "Literature Review",
+          title: "Advancements in Machine Learning for Early Cancer Detection",
+          author: "David Kim, PhD, Amina Yusuf, MD",
+          date: "April 15, 2024",
+          alt: "Machine learning advances for early ocular cancer detection",
+        },
+        {
+          image: "article-3.webp",
+          tag: "Original Research",
+          title: "Impact of Virtual Reality Therapy on PTSD Recovery Rates",
+          author: "Liam O’Connor, MD, Sofia Martinez, PhD",
+          date: "June 10, 2024",
+          alt: "VR therapy impact on vision-related trauma recovery",
+        },
+        {
+          image: "article-4.webp",
+          tag: "Case Study",
+          title: "Telemedicine Adoption in Rural Healthcare Facilities during COVID-19",
+          author: "Chen Wei, MD, Fatima Al-Mansouri, MPH",
+          date: "April 15, 2024",
+          alt: "Telemedicine and teleophthalmology adoption in rural clinics",
+        },
+      ] as Omit<ArticlePreview, "href">[]
+    ).map((item) => ({ ...item, href: articlePath(item.title) })),
   },
   scope: {
     kicker: "AIMS & SCOPE",
@@ -694,19 +699,20 @@ export const landingContent = {
       {
         title: "For Authors",
         items: [
-          { label: "Author Guidelines", href: ojsLinks.submit },
-          { label: "Submission Process", href: "/#submission-guide" },
-          { label: "Article Types", href: "/#submission-guide" },
+          { label: "Author Guidelines", href: `/submission#${submissionAnchors.preparation}` },
+          { label: "Submission Process", href: `/submission#${submissionAnchors.howToSubmit}` },
+          { label: "Article Types", href: `/submission#${submissionAnchors.articleTypes}` },
           { label: "Terms & Conditions", href: "#" },
-          { label: "Article Processing Charges", href: "/#submission-guide" },
-          { label: "Writer Resources", href: "#" },
+          { label: "Article Processing Charges", href: `/submission#${submissionAnchors.fees}` },
+          { label: "Writer Resources", href: `/submission#${submissionAnchors.resources}` },
         ],
       },
       {
         title: "For Reviewers",
         items: [
           { label: "Reviewer Guidelines", href: "#" },
-          { label: "Peer Review Process", href: "/#submission-guide" },
+          { label: "Peer Review Process", href: aboutPath(aboutAnchors.peerReview) },
+          // Kept from the local side: /register exists now.
           { label: "Become a Reviewer", href: "/register" },
           { label: "Reviewer Ethics & Resources", href: "#" },
         ],
@@ -714,9 +720,10 @@ export const landingContent = {
       {
         title: "Journal Information",
         items: [
-          { label: "About the Journal", href: "/#about-journal" },
-          { label: "Editorial Board", href: ojsLinks.editorialMasthead },
-          { label: "Aims & Scope", href: "/#aims-scope" },
+          { label: "About the Journal", href: aboutPath() },
+          { label: "Editorial Board", href: editorialPath },
+          { label: "Aims & Scope", href: aboutPath(aboutAnchors.aimsScope) },
+          // Kept from the local side: these two sections only exist on the landing page.
           { label: "Journal Metrics", href: "/#journal-metrics" },
           { label: "Indexing & Abstracting", href: "/#indexing" },
         ],
@@ -724,13 +731,22 @@ export const landingContent = {
       {
         title: "Support",
         items: [
+          // Kept from the local side: OJS is the only place these two live.
           { label: "Contact Us", href: ojsLinks.contact },
           { label: "FAQ", href: "#" },
-          { label: "Privacy Policy", href: ojsLinks.privacy },
-          { label: "Publication Ethics & Malpractice", href: "/#submission-guide" },
+          { label: "Privacy Policy", href: `/submission#${submissionAnchors.privacy}` },
+          { label: "Publication Ethics & Malpractice", href: ethicsPath() },
         ],
       },
     ] as FooterColumn[],
+    license: {
+      journal: "JONSON: Journal of North Sumatera Ophthalmology Nexus",
+      statement: "is an open-access journal.",
+      prefix: "This work is licensed under a",
+      name: "Creative Commons Attribution-ShareAlike 4.0 International License",
+      badge: "BY-SA 4.0",
+      href: "https://creativecommons.org/licenses/by-sa/4.0/",
+    },
   },
   header: {
     tagline: "Peer-reviewed. Open access. Advancing eye care worldwide",
@@ -750,20 +766,22 @@ export const landingContent = {
         label: "About",
         href: "#",
         children: [
-          { label: "About the Journal", href: ojsLinks.about },
-          { label: "Submissions", href: ojsLinks.submit },
-          { label: "Editorial Masthead", href: ojsLinks.editorialMasthead },
-          { label: "Privacy Statement", href: ojsLinks.privacy },
-          // No OJS page exists for this one yet.
+          { label: "About the Journal", href: aboutPath() },
+          { label: "Submissions", href: "/submission" },
+          { label: "Editorial Masthead", href: editorialPath },
+          { label: "Privacy Statement", href: `/submission#${submissionAnchors.privacy}` },
+          // Nothing on the site or in OJS covers this one yet.
           { label: "Reviewer Acknowledgement", href: "#" },
         ],
       },
+      // Kept from the local side: added from the 20 Sep navbar design.
       { label: "Announcement", href: ojsLinks.announcements },
-      { label: "Editorial Board", href: ojsLinks.editorialMasthead },
-      { label: "Policies", href: "/#submission-guide" },
+      { label: "Editorial Board", href: editorialPath },
+      { label: "Policies", href: policiesPath() },
     ] as NavItem[],
     login: "Sign In",
     submit: "Submit Manuscript",
+    submitHref: "/submission",
     search: {
       open: "Open search",
       label: "Search:",

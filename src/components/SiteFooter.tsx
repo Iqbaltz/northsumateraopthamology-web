@@ -1,7 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CreativeCommonsBadge } from "@/components/CreativeCommonsBadge";
 import { shell } from "@/components/landing/styles";
-import { landingContent } from "@/components/landing/content";
+import {
+  indexingPartners,
+  landingContent,
+  type FooterColumn as FooterColumnContent,
+} from "@/components/landing/content";
+
+/** Footer logos render smaller than the landing indexing strip. */
+const PARTNER_LOGO_SCALE = 0.72;
 
 export function SiteFooter() {
   const content = landingContent.footer;
@@ -60,6 +68,51 @@ export function SiteFooter() {
           ))}
         </div>
       </div>
+
+      <div className={`${shell} border-t border-[#e3eaef] py-8`}>
+        <ul
+          className="flex flex-wrap items-center justify-between gap-x-8 gap-y-6 max-[1200px]:justify-center max-[1200px]:gap-x-10"
+          aria-label="Indexing partners"
+        >
+          {indexingPartners.map((partner) => (
+            <li key={partner.name} className="shrink-0">
+              {/* multiply drops the white matte some logo files ship with onto the tinted footer */}
+              <Image
+                className="object-contain mix-blend-multiply"
+                src={`/figma/${partner.image}`}
+                alt={`JONSON is indexed in ${partner.name}`}
+                width={partner.width}
+                height={partner.height}
+                style={{
+                  width: `${Math.round(partner.width * PARTNER_LOGO_SCALE)}px`,
+                  height: `${Math.round(partner.height * PARTNER_LOGO_SCALE)}px`,
+                  maxWidth: "100%",
+                }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div
+        className={`${shell} flex items-center justify-between gap-x-10 gap-y-4 border-t border-[#e3eaef] py-6 max-[700px]:flex-col max-[700px]:items-start`}
+      >
+        <p className="max-w-[960px] text-xs leading-5 text-[#4a4a4a]">
+          <strong className="font-bold uppercase text-[#0c0c0c]">{content.license.journal}</strong>{" "}
+          {content.license.statement} {content.license.prefix}{" "}
+          <a
+            className="rounded-sm font-semibold text-[#07868f] underline underline-offset-2 transition-colors duration-200 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f]"
+            href={content.license.href}
+            target="_blank"
+            rel="license noopener noreferrer"
+          >
+            {content.license.name}
+          </a>
+          .
+        </p>
+        <CreativeCommonsBadge />
+      </div>
+
       <div className="flex min-h-10 items-center justify-between gap-5 bg-[#07868f] px-[max(20px,calc((100%_-_1320px)/2))] py-2 text-sm leading-6 text-white max-[1200px]:px-[58px] max-[1200px]:text-[11px] max-[700px]:flex-col max-[700px]:items-start max-[700px]:px-4 max-[700px]:text-[11px] max-[700px]:leading-5">
         <p>
           © {year} {content.copyright}
@@ -70,15 +123,7 @@ export function SiteFooter() {
   );
 }
 
-function FooterColumn({
-  title,
-  items,
-  delay,
-}: {
-  title: string;
-  items: { label: string; href: string }[];
-  delay: number;
-}) {
+function FooterColumn({ title, items, delay }: FooterColumnContent & { delay: number }) {
   return (
     <div data-reveal-item data-reveal-delay={String(delay)}>
       <h3 className="mb-4 text-sm sm:text-base leading-snug font-bold text-[#0c0c0c]">{title}</h3>

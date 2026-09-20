@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ojsLinks } from "@/lib/links";
+import { aboutAnchors, aboutPath } from "@/components/about/anchors";
 import { landingContent } from "./content";
 import { kicker, shell, textLink } from "./styles";
 
@@ -137,7 +137,7 @@ export function ScopeSection() {
               <p>{content.p1}</p>
               <p>{content.p2}</p>
             </div>
-            <Link className={`${textLink} mt-6 sm:mt-8`} href={ojsLinks.about}>
+            <Link className={`${textLink} mt-6 sm:mt-8`} href={aboutPath(aboutAnchors.aimsScope)}>
               {content.cta}{" "}
               <Image
                 src="/figma/arrow-up-right.svg"

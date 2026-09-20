@@ -54,6 +54,27 @@ export function UserCircle({ className = "" }: IconProps) {
   );
 }
 
+/** An eye inside a reticle: the mark for a subject area in the journal's scope. */
+export function ScopeMark({ className = "" }: IconProps) {
+  return (
+    <svg {...strokeProps} strokeWidth={1.5} className={`size-6 shrink-0 ${className}`}>
+      <circle cx="12" cy="12" r="9.25" />
+      <path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5" />
+      <path d="M6.5 12c1.5-2.4 3.3-3.6 5.5-3.6s4 1.2 5.5 3.6c-1.5 2.4-3.3 3.6-5.5 3.6S8 14.4 6.5 12Z" />
+      <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function Envelope({ className = "" }: IconProps) {
+  return (
+    <svg {...strokeProps} strokeWidth={1.8} className={`size-5 shrink-0 ${className}`}>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3.5 6 8.5 7 8.5-7" />
+    </svg>
+  );
+}
+
 export function XMark({ className = "" }: IconProps) {
   return (
     <svg {...strokeProps} strokeWidth={2.2} className={`size-4 shrink-0 ${className}`}>
