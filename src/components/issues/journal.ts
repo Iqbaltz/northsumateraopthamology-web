@@ -266,3 +266,19 @@ export const issueArticles: IssueArticle[] = seeds.map((seed) => ({
 export function articlesForIssue(count: number): IssueArticle[] {
   return issueArticles.slice(0, Math.min(count, issueArticles.length));
 }
+
+/**
+ * Resolves a cover/image value to an `<Image src>`. Static content stores bare
+ * filenames from /public/figma; OJS supplies absolute URLs.
+ */
+export function coverSrc(image: string): string {
+  return image.startsWith("http") || image.startsWith("/") ? image : `/figma/${image}`;
+}
+
+/**
+ * The footnote beside an article's download link: its page range, falling back
+ * to the publication date for records that carry no pagination.
+ */
+export function articleMeta(article: IssueArticle): string {
+  return article.pages ? `Pages ${article.pages}` : article.date;
+}

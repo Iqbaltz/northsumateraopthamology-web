@@ -1,11 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { aboutAnchors, aboutPath } from "@/components/about/anchors";
-import { landingContent } from "./content";
+import { coverSrc } from "@/components/issues/journal";
+import { landingContent, type ArticlePreview } from "./content";
 import { kicker, shell, textLink } from "./styles";
 
-export function LatestArticlesSection() {
+/**
+ * `items` carries the journal's published articles when OJS has any; without it
+ * the section falls back to the designed placeholder list so the page is never
+ * empty while the journal is still being filled in.
+ */
+export function LatestArticlesSection({ items }: { items?: ArticlePreview[] } = {}) {
   const content = landingContent.articlesSection;
+  const articles = items?.length ? items : content.items;
 
   return (
     <section className="bg-white py-12 sm:py-24">
@@ -32,7 +39,7 @@ export function LatestArticlesSection() {
           </Link>
         </div>
         <div className="grid grid-cols-4 gap-6 lg:gap-8 max-[1200px]:grid-cols-1 max-[1200px]:gap-8 max-[700px]:gap-8">
-          {content.items.map((article) => (
+          {articles.map((article) => (
             <article
               className="group overflow-hidden rounded-xl border border-[#d5e0e2] bg-white shadow-sm transition-[border-color,box-shadow,transform] duration-200 motion-safe:hover:-translate-y-1 motion-safe:hover:border-[#a9cacc] max-[1200px]:grid max-[1200px]:grid-cols-[45%_55%] max-[1200px]:h-[280px] max-[700px]:block max-[700px]:h-auto [&:nth-child(2)]:delay-[60ms] [&:nth-child(3)]:delay-[120ms] [&:nth-child(4)]:delay-[180ms]"
               key={article.title}
@@ -41,7 +48,7 @@ export function LatestArticlesSection() {
               <div className="relative h-[204px] overflow-hidden max-[1200px]:h-full max-[700px]:h-[180px]">
                 <Image
                   className="object-cover transition-transform duration-300 motion-safe:group-hover:scale-[1.025]"
-                  src={`/figma/${article.image}`}
+                  src={coverSrc(article.image)}
                   alt={article.alt}
                   fill
                   sizes="(max-width: 700px) 100vw, (max-width: 1200px) 45vw, 306px"

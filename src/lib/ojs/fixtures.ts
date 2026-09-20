@@ -1,6 +1,6 @@
 /**
  * Sample data so the branded UI can be developed and previewed before the live
- * OJS journal (`jnso`) has published content / an API token. Shapes mirror the
+ * OJS journal (`JONSON`) has published content / an API token. Shapes mirror the
  * real REST API responses. Swap to live data by setting OJS_API_TOKEN.
  */
 import type { Context, Issue } from "./types";
@@ -18,7 +18,7 @@ export const fixtureContext: Context = {
   publisherInstitution: "North Sumatra Ophthalmology Society",
   contactName: "Editorial Office",
   contactEmail: "editor@northsumatraophthalmology.com",
-  urlPath: "jnso",
+  urlPath: "JONSON",
   currentIssueId: 2,
 };
 

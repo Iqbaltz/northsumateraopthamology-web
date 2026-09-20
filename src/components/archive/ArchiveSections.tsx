@@ -1,13 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/Breadcrumb";
-import { VolumeCard } from "@/components/VolumeCard";
+import { VolumeCard, type VolumeCatalogItem } from "@/components/VolumeCard";
 import { ojsLinks } from "@/lib/links";
 import { shell, textLink } from "@/components/landing/styles";
 import { archiveContent } from "./content";
 
-export function ArchiveCatalogSection() {
+/**
+ * `volumes` carries the journal's published volumes when OJS has any; without
+ * them the catalog falls back to the designed placeholder list.
+ */
+export function ArchiveCatalogSection({ volumes }: { volumes?: VolumeCatalogItem[] } = {}) {
   const content = archiveContent;
+  const items = volumes?.length ? volumes : content.volumes;
 
   return (
     <section className="bg-white pt-16 sm:pt-24 pb-16 sm:pb-20">
@@ -34,7 +39,7 @@ export function ArchiveCatalogSection() {
         </div>
 
         <div className="mt-10 sm:mt-12 grid grid-cols-4 gap-x-6 gap-y-10 sm:gap-y-12 max-[1200px]:grid-cols-2 max-[700px]:grid-cols-1">
-          {content.volumes.map((volume) => (
+          {items.map((volume) => (
             <VolumeCard key={volume.label} volume={volume} />
           ))}
         </div>

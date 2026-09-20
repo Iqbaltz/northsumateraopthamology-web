@@ -12,6 +12,7 @@ import {
   SubmissionGuideSection,
 } from "@/components/landing";
 import { StructuredData } from "@/components/StructuredData";
+import { getCurrentIssueSummary, getLatestArticles } from "@/lib/ojs/view";
 
 export const metadata: Metadata = {
   title: "JONSON · Journal of North Sumatera Ophthalmology Nexus",
@@ -29,16 +30,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Live journal data; both fall back to the designed content when OJS has
+  // nothing published or is unreachable.
+  const [issue, latestArticles] = await Promise.all([
+    getCurrentIssueSummary(),
+    getLatestArticles(4),
+  ]);
+
   return (
     <div className="overflow-hidden text-[#0c0c0c]">
       <StructuredData />
       <MotionEffects />
       <HeroSection />
       <QuickLinksSection />
-      <AboutJournalSection />
+      <AboutJournalSection issue={issue} />
       <IndexingSection />
-      <LatestArticlesSection />
+      <LatestArticlesSection items={latestArticles} />
       <ScopeSection />
       <MetricsSection />
       <BenefitsSection />

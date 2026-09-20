@@ -1,11 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { aboutPath } from "@/components/about/anchors";
+import type { CurrentIssueSummary } from "@/lib/ojs/view";
 import { ojsLinks } from "@/lib/links";
 import { indexingPartners, landingContent } from "./content";
 import { button, kicker, shell, textLink } from "./styles";
 
-export function AboutJournalSection() {
+/**
+ * `issue` carries the current issue from OJS when one is published; without it
+ * the card falls back to the designed placeholder issue.
+ */
+export function AboutJournalSection({ issue }: { issue?: CurrentIssueSummary } = {}) {
   const content = landingContent.aboutJournal;
 
   return (
@@ -75,13 +80,13 @@ export function AboutJournalSection() {
             <div className="flex flex-col justify-center">
               <p className={kicker}>{content.issueKicker}</p>
               <h3 className="mt-2 mb-1 font-sans text-xl sm:text-[32px] font-bold leading-tight whitespace-pre-line text-[#0c0c0c]">
-                {content.volumeTitle}
+                {issue?.volumeTitle ?? content.volumeTitle}
               </h3>
               <h4 className="mb-2 text-base sm:text-2xl font-semibold leading-tight text-[#07868f]">
-                {content.publishDate}
+                {issue?.publishMonth ?? content.publishDate}
               </h4>
               <p className="mb-4 text-xs sm:text-base leading-relaxed text-[#0c0c0c]">
-                {content.issueDescription}
+                {issue?.description ?? content.issueDescription}
               </p>
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
                 <Link

@@ -70,17 +70,6 @@ function ProfileBadge({ member, kind }: { member: BoardMember; kind: ProfileKind
   );
 }
 
-/** Grey head-and-shoulders stand-in until a portrait is supplied. */
-function PortraitPlaceholder() {
-  return (
-    <svg className="size-full" viewBox="0 0 120 120" aria-hidden>
-      <rect width="120" height="120" fill="#e3e7e9" />
-      <circle cx="60" cy="47" r="21" fill="#b5bbbf" />
-      <path d="M18 120c3-27 20-42 42-42s39 15 42 42Z" fill="#b5bbbf" />
-    </svg>
-  );
-}
-
 export function EditorialHeroSection() {
   const content = editorialContent.hero;
 
@@ -108,31 +97,13 @@ function MemberCard({ member }: { member: BoardMember }) {
       className="overflow-hidden rounded-xl border border-[#e3eaef] bg-white shadow-[0_14px_30px_-24px_rgba(0,0,0,0.25)]"
       data-reveal
     >
-      <div className="flex items-start gap-8 p-6 sm:p-8 max-[700px]:flex-col-reverse max-[700px]:gap-5">
-        <div className="min-w-0 flex-1">
-          <p className="text-sm sm:text-base font-semibold text-[#3f3f3f]">{member.role}</p>
-          <h3 className="mt-1.5 text-xl sm:text-2xl font-bold leading-snug text-[#0c0c0c]">
-            {member.name}
-          </h3>
-          <p className="mt-2.5 text-sm font-medium text-[#07868f]">{member.affiliation}</p>
-          <p className="mt-4 text-sm leading-6 text-[#4a4a4a]">{member.bio}</p>
-        </div>
-
-        {member.portrait && (
-          <div className="relative size-[180px] shrink-0 overflow-hidden rounded-md max-[1200px]:size-[140px] max-[700px]:size-[112px]">
-            {member.portrait.src ? (
-              <Image
-                className="object-cover"
-                src={member.portrait.src}
-                alt={`Portrait of ${member.name}`}
-                fill
-                sizes="(max-width: 700px) 112px, (max-width: 1200px) 140px, 180px"
-              />
-            ) : (
-              <PortraitPlaceholder />
-            )}
-          </div>
-        )}
+      <div className="p-6 sm:p-8">
+        <p className="text-sm sm:text-base font-semibold text-[#3f3f3f]">{member.role}</p>
+        <h3 className="mt-1.5 text-xl sm:text-2xl font-bold leading-snug text-[#0c0c0c]">
+          {member.name}
+        </h3>
+        <p className="mt-2.5 text-sm font-medium text-[#07868f]">{member.affiliation}</p>
+        <p className="mt-4 text-sm leading-6 text-[#4a4a4a]">{member.bio}</p>
       </div>
 
       <div className="mx-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-t border-[#e3eaef] py-5 sm:mx-8">

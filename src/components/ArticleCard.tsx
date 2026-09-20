@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { authorLine, type IssueArticle } from "@/components/issues/journal";
+import { authorLine, coverSrc, type IssueArticle } from "@/components/issues/journal";
 
 /**
  * Cover tile for one article. Shared by issue tables of contents and an article's
@@ -26,7 +26,7 @@ export function ArticleCard({
         <div className="relative h-[170px] shrink-0 overflow-hidden max-[700px]:h-[200px]">
           <Image
             className="object-cover transition-transform duration-300 motion-safe:group-hover:scale-[1.025]"
-            src={`/figma/${article.image}`}
+            src={coverSrc(article.image)}
             alt={article.alt}
             fill
             sizes="(max-width: 700px) 100vw, (max-width: 1200px) 50vw, 306px"

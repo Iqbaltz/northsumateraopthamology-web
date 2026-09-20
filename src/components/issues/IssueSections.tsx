@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArticleCard } from "@/components/ArticleCard";
 import { Breadcrumb, type BreadcrumbItem } from "@/components/Breadcrumb";
-import { VolumeCard } from "@/components/VolumeCard";
+import { VolumeCard, type VolumeCatalogItem } from "@/components/VolumeCard";
 import { ojsLinks } from "@/lib/links";
 import { shell, textLink } from "@/components/landing/styles";
-import type { IssueArticle } from "./journal";
+import { articleMeta, coverSrc, type IssueArticle } from "./journal";
 import { issuesContent } from "./content";
 
 /** Everything the issue hero renders, for the current issue or an archived one. */
@@ -46,7 +46,7 @@ export function IssueHeroSection({ issue }: { issue: IssueHero }) {
               <div className="relative h-[300px] lg:h-[390px] overflow-hidden rounded-lg max-[700px]:h-[170px]">
                 <Image
                   className="object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
-                  src={`/figma/${content.cover}`}
+                  src={coverSrc(content.cover)}
                   alt={content.coverAlt}
                   fill
                   loading="eager"
@@ -155,7 +155,7 @@ export function IssueArticlesSection({
             <ArticleCard
               key={article.slug}
               article={article}
-              meta={article.date}
+              meta={articleMeta(article)}
               withImage={false}
             />
           ))}
@@ -165,8 +165,10 @@ export function IssueArticlesSection({
   );
 }
 
-export function VolumeCatalogSection() {
+/** `volumes` carries the journal's published volumes; falls back to the designed set. */
+export function VolumeCatalogSection({ volumes }: { volumes?: VolumeCatalogItem[] } = {}) {
   const content = issuesContent.catalog;
+  const items = volumes?.length ? volumes : content.items;
 
   return (
     <section className="bg-white pb-16 sm:pb-24">
@@ -191,7 +193,7 @@ export function VolumeCatalogSection() {
         </div>
 
         <div className="grid grid-cols-3 gap-6 max-[700px]:grid-cols-1">
-          {content.items.map((volume) => (
+          {items.map((volume) => (
             <VolumeCard key={volume.label} volume={volume} />
           ))}
         </div>

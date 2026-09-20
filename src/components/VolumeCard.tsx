@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { coverSrc } from "@/components/issues/journal";
 
 export type VolumeCatalogItem = {
   cover: string;
@@ -7,6 +8,8 @@ export type VolumeCatalogItem = {
   label: string;
   published: string;
   href: string;
+  /** Size of the issue's table of contents; hidden when not known. */
+  articleCount?: number;
 };
 
 /** Cover tile for one published volume. Shared by the issue catalog and the archive. */
@@ -20,7 +23,7 @@ export function VolumeCard({ volume }: { volume: VolumeCatalogItem }) {
       <div className="relative h-[260px] lg:h-[320px] shrink-0 overflow-hidden bg-white">
         <Image
           className="object-contain transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.03]"
-          src={`/figma/${volume.cover}`}
+          src={coverSrc(volume.cover)}
           alt={volume.alt}
           fill
           sizes="(max-width: 700px) 100vw, (max-width: 1200px) 50vw, 320px"
@@ -30,6 +33,11 @@ export function VolumeCard({ volume }: { volume: VolumeCatalogItem }) {
         <p className="text-xs sm:text-sm font-bold uppercase tracking-[0.04em] text-[#0c0c0c]">
           {volume.label}
         </p>
+        {volume.articleCount !== undefined && (
+          <p className="mt-1.5 text-xs sm:text-sm text-[#4a4a4a]">
+            {volume.articleCount} {volume.articleCount === 1 ? "article" : "articles"}
+          </p>
+        )}
         <div className="mt-2 flex items-center justify-between gap-3">
           <span className="text-xs text-[#8d8d8d]">{volume.published}</span>
           <Image

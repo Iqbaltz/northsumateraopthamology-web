@@ -14,8 +14,6 @@ export type BoardMember = {
   email: string;
   /** Profile URLs; a badge without one renders as a plain, unlinked mark. */
   profiles: Partial<Record<ProfileKind, string>>;
-  /** Present when the card shows a portrait; without `src` it shows a placeholder silhouette. */
-  portrait?: { src?: string };
 };
 
 const members: BoardMember[] = [
@@ -26,7 +24,6 @@ const members: BoardMember[] = [
     bio: `dr. Endi T. Pasaribu, M.si. Med. Sp.B. Subsp.Onk (K) serves as the Editor-in-Chief of ${journal.name}, overseeing the journal's editorial direction, scholarly standards, and publication policies. The Editor-in-Chief is responsible for ensuring that editorial decisions are made independently, fairly, and in accordance with the journal's aims, scope, and publication ethics.`,
     email: "endi_pasaribu@usu.ac.id",
     profiles: {},
-    portrait: {},
   },
   {
     role: "Managing Editor",
