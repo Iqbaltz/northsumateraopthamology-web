@@ -76,9 +76,21 @@ function cleanByline(authors: string): string {
     .trim();
 }
 
+/** Whole rich-text field as plain text, paragraphs joined by a space. */
+function plainText(html: string, maxLength = 900): string {
+  const text = html
+    .split(/<\/p>/i)
+    .map((chunk) => firstParagraph(`${chunk}</p>`, maxLength))
+    .filter(Boolean)
+    .join(" ");
+
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, text.lastIndexOf(" ", maxLength))}…`;
+}
+
 /**
- * OJS stores rich text as HTML. The issue card is a one-paragraph slot, so take
- * the first paragraph as plain text and keep it short enough not to overflow.
+ * OJS stores rich text as HTML. Takes the first paragraph as plain text, capped
+ * so a single field cannot blow past its slot.
  */
 function firstParagraph(html: string, maxLength = 180): string {
   const [first = ""] = html.split(/<\/p>/i);
@@ -132,6 +144,8 @@ export type CurrentIssueSummary = {
   identification: string;
   href: string;
   articleCount: number;
+  cover: string;
+  coverAlt: string;
 };
 
 /** Headline facts about the issue OJS currently marks as current. */
@@ -146,10 +160,15 @@ export async function getCurrentIssueSummary(): Promise<CurrentIssueSummary | un
     return {
       volumeTitle: [volume, number].filter(Boolean).join("\n") || localize(issue.identification),
       publishMonth: formatDate(issue.datePublished),
-      description: firstParagraph(localize(issue.description)) || journal.issueDescription,
+      // Full text; the card clamps it to five lines.
+      description: plainText(localize(issue.description)) || journal.issueDescription,
       identification: localize(issue.identification),
       href: ojsLinks.issue(issue.id),
       articleCount: issue.articles?.length ?? 0,
+      cover: issueCover(issue),
+      coverAlt:
+        localize(issue.coverImageAltText) ||
+        `${localize(issue.identification) || journal.title} cover`,
     };
   } catch {
     return undefined;

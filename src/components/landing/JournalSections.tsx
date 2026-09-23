@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { aboutPath } from "@/components/about/anchors";
+import { coverSrc, journal } from "@/components/issues/journal";
 import type { CurrentIssueSummary } from "@/lib/ojs/view";
 import { ojsLinks } from "@/lib/links";
 import { indexingPartners, landingContent } from "./content";
@@ -71,8 +72,8 @@ export function AboutJournalSection({ issue }: { issue?: CurrentIssueSummary } =
             <div className="relative h-[240px] sm:h-[389px] lg:h-[450px] overflow-hidden rounded-lg">
               <Image
                 className="object-contain transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
-                src="/figma/journal-cover.webp"
-                alt={content.coverAlt}
+                src={coverSrc(issue?.cover ?? journal.cover)}
+                alt={issue?.coverAlt ?? content.coverAlt}
                 fill
                 sizes="(max-width: 700px) 135px, (max-width: 1200px) 333px, 385px"
               />
@@ -85,7 +86,8 @@ export function AboutJournalSection({ issue }: { issue?: CurrentIssueSummary } =
               <h4 className="mb-2 text-base sm:text-2xl font-semibold leading-tight text-[#07868f]">
                 {issue?.publishMonth ?? content.publishDate}
               </h4>
-              <p className="mb-4 text-xs sm:text-base leading-relaxed text-[#0c0c0c]">
+              {/* OJS descriptions run long; cut them off at five lines. */}
+              <p className="mb-4 line-clamp-5 text-xs sm:text-base leading-relaxed text-[#0c0c0c]">
                 {issue?.description ?? content.issueDescription}
               </p>
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
