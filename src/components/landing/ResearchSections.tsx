@@ -47,7 +47,7 @@ export function LatestArticlesSection({ items }: { items?: ArticlePreview[] } = 
             >
               <div className="relative h-[204px] overflow-hidden max-[1200px]:h-full max-[700px]:h-[180px]">
                 <Image
-                  className="object-cover transition-transform duration-300 motion-safe:group-hover:scale-[1.025]"
+                  className="object-contain transition-transform duration-300 motion-safe:group-hover:scale-[1.025]"
                   src={coverSrc(article.image)}
                   alt={article.alt}
                   fill

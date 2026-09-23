@@ -82,7 +82,7 @@ export function ArticleHeroSection({ detail }: { detail: ArticleDetail }) {
             <div className="grid grid-cols-[132px_minmax(0,1fr)] items-center gap-6 p-6 sm:p-7 max-[700px]:grid-cols-[92px_minmax(0,1fr)] max-[700px]:gap-4 max-[700px]:p-4">
               <div className="relative h-[184px] overflow-hidden rounded-md shadow-[0_10px_20px_-14px_rgba(0,0,0,0.45)] max-[700px]:h-[128px]">
                 <Image
-                  className="object-cover"
+                  className="object-contain"
                   src={coverSrc(issue.cover)}
                   alt={issue.coverAlt}
                   fill

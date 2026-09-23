@@ -25,7 +25,7 @@ export function ArticleCard({
       {withImage && (
         <div className="relative h-[170px] shrink-0 overflow-hidden max-[700px]:h-[200px]">
           <Image
-            className="object-cover transition-transform duration-300 motion-safe:group-hover:scale-[1.025]"
+            className="object-contain transition-transform duration-300 motion-safe:group-hover:scale-[1.025]"
             src={coverSrc(article.image)}
             alt={article.alt}
             fill

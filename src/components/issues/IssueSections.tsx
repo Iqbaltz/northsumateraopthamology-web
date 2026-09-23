@@ -45,7 +45,7 @@ export function IssueHeroSection({ issue }: { issue: IssueHero }) {
             <div className="grid grid-cols-[minmax(0,340px)_minmax(0,1fr)] items-center gap-6 lg:gap-8 p-5 sm:p-6 max-[700px]:grid-cols-[120px_1fr] max-[700px]:gap-4 max-[700px]:p-4">
               <div className="relative h-[300px] lg:h-[390px] overflow-hidden rounded-lg max-[700px]:h-[170px]">
                 <Image
-                  className="object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
+                  className="object-contain transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
                   src={coverSrc(content.cover)}
                   alt={content.coverAlt}
                   fill

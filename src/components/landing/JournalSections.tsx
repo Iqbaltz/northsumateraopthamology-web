@@ -70,7 +70,7 @@ export function AboutJournalSection({ issue }: { issue?: CurrentIssueSummary } =
           <div className="grid min-h-[440px] grid-cols-[385px_1fr] max-[1200px]:grid-cols-[333px_1fr] items-center gap-6 sm:gap-8 p-6 sm:p-8 max-[700px]:grid-cols-[135px_1fr] max-[700px]:gap-3.5 max-[700px]:p-3.5 max-[700px]:min-h-0">
             <div className="relative h-[240px] sm:h-[389px] lg:h-[450px] overflow-hidden rounded-lg">
               <Image
-                className="object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
+                className="object-contain transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
                 src="/figma/journal-cover.webp"
                 alt={content.coverAlt}
                 fill
