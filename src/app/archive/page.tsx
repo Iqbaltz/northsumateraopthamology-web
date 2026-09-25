@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ArchiveCatalogSection } from "@/components/archive";
 import { MotionEffects } from "@/components/landing";
+import { getVolumeCards } from "@/lib/ojs/view";
 
 export const metadata: Metadata = {
   title: "Archive Catalog",
@@ -17,11 +18,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ArchivePage() {
+export default async function ArchivePage() {
+  // Falls back to the designed placeholder volumes when OJS has none published.
+  const volumes = await getVolumeCards();
+
   return (
     <div className="overflow-hidden text-[#0c0c0c]">
       <MotionEffects />
-      <ArchiveCatalogSection />
+      <ArchiveCatalogSection volumes={volumes} />
     </div>
   );
 }

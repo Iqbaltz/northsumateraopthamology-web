@@ -38,7 +38,7 @@ export function HeroSection() {
           <a href={ojsLinks.submit} className={`${button} max-[700px]:w-full`}>
             {content.submitButton}
           </a>
-          <Link href="#" className={`${button} ${outlineButton} max-[700px]:w-[208px]`}>
+          <Link href="/issues" className={`${button} ${outlineButton} max-[700px]:w-[208px]`}>
             {content.viewIssueButton}
           </Link>
         </div>

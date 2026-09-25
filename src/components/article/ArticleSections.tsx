@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArticleCard } from "@/components/ArticleCard";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { CreativeCommonsBadge } from "@/components/CreativeCommonsBadge";
-import { journal, type IssueArticle } from "@/components/issues/journal";
+import { articleMeta, coverSrc, journal, type IssueArticle } from "@/components/issues/journal";
 import { landingContent } from "@/components/landing/content";
 import { button, shell } from "@/components/landing/styles";
 import {
@@ -82,8 +82,8 @@ export function ArticleHeroSection({ detail }: { detail: ArticleDetail }) {
             <div className="grid grid-cols-[132px_minmax(0,1fr)] items-center gap-6 p-6 sm:p-7 max-[700px]:grid-cols-[92px_minmax(0,1fr)] max-[700px]:gap-4 max-[700px]:p-4">
               <div className="relative h-[184px] overflow-hidden rounded-md shadow-[0_10px_20px_-14px_rgba(0,0,0,0.45)] max-[700px]:h-[128px]">
                 <Image
-                  className="object-cover"
-                  src={`/figma/${issue.cover}`}
+                  className="object-contain"
+                  src={coverSrc(issue.cover)}
                   alt={issue.coverAlt}
                   fill
                   sizes="(max-width: 700px) 92px, 132px"
@@ -248,7 +248,7 @@ export function SimilarArticlesSection({ articles }: { articles: IssueArticle[] 
         </h2>
         <div className="grid grid-cols-4 gap-6 max-[1200px]:grid-cols-2 max-[700px]:grid-cols-1">
           {articles.map((article) => (
-            <ArticleCard key={article.slug} article={article} meta={`Pages ${article.pages}`} />
+            <ArticleCard key={article.slug} article={article} meta={articleMeta(article)} />
           ))}
         </div>
       </div>

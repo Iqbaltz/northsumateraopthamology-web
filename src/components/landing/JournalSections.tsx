@@ -1,14 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { aboutPath } from "@/components/about/anchors";
+import { coverSrc, journal } from "@/components/issues/journal";
+import type { CurrentIssueSummary } from "@/lib/ojs/view";
+import { ojsLinks } from "@/lib/links";
 import { indexingPartners, landingContent } from "./content";
 import { button, kicker, shell, textLink } from "./styles";
 
-export function AboutJournalSection() {
+/**
+ * `issue` carries the current issue from OJS when one is published; without it
+ * the card falls back to the designed placeholder issue.
+ */
+export function AboutJournalSection({ issue }: { issue?: CurrentIssueSummary } = {}) {
   const content = landingContent.aboutJournal;
 
   return (
-    <section className="bg-white py-16 sm:py-24">
+    <section id="about-journal" className="scroll-mt-8 bg-white py-16 sm:py-24">
       <div
         className={`${shell} grid grid-cols-[470px_1fr] items-start gap-12 max-[1200px]:grid-cols-1 max-[1200px]:gap-16`}
       >
@@ -64,9 +71,9 @@ export function AboutJournalSection() {
           <div className="grid min-h-[440px] grid-cols-[385px_1fr] max-[1200px]:grid-cols-[333px_1fr] items-center gap-6 sm:gap-8 p-6 sm:p-8 max-[700px]:grid-cols-[135px_1fr] max-[700px]:gap-3.5 max-[700px]:p-3.5 max-[700px]:min-h-0">
             <div className="relative h-[240px] sm:h-[389px] lg:h-[450px] overflow-hidden rounded-lg">
               <Image
-                className="object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
-                src="/figma/journal-cover.webp"
-                alt={content.coverAlt}
+                className="object-contain transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
+                src={coverSrc(issue?.cover ?? journal.cover)}
+                alt={issue?.coverAlt ?? content.coverAlt}
                 fill
                 sizes="(max-width: 700px) 135px, (max-width: 1200px) 333px, 385px"
               />
@@ -74,17 +81,18 @@ export function AboutJournalSection() {
             <div className="flex flex-col justify-center">
               <p className={kicker}>{content.issueKicker}</p>
               <h3 className="mt-2 mb-1 font-sans text-xl sm:text-[32px] font-bold leading-tight whitespace-pre-line text-[#0c0c0c]">
-                {content.volumeTitle}
+                {issue?.volumeTitle ?? content.volumeTitle}
               </h3>
               <h4 className="mb-2 text-base sm:text-2xl font-semibold leading-tight text-[#07868f]">
-                {content.publishDate}
+                {issue?.publishMonth ?? content.publishDate}
               </h4>
-              <p className="mb-4 text-xs sm:text-base leading-relaxed text-[#0c0c0c]">
-                {content.issueDescription}
+              {/* OJS descriptions run long; cut them off at five lines. */}
+              <p className="mb-4 line-clamp-5 text-xs sm:text-base leading-relaxed text-[#0c0c0c]">
+                {issue?.description ?? content.issueDescription}
               </p>
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
                 <Link
-                  href="#"
+                  href="/issues"
                   className={`${button} max-[700px]:px-2.5 max-[700px]:py-1.5 max-[700px]:text-[10px] max-[700px]:min-h-0 max-[700px]:w-fit`}
                 >
                   {content.viewIssueButton}
@@ -110,7 +118,7 @@ export function AboutJournalSection() {
             </span>
             <a
               className="flex items-center gap-1.5 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
-              href="#"
+              href={ojsLinks.submit}
             >
               {content.downloadTemplate}{" "}
               <Image
@@ -132,7 +140,7 @@ export function IndexingSection() {
   const content = landingContent.indexing;
 
   return (
-    <section className="bg-white py-12 max-[700px]:py-8">
+    <section id="indexing" className="scroll-mt-8 bg-white py-12 max-[700px]:py-8">
       <div
         className={`${shell} flex min-h-[127px] items-center gap-8 rounded-xl border border-[#d5e0e2] bg-white p-8 shadow-[0_24px_45px_-30px_rgba(0,0,0,0.12)] max-[1200px]:flex-col max-[1200px]:items-center max-[1200px]:gap-6 max-[700px]:min-h-[541px] max-[700px]:px-5 max-[700px]:py-8`}
         data-reveal

@@ -12,6 +12,7 @@ import {
 } from "@/components/article";
 import { issueArticles } from "@/components/issues";
 import { MotionEffects } from "@/components/landing";
+import { getAllArticles, getArticleDetail } from "@/lib/ojs/view";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -24,19 +25,26 @@ function summary(text: string, limit = 155): string {
   return `${text.slice(0, wordEnd > 0 ? wordEnd : limit)}…`;
 }
 
-export function generateStaticParams() {
-  return issueArticles.map((article) => ({ slug: article.slug }));
+export async function generateStaticParams() {
+  // The journal's real articles when it has any, otherwise the designed set.
+  const live = await getAllArticles();
+  const slugs = live.length
+    ? live.map((article) => article.slug)
+    : issueArticles.map((article) => article.slug);
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const article = findArticle(slug);
+  const live = await getArticleDetail(slug);
+  const placeholder = live ? undefined : findArticle(slug);
 
-  if (!article) {
+  if (!live && !placeholder) {
     return { title: "Article not found" };
   }
 
-  const detail = articleDetail(article);
+  const detail = live ?? articleDetail(placeholder!);
+  const article = detail.article;
   const description = summary(detail.abstract[0]?.text ?? article.title);
 
   return {
@@ -61,22 +69,31 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ArticlePage({ params }: PageProps) {
   const { slug } = await params;
-  const article = findArticle(slug);
 
-  if (!article) {
+  // Published articles come from OJS; the designed set covers the rest.
+  const live = await getArticleDetail(slug);
+  const placeholder = live ? undefined : findArticle(slug);
+
+  if (!live && !placeholder) {
     notFound();
   }
 
-  const detail = articleDetail(article);
+  const detail = live ?? articleDetail(placeholder!);
+  const related = live
+    ? (await getAllArticles()).filter((other) => other.slug !== slug)
+    : similarArticles(placeholder!);
 
   return (
     <div className="overflow-hidden text-[#0c0c0c]">
       <MotionEffects />
       <ArticleHeroSection detail={detail} />
-      <ArticleAbstractSection parts={detail.abstract} />
-      <ArticleMetricsSection downloads={detail.downloads} />
-      <ArticleReferencesSection references={detail.references} />
-      <SimilarArticlesSection articles={similarArticles(article)} />
+      {/* OJS may not carry these yet; an empty section is left out entirely. */}
+      {detail.abstract.length > 0 && <ArticleAbstractSection parts={detail.abstract} />}
+      {detail.downloads.length > 0 && <ArticleMetricsSection downloads={detail.downloads} />}
+      {detail.references.length > 0 && (
+        <ArticleReferencesSection references={detail.references} />
+      )}
+      {related.length > 0 && <SimilarArticlesSection articles={related} />}
     </div>
   );
 }

@@ -76,3 +76,22 @@ export async function findArticle(
 }
 
 export type { Article, Context, Issue, Publication } from "./types";
+
+/**
+ * Full publication record. The issue table of contents returns a trimmed
+ * summary — abstract, keywords, citations and author affiliations only come
+ * back from this endpoint.
+ */
+export async function getPublication(
+  submissionId: number,
+  publicationId: number,
+): Promise<Publication | undefined> {
+  if (USE_FIXTURES) return undefined;
+  try {
+    return await ojsFetch<Publication>(
+      `submissions/${submissionId}/publications/${publicationId}`,
+    );
+  } catch {
+    return undefined;
+  }
+}

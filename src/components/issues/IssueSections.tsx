@@ -2,9 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArticleCard } from "@/components/ArticleCard";
 import { Breadcrumb, type BreadcrumbItem } from "@/components/Breadcrumb";
-import { VolumeCard } from "@/components/VolumeCard";
-import { button, shell, textLink } from "@/components/landing/styles";
-import type { IssueArticle } from "./journal";
+import { VolumeCard, type VolumeCatalogItem } from "@/components/VolumeCard";
+import { ojsLinks } from "@/lib/links";
+import { shell, textLink } from "@/components/landing/styles";
+import { articleMeta, coverSrc, type IssueArticle } from "./journal";
 import { issuesContent } from "./content";
 
 /** Everything the issue hero renders, for the current issue or an archived one. */
@@ -14,8 +15,8 @@ export type IssueHero = {
   volumeTitle: string;
   publishMonth: string;
   description: string;
-  /** Omitted for archived issues — the reader is already on the issue. */
-  viewIssue?: { label: string; href: string };
+  /** Resolvable DOI for the issue, shown under the description. */
+  doi?: string;
   cover: string;
   coverAlt: string;
   issnOnline: string;
@@ -44,8 +45,8 @@ export function IssueHeroSection({ issue }: { issue: IssueHero }) {
             <div className="grid grid-cols-[minmax(0,340px)_minmax(0,1fr)] items-center gap-6 lg:gap-8 p-5 sm:p-6 max-[700px]:grid-cols-[120px_1fr] max-[700px]:gap-4 max-[700px]:p-4">
               <div className="relative h-[300px] lg:h-[390px] overflow-hidden rounded-lg max-[700px]:h-[170px]">
                 <Image
-                  className="object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
-                  src={`/figma/${content.cover}`}
+                  className="object-contain transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
+                  src={coverSrc(content.cover)}
                   alt={content.coverAlt}
                   fill
                   loading="eager"
@@ -65,13 +66,16 @@ export function IssueHeroSection({ issue }: { issue: IssueHero }) {
                 <p className="mb-5 max-w-[300px] text-xs sm:text-sm leading-relaxed text-[#4a4a4a]">
                   {content.description}
                 </p>
-                {content.viewIssue && (
-                  <Link
-                    href={content.viewIssue.href}
-                    className={`${button} w-fit max-[700px]:min-h-0 max-[700px]:px-2.5 max-[700px]:py-1.5 max-[700px]:text-[10px]`}
-                  >
-                    {content.viewIssue.label}
-                  </Link>
+                {content.doi && (
+                  <p className="text-xs sm:text-sm leading-relaxed text-[#0c0c0c]">
+                    <strong className="font-bold">DOI:</strong>{" "}
+                    <a
+                      className="rounded-sm break-all text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f]"
+                      href={content.doi}
+                    >
+                      {content.doi}
+                    </a>
+                  </p>
                 )}
               </div>
             </div>
@@ -92,7 +96,7 @@ export function IssueHeroSection({ issue }: { issue: IssueHero }) {
               </span>
               <a
                 className="flex items-center gap-1.5 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
-                href="#"
+                href={ojsLinks.currentIssue}
               >
                 {content.downloadLabel}
                 <Image
@@ -148,7 +152,12 @@ export function IssueArticlesSection({
         </h2>
         <div className="grid grid-cols-4 gap-6 max-[1200px]:grid-cols-2 max-[700px]:grid-cols-1">
           {items.map((article) => (
-            <ArticleCard key={article.slug} article={article} meta={article.date} />
+            <ArticleCard
+              key={article.slug}
+              article={article}
+              meta={articleMeta(article)}
+              withImage={false}
+            />
           ))}
         </div>
       </div>
@@ -156,8 +165,10 @@ export function IssueArticlesSection({
   );
 }
 
-export function VolumeCatalogSection() {
+/** `volumes` carries the journal's published volumes; falls back to the designed set. */
+export function VolumeCatalogSection({ volumes }: { volumes?: VolumeCatalogItem[] } = {}) {
   const content = issuesContent.catalog;
+  const items = volumes?.length ? volumes : content.items;
 
   return (
     <section className="bg-white pb-16 sm:pb-24">
@@ -182,7 +193,7 @@ export function VolumeCatalogSection() {
         </div>
 
         <div className="grid grid-cols-3 gap-6 max-[700px]:grid-cols-1">
-          {content.items.map((volume) => (
+          {items.map((volume) => (
             <VolumeCard key={volume.label} volume={volume} />
           ))}
         </div>

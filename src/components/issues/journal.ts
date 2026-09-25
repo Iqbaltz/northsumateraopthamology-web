@@ -53,6 +53,15 @@ export const journal = {
   articlesFactText: "Original research, reviews, and clinical reports",
 };
 
+/**
+ * Resolvable DOI for an issue, e.g. "https://doi.org/10.0000/jonson.v12i1".
+ * Built from `journal.doiPrefix`, so it stays a placeholder until real DOIs are
+ * registered — see the note on that field.
+ */
+export function issueDoiUrl(volume: number, number: number): string {
+  return `https://doi.org/${journal.doiPrefix}.v${volume}i${number}`;
+}
+
 /** URL-safe slug for an article title: "Use of VR in X" -> "use-of-vr-in-x". */
 export function articleSlug(title: string): string {
   return title
@@ -256,4 +265,20 @@ export const issueArticles: IssueArticle[] = seeds.map((seed) => ({
 /** The first `count` articles, clamped to what the placeholder list holds. */
 export function articlesForIssue(count: number): IssueArticle[] {
   return issueArticles.slice(0, Math.min(count, issueArticles.length));
+}
+
+/**
+ * Resolves a cover/image value to an `<Image src>`. Static content stores bare
+ * filenames from /public/figma; OJS supplies absolute URLs.
+ */
+export function coverSrc(image: string): string {
+  return image.startsWith("http") || image.startsWith("/") ? image : `/figma/${image}`;
+}
+
+/**
+ * The footnote beside an article's download link: its page range, falling back
+ * to the publication date for records that carry no pagination.
+ */
+export function articleMeta(article: IssueArticle): string {
+  return article.pages ? `Pages ${article.pages}` : article.date;
 }

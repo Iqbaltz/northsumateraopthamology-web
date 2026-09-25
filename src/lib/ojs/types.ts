@@ -19,6 +19,8 @@ export interface Author {
   familyName?: LocalizedString | string;
   preferredPublicName?: LocalizedString | string;
   affiliation?: LocalizedString | string;
+  /** OJS 3.5 moved affiliation into a ROR-aware list. */
+  affiliations?: { name?: LocalizedString | string }[];
   orcid?: string;
   email?: string;
   seq?: number;
@@ -56,7 +58,9 @@ export interface Publication {
   issueId?: number;
   datePublished?: string;
   doiObject?: DoiObject;
-  keywords?: LocalizedString;
+  keywords?: Record<string, { name: string }[]> | LocalizedString;
+  /** Plain strings in OJS 3.5; older builds wrapped them in an object. */
+  citations?: (string | { rawCitation?: string })[];
   urlPublished?: string;
   coverImage?: Record<string, { uploadName?: string; altText?: string }>;
 }

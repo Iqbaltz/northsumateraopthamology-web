@@ -78,6 +78,7 @@ export function archiveIssueCard(issue: ArchiveIssue): VolumeCatalogItem {
     label: `VOLUME ${issue.volume} • NUMBER ${issue.number}`,
     published: `Published ${issue.month} ${issue.year}`,
     href: `/archive/${issue.slug}`,
+    articleCount: issue.articleCount,
   };
 }
 

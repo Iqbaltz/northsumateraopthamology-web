@@ -7,6 +7,7 @@ import { articlePath } from "@/components/issues/journal";
 import { policiesPath } from "@/components/policies/anchors";
 import { privacyPath } from "@/components/privacy/path";
 import { submissionAnchors } from "@/components/submission/content";
+import { ojsLinks } from "@/lib/links";
 
 export type QuickLink = {
   image: string;
@@ -50,16 +51,16 @@ export type GuideSection = {
   blocks: GuideBlock[];
 };
 
+export type FooterColumn = {
+  title: string;
+  items: { label: string; href: string }[];
+};
+
 /** A top-level nav entry. `children` turns it into a dropdown trigger. */
 export type NavItem = {
   label: string;
   href: string;
   children?: { label: string; href: string }[];
-};
-
-export type FooterColumn = {
-  title: string;
-  items: { label: string; href: string }[];
 };
 
 export type IndexingPartner = {
@@ -93,21 +94,21 @@ export const landingContent = {
       image: "for-authors.webp",
       title: "For Authors",
       text: "Submission guidelines and policies",
-      href: "#",
+      href: "/#submission-guide",
       alt: "Submission guidelines and author instructions",
     },
     {
       image: "for-reviewers.webp",
-      title: "For Reviewers",
-      text: "Review process and guidelines",
-      href: "#",
-      alt: "Reviewer guidelines and peer review process",
+      title: "Editorial Board",
+      text: "Editorial team and masthead",
+      href: ojsLinks.editorialMasthead,
+      alt: "JONSON editorial board and masthead",
     },
     {
       image: "current-issue.webp",
       title: "Current Issue",
       text: "Latest research and articles",
-      href: "#",
+      href: "/issues",
       alt: "Browse current issue and published articles",
     },
     {
@@ -472,15 +473,231 @@ export const landingContent = {
           },
         ],
       },
-      { title: "Peer review policy", blocks: [] },
-      { title: "Publication Ethics", blocks: [] },
-      { title: "After Acceptance", blocks: [] },
+      {
+        title: "Peer Review Policy",
+        blocks: [
+          {
+            body: [
+              "The journal follows a rigorous peer-review process designed to maintain the scientific quality, integrity, and relevance of published research.",
+            ],
+          },
+          {
+            heading: "Initial Editorial Assessment",
+            body: [
+              "Following submission, each manuscript undergoes an initial editorial assessment.",
+              "The editorial team evaluates whether the manuscript:",
+              {
+                list: [
+                  "Falls within the journal's aims and scope.",
+                  "Meets basic submission requirements.",
+                  "Demonstrates sufficient scientific and methodological quality.",
+                  "Meets applicable ethical standards.",
+                  "Contains appropriate declarations and supporting information.",
+                ],
+              },
+              "Manuscripts that are outside the journal's scope or do not meet essential requirements may be rejected or returned to the authors before external peer review.",
+            ],
+          },
+          {
+            heading: "Peer Review",
+            body: [
+              "Manuscripts that pass the initial editorial assessment are typically evaluated by independent reviewers with relevant expertise.",
+              "Reviewers assess aspects including:",
+              {
+                list: [
+                  "Scientific originality",
+                  "Research question and relevance",
+                  "Methodological rigor",
+                  "Data quality and interpretation",
+                  "Statistical analysis, where applicable",
+                  "Clarity of presentation",
+                  "Validity of conclusions",
+                  "Ethical considerations",
+                  "Contribution to ophthalmic knowledge",
+                ],
+              },
+              "The number of reviewers and specific review process may vary according to the article type and editorial requirements.",
+            ],
+          },
+          {
+            heading: "Reviewer Confidentiality",
+            body: [
+              "The identities of reviewers are kept confidential in accordance with the journal's peer-review policy.",
+              "Reviewers are expected to maintain the confidentiality of submitted manuscripts and must not use unpublished information for personal or professional advantage.",
+            ],
+          },
+          {
+            heading: "Editorial Decisions",
+            body: [
+              "Following peer review, the editor may make one of several decisions:",
+              { list: ["Accept", "Minor Revision", "Major Revision", "Reject"] },
+              "A request for revision does not guarantee eventual acceptance. Revised manuscripts may be returned to the original reviewers or evaluated by the editor.",
+            ],
+          },
+          {
+            heading: "Appeals",
+            body: [
+              "Authors who believe that an editorial decision was based on a significant misunderstanding or procedural error may submit an appeal to the editorial office.",
+              "Appeals should provide a clear and evidence-based explanation of the concern. Disagreement with an editor's scientific judgment alone is generally not sufficient grounds for an appeal.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Publication Ethics",
+        blocks: [
+          {
+            body: [
+              "The journal is committed to maintaining high standards of research and publication integrity.",
+              "Authors, editors, and reviewers are expected to follow ethical principles throughout the publication process.",
+            ],
+          },
+          {
+            heading: "Originality and Duplicate Submission",
+            body: [
+              "Manuscripts must contain original work and must not have been published previously, except where appropriately disclosed and permitted.",
+              "A manuscript must not be submitted simultaneously to more than one journal.",
+              "Authors should appropriately cite previous publications and disclose any closely related manuscripts or reports.",
+            ],
+          },
+          {
+            heading: "Authorship",
+            body: [
+              "Authorship should be limited to individuals who have made substantial contributions to the work and who are willing to take responsibility for the content of the manuscript.",
+              "All listed authors should:",
+              {
+                list: [
+                  "Have made a meaningful contribution to the work.",
+                  "Participate in drafting or critically revising the manuscript.",
+                  "Approve the final version.",
+                  "Agree to be accountable for the work.",
+                ],
+              },
+              "Individuals who contributed to the work but do not meet authorship criteria should be acknowledged where appropriate.",
+            ],
+          },
+          {
+            heading: "Conflicts of Interest",
+            body: [
+              "Authors must disclose any financial, professional, personal, or other relationships that could reasonably be perceived as influencing the research or its interpretation.",
+              "If no conflicts exist, authors should provide an appropriate declaration such as:",
+              "“The authors declare that they have no conflicts of interest related to this work.”",
+            ],
+          },
+          {
+            heading: "Funding",
+            body: [
+              "All sources of financial support for the research or publication should be disclosed.",
+              "Authors should provide the name of the funding organization and, where applicable, the relevant grant or project number.",
+            ],
+          },
+          {
+            heading: "Research Ethics",
+            body: [
+              "Research involving human participants must comply with applicable ethical principles and institutional or national requirements.",
+              "Where applicable, manuscripts should include:",
+              {
+                list: [
+                  "Name of the approving ethics committee or institutional review board.",
+                  "Approval or reference number.",
+                  "Statement regarding informed consent.",
+                ],
+              },
+              "For research involving animals, authors should provide appropriate information regarding ethical approval and compliance with applicable animal welfare standards.",
+            ],
+          },
+          {
+            heading: "Patient Privacy and Consent",
+            body: [
+              "Authors must protect the privacy of patients and research participants.",
+              "Identifying information should not be published unless it is essential for scientific purposes and appropriate informed consent has been obtained.",
+              "Patient photographs, clinical images, and case descriptions should be prepared in a manner that protects individual privacy.",
+            ],
+          },
+          {
+            heading: "Research Misconduct",
+            body: [
+              "The journal takes allegations of research misconduct seriously. Potential concerns may include:",
+              {
+                list: [
+                  "Fabrication or falsification of data",
+                  "Plagiarism",
+                  "Duplicate publication",
+                  "Undisclosed conflicts of interest",
+                  "Inappropriate authorship",
+                  "Manipulation of images or data",
+                  "Unethical research practices",
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "After Acceptance",
+        blocks: [
+          {
+            body: [
+              "Once a manuscript has been accepted, it proceeds through the journal's production and publication process.",
+            ],
+          },
+          {
+            heading: "Copyediting and Production",
+            body: [
+              "The accepted manuscript may undergo editorial and production checks to ensure consistency, clarity, formatting, and adherence to the journal's publication standards.",
+              "Authors may be contacted if clarification or additional information is required.",
+            ],
+          },
+          {
+            heading: "Proofreading",
+            body: [
+              "Before publication, authors may receive a proof version of the article for final review.",
+              "Authors should carefully check:",
+              {
+                list: [
+                  "Author names and affiliations",
+                  "Article title",
+                  "Figures and tables",
+                  "References",
+                  "Numerical data",
+                  "Equations and symbols",
+                  "Spelling and grammatical errors",
+                  "Other factual or production errors",
+                ],
+              },
+              "Proof corrections should generally be limited to errors introduced during production or essential factual corrections.",
+            ],
+          },
+          {
+            heading: "Publication",
+            body: [
+              "After final approval, the article will be published online as part of the journal's current publication workflow.",
+              "Each published article will receive its permanent publication information, including a Digital Object Identifier (DOI) where applicable.",
+            ],
+          },
+          {
+            heading: "Article Updates and Corrections",
+            body: [
+              "The journal is committed to maintaining the accuracy and integrity of the published record.",
+              "If an error is identified after publication, the editorial team will assess the issue and determine the appropriate action. This may include a correction, clarification, expression of concern, or retraction when necessary.",
+            ],
+          },
+          {
+            heading: "Promoting Your Published Research",
+            body: [
+              "Authors are encouraged to share their published work with colleagues, academic institutions, and professional communities.",
+              "When sharing an article, authors should use the official published version and cite the article appropriately.",
+            ],
+          },
+        ],
+      },
     ] as GuideSection[],
   },
   footer: {
     address: "Jl. Sei Mencirim No.77, Babura, Kec. Medan Baru, Kota Medan, Sumatera Utara 20154",
     copyright: "JONSON: Journal of North Sumatera Ophthalmology Nexus",
     hospital: "Part of Rumah Sakit Khusus Mata Mencirim 77 Medan",
+    /** `href: "#"` marks the few entries that have no destination anywhere yet. */
     columns: [
       {
         title: "For Author",

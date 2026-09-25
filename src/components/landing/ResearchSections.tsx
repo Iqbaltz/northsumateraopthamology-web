@@ -1,11 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { aboutAnchors, aboutPath } from "@/components/about/anchors";
-import { landingContent } from "./content";
+import { coverSrc } from "@/components/issues/journal";
+import { landingContent, type ArticlePreview } from "./content";
 import { kicker, shell, textLink } from "./styles";
 
-export function LatestArticlesSection() {
+/**
+ * `items` carries the journal's published articles when OJS has any; without it
+ * the section falls back to the designed placeholder list so the page is never
+ * empty while the journal is still being filled in.
+ */
+export function LatestArticlesSection({ items }: { items?: ArticlePreview[] } = {}) {
   const content = landingContent.articlesSection;
+  const articles = items?.length ? items : content.items;
 
   return (
     <section className="bg-white py-12 sm:py-24">
@@ -19,7 +26,7 @@ export function LatestArticlesSection() {
           </h2>
           <Link
             className="group hidden sm:flex items-center gap-2 sm:gap-3 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] focus-visible:ring-offset-2 [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-x-1"
-            href="#"
+            href="/issues"
           >
             {content.viewAll}{" "}
             <Image
@@ -32,7 +39,7 @@ export function LatestArticlesSection() {
           </Link>
         </div>
         <div className="grid grid-cols-4 gap-6 lg:gap-8 max-[1200px]:grid-cols-1 max-[1200px]:gap-8 max-[700px]:gap-8">
-          {content.items.map((article) => (
+          {articles.map((article) => (
             <article
               className="group overflow-hidden rounded-xl border border-[#d5e0e2] bg-white shadow-sm transition-[border-color,box-shadow,transform] duration-200 motion-safe:hover:-translate-y-1 motion-safe:hover:border-[#a9cacc] max-[1200px]:grid max-[1200px]:grid-cols-[45%_55%] max-[1200px]:h-[280px] max-[700px]:block max-[700px]:h-auto [&:nth-child(2)]:delay-[60ms] [&:nth-child(3)]:delay-[120ms] [&:nth-child(4)]:delay-[180ms]"
               key={article.title}
@@ -40,8 +47,8 @@ export function LatestArticlesSection() {
             >
               <div className="relative h-[204px] overflow-hidden max-[1200px]:h-full max-[700px]:h-[180px]">
                 <Image
-                  className="object-cover transition-transform duration-300 motion-safe:group-hover:scale-[1.025]"
-                  src={`/figma/${article.image}`}
+                  className="object-contain transition-transform duration-300 motion-safe:group-hover:scale-[1.025]"
+                  src={coverSrc(article.image)}
                   alt={article.alt}
                   fill
                   sizes="(max-width: 700px) 100vw, (max-width: 1200px) 45vw, 306px"
@@ -81,7 +88,7 @@ export function LatestArticlesSection() {
         <div className="mt-8 flex sm:hidden items-center justify-start">
           <Link
             className="group flex items-center gap-2 text-sm font-bold text-[#07868f] uppercase"
-            href="#"
+            href="/issues"
           >
             {content.viewAll}{" "}
             <Image
@@ -101,7 +108,7 @@ export function ScopeSection() {
   const content = landingContent.scope;
 
   return (
-    <section id="aims-scope" className="bg-white py-16 sm:py-24">
+    <section id="aims-scope" className="scroll-mt-8 bg-white py-16 sm:py-24">
       <div className={shell}>
         {/*
           Above 1200px: illustration owns a left column, divider, all copy stacked on the right.

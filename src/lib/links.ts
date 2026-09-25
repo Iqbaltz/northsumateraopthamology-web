@@ -58,6 +58,12 @@ export const ojsLinks = {
 
   issue: (issueId: number) => `${OJS_PUBLIC_URL}/issue/view/${issueId}`,
 
+  /** The issue OJS currently marks as current, whatever its id. */
+  currentIssue: `${OJS_PUBLIC_URL}/issue/current`,
+  /** OJS's own archive listing. */
+  archive: `${OJS_PUBLIC_URL}/issue/archive`,
+  announcements: `${OJS_PUBLIC_URL}/announcement`,
+
   /** GET target of the OJS search form — post the fields in `journalSearchFields`. */
   searchAction: `${OJS_PUBLIC_URL}/search/search`,
 
@@ -80,6 +86,8 @@ export const ojsLinks = {
   register: `${OJS_PUBLIC_URL}/user/register`,
   submit: `${OJS_PUBLIC_URL}/about/submissions`,
   about: `${OJS_PUBLIC_URL}/about`,
-  editorialTeam: `${OJS_PUBLIC_URL}/about/editorialTeam`,
+  /** OJS 3.5 renamed the editorial team page to the masthead; the old path 404s. */
+  editorialMasthead: `${OJS_PUBLIC_URL}/about/editorialMasthead`,
+  privacy: `${OJS_PUBLIC_URL}/about/privacy`,
   contact: `${OJS_PUBLIC_URL}/about/contact`,
 } as const;

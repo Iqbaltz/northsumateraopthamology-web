@@ -9,11 +9,12 @@ import { button, kicker, shell } from "./styles";
 
 export function SubmissionGuideSection() {
   const content = landingContent.submissionGuide;
-  /** Index of the expanded panel; the guide opens on its first section. */
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  /** Index of the expanded panel, or null when every panel is collapsed. */
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="bg-white pb-16 sm:pb-24">
+    // Anchor target for the "For Authors" quick link.
+    <section id="submission-guide" className="scroll-mt-8 bg-white pb-16 sm:pb-24">
       <div className={shell}>
         <div
           className="mb-8 sm:mb-10 flex flex-wrap items-start justify-between gap-4"
