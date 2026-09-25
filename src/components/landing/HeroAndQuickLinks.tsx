@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ojsLinks } from "@/lib/links";
 import { landingContent, type QuickLink } from "./content";
 import { button, outlineButton, shell } from "./styles";
 
@@ -35,9 +34,9 @@ export function HeroSection() {
           {content.subtitle}
         </p>
         <div className="flex flex-wrap gap-4 max-[700px]:w-[208px] max-[700px]:flex-col motion-safe:animate-hero-fade-up animate-delay-400">
-          <a href={ojsLinks.submit} className={`${button} max-[700px]:w-full`}>
+          <Link href="/submission" className={`${button} max-[700px]:w-full`}>
             {content.submitButton}
-          </a>
+          </Link>
           <Link href="/issues" className={`${button} ${outlineButton} max-[700px]:w-[208px]`}>
             {content.viewIssueButton}
           </Link>

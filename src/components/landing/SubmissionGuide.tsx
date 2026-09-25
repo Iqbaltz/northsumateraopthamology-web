@@ -1,9 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { GuideNodeView } from "@/components/GuideNodeView";
 import { Chevron } from "@/components/icons";
-import { ojsLinks } from "@/lib/links";
 import { landingContent } from "./content";
 import { button, kicker, shell } from "./styles";
 
@@ -26,12 +26,12 @@ export function SubmissionGuideSection() {
               {content.title}
             </h2>
           </div>
-          <a
-            href={ojsLinks.submit}
+          <Link
+            href="/submission"
             className={`${button} shrink-0 !min-h-0 px-4 py-2.5 text-[11px] tracking-[0.04em] uppercase`}
           >
             {content.cta}
-          </a>
+          </Link>
         </div>
 
         <div className="flex flex-col gap-2.5" data-reveal>

@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { aboutPath } from "@/components/about/anchors";
 import { coverSrc, journal } from "@/components/issues/journal";
+import { submissionAnchors } from "@/components/submission/content";
 import type { CurrentIssueSummary } from "@/lib/ojs/view";
-import { ojsLinks } from "@/lib/links";
 import { indexingPartners, landingContent } from "./content";
 import { button, kicker, shell, textLink } from "./styles";
 
@@ -116,9 +116,9 @@ export function AboutJournalSection({ issue }: { issue?: CurrentIssueSummary } =
               />
               {content.submitBanner}
             </span>
-            <a
+            <Link
               className="flex items-center gap-1.5 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
-              href={ojsLinks.submit}
+              href={`/submission#${submissionAnchors.resources}`}
             >
               {content.downloadTemplate}{" "}
               <Image
@@ -128,7 +128,7 @@ export function AboutJournalSection({ issue }: { issue?: CurrentIssueSummary } =
                 height={18}
                 className="sm:size-6"
               />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

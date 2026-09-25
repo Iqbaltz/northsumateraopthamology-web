@@ -113,9 +113,6 @@ function toPreview(issue: Issue, article: NonNullable<Issue["articles"]>[number]
   const published = view.publication?.datePublished ?? issue.datePublished;
 
   return {
-    // OJS has no per-article artwork; the issue cover stands in.
-    image: issueCover(issue),
-    alt: `Cover of ${localize(issue.identification) || journal.title}`,
     tag,
     title: view.title,
     author: cleanByline(view.authors),
@@ -163,7 +160,7 @@ export async function getCurrentIssueSummary(): Promise<CurrentIssueSummary | un
       // Full text; the card clamps it to five lines.
       description: plainText(localize(issue.description)) || journal.issueDescription,
       identification: localize(issue.identification),
-      href: ojsLinks.issue(issue.id),
+      href: "/issues",
       articleCount: issue.articles?.length ?? 0,
       cover: issueCover(issue),
       coverAlt:

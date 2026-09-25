@@ -15,13 +15,11 @@ export type QuickLink = {
 };
 
 export type ArticlePreview = {
-  image: string;
   tag: string;
   title: string;
   author: string;
   date: string;
   href: string;
-  alt: string;
 };
 
 export type PublishingBenefit = {
@@ -98,7 +96,7 @@ export const landingContent = {
       image: "for-reviewers.webp",
       title: "Editorial Board",
       text: "Editorial team and masthead",
-      href: ojsLinks.editorialMasthead,
+      href: editorialPath,
       alt: "JONSON editorial board and masthead",
     },
     {
@@ -150,36 +148,28 @@ export const landingContent = {
     items: (
       [
         {
-          image: "article-1.webp",
           tag: "Case Study",
           title: "Efficacy of Artificial Intelligence in Diabetic Retinopathy Screening",
           author: "Sarah Johnson, MD, Michael Lee, PhD, Priya Shah, MD",
           date: "May 26, 2024",
-          alt: "AI efficacy in diabetic retinopathy screening research",
         },
         {
-          image: "article-2.webp",
           tag: "Literature Review",
           title: "Advancements in Machine Learning for Early Cancer Detection",
           author: "David Kim, PhD, Amina Yusuf, MD",
           date: "April 15, 2024",
-          alt: "Machine learning advances for early ocular cancer detection",
         },
         {
-          image: "article-3.webp",
           tag: "Original Research",
           title: "Impact of Virtual Reality Therapy on PTSD Recovery Rates",
           author: "Liam O’Connor, MD, Sofia Martinez, PhD",
           date: "June 10, 2024",
-          alt: "VR therapy impact on vision-related trauma recovery",
         },
         {
-          image: "article-4.webp",
           tag: "Case Study",
           title: "Telemedicine Adoption in Rural Healthcare Facilities during COVID-19",
           author: "Chen Wei, MD, Fatima Al-Mansouri, MPH",
           date: "April 15, 2024",
-          alt: "Telemedicine and teleophthalmology adoption in rural clinics",
         },
       ] as Omit<ArticlePreview, "href">[]
     ).map((item) => ({ ...item, href: articlePath(item.title) })),

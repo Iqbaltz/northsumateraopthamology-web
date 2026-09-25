@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { aboutAnchors, aboutPath } from "@/components/about/anchors";
-import { coverSrc } from "@/components/issues/journal";
 import { landingContent, type ArticlePreview } from "./content";
 import { kicker, shell, textLink } from "./styles";
 
@@ -41,20 +40,11 @@ export function LatestArticlesSection({ items }: { items?: ArticlePreview[] } = 
         <div className="grid grid-cols-4 gap-6 lg:gap-8 max-[1200px]:grid-cols-1 max-[1200px]:gap-8 max-[700px]:gap-8">
           {articles.map((article) => (
             <article
-              className="group overflow-hidden rounded-xl border border-[#d5e0e2] bg-white shadow-sm transition-[border-color,box-shadow,transform] duration-200 motion-safe:hover:-translate-y-1 motion-safe:hover:border-[#a9cacc] max-[1200px]:grid max-[1200px]:grid-cols-[45%_55%] max-[1200px]:h-[280px] max-[700px]:block max-[700px]:h-auto [&:nth-child(2)]:delay-[60ms] [&:nth-child(3)]:delay-[120ms] [&:nth-child(4)]:delay-[180ms]"
+              className="group overflow-hidden rounded-xl border border-[#d5e0e2] bg-white shadow-sm transition-[border-color,box-shadow,transform] duration-200 motion-safe:hover:-translate-y-1 motion-safe:hover:border-[#a9cacc] [&:nth-child(2)]:delay-[60ms] [&:nth-child(3)]:delay-[120ms] [&:nth-child(4)]:delay-[180ms]"
               key={article.title}
               data-reveal-item
             >
-              <div className="relative h-[204px] overflow-hidden max-[1200px]:h-full max-[700px]:h-[180px]">
-                <Image
-                  className="object-contain transition-transform duration-300 motion-safe:group-hover:scale-[1.025]"
-                  src={coverSrc(article.image)}
-                  alt={article.alt}
-                  fill
-                  sizes="(max-width: 700px) 100vw, (max-width: 1200px) 45vw, 306px"
-                />
-              </div>
-              <div className="flex min-h-[220px] sm:min-h-[260px] max-[1200px]:h-full max-[700px]:h-[240px] flex-col p-6 sm:p-8 justify-between">
+              <div className="flex h-full min-h-[220px] sm:min-h-[260px] max-[1200px]:min-h-0 flex-col p-6 sm:p-8 justify-between">
                 <div>
                   <span className="mb-2.5 inline-block rounded-md bg-[#e3eaef] px-2.5 py-1 text-xs font-semibold leading-4 text-[#0b1836] transition-[background-color,transform] duration-300">
                     {article.tag}
