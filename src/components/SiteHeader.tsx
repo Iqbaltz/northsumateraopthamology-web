@@ -4,16 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { Chevron, MagnifyingGlass } from "@/components/icons";
+import { CaretDown, Chevron, MagnifyingGlass } from "@/components/icons";
 import { SearchDeck } from "@/components/SearchDeck";
 import { button, outlineButton, shell } from "@/components/landing/styles";
 import { landingContent, type NavItem } from "@/components/landing/content";
 
 const navItemClass =
-  "relative rounded-md px-2.5 py-1.5 text-sm xl:text-base leading-[19px] font-semibold transition-colors duration-200 after:absolute after:right-2.5 after:bottom-0 after:left-2.5 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#07868f] after:transition-transform after:duration-200 hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] focus-visible:ring-offset-2 motion-safe:hover:after:scale-x-100";
+  "relative rounded-md px-2.5 py-1.5 text-sm xl:text-base leading-[19px] font-normal transition-colors duration-200 after:absolute after:right-2.5 after:bottom-0 after:left-2.5 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#07868f] after:transition-transform after:duration-200 hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] focus-visible:ring-offset-2 motion-safe:hover:after:scale-x-100";
 
 const dropdownItemClass =
-  "block px-4 py-2.5 text-sm leading-snug font-medium text-[#0c0c0c] transition-colors duration-200 hover:bg-[#e8f4f4] hover:text-[#07868f] focus-visible:outline-none focus-visible:bg-[#e8f4f4] focus-visible:text-[#07868f]";
+  "block whitespace-nowrap rounded-md px-3 py-2 text-sm xl:text-[15px] leading-snug text-[#0c0c0c] transition-colors duration-200 hover:bg-[#eef3f5] hover:text-[#07868f] focus-visible:outline-none focus-visible:bg-[#eef3f5] focus-visible:text-[#07868f]";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -151,17 +151,17 @@ export function SiteHeader() {
                   className={`${navItemClass} ${activeClass} flex items-center gap-1.5`}
                 >
                   {item.label}
-                  <Chevron open={expanded} />
+                  <CaretDown open={expanded} />
                 </button>
                 {expanded && (
-                  <div className="absolute top-full left-0 z-50 min-w-[210px] overflow-hidden rounded-lg border border-[#d5e0e2] bg-white py-2 shadow-[0_18px_35px_-20px_rgb(0_0_0/0.28)] motion-safe:animate-menu-enter">
+                  <div className="absolute top-full left-0 z-50 grid min-w-[172px] gap-0.5 rounded-lg border border-[#dfe5e8] bg-white p-2 shadow-[0_18px_35px_-20px_rgb(0_0_0/0.28)] motion-safe:animate-menu-enter">
                     {item.children.map((child) => (
                       <Link
                         key={child.label}
                         href={child.href}
                         onClick={() => setOpenMenu(null)}
                         className={`${dropdownItemClass} ${
-                          isActive(child.href) ? "bg-[#e8f4f4] text-[#07868f]" : ""
+                          isActive(child.href) ? "bg-[#eef3f5] text-[#07868f]" : ""
                         }`}
                       >
                         {child.label}

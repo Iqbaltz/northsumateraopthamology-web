@@ -82,3 +82,36 @@ export function XMark({ className = "" }: IconProps) {
     </svg>
   );
 }
+
+export function Phone({ className = "" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={`size-5 shrink-0 ${className}`}>
+      <path d="M21.7 16.37 17.3 14.4a1.5 1.5 0 0 0-1.42.13l-2.36 1.57a7.3 7.3 0 0 1-3.62-3.6l1.57-2.4a1.5 1.5 0 0 0 .12-1.41L9.63 4.3a1.5 1.5 0 0 0-1.56-.9A5.27 5.27 0 0 0 3.5 8.63C3.5 15.18 8.82 20.5 15.38 20.5a5.27 5.27 0 0 0 5.22-4.57 1.5 1.5 0 0 0-.9-1.56Z" />
+    </svg>
+  );
+}
+
+export function MapPin({ className = "" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={`size-5 shrink-0 ${className}`}>
+      <path
+        fillRule="evenodd"
+        d="M12 1.5a8.26 8.26 0 0 0-8.25 8.25c0 7.06 7.5 12.4 7.82 12.62a.75.75 0 0 0 .86 0c.32-.22 7.82-5.56 7.82-12.62A8.26 8.26 0 0 0 12 1.5Zm0 5.25a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
+      />
+    </svg>
+  );
+}
+
+/** Solid disclosure triangle, as used on the desktop navigation dropdowns. */
+export function CaretDown({ open, className = "" }: IconProps & { open: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden
+      className={`size-3 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""} ${className}`}
+    >
+      <path d="M4.5 8.25h15L12 16.5z" />
+    </svg>
+  );
+}
