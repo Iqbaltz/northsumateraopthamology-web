@@ -1,6 +1,7 @@
 import { aboutAnchors, aboutPath } from "@/components/about/anchors";
 import type { BreadcrumbItem } from "@/components/Breadcrumb";
 import { ethicsPath } from "@/components/ethics/anchors";
+import { privacyPath } from "@/components/privacy/path";
 
 /** One pre-submission check. `link` points at the page or section that explains it. */
 export type SubmissionStep = {
@@ -306,7 +307,7 @@ export const submissionContent = {
       "Information provided during manuscript submission, including author names, affiliations, email addresses, and other personal information, will be used for the purposes of manuscript processing, peer review, publication, and communication related to the journal.",
       "JONSON will not use or disclose author information for unrelated purposes except where required by applicable policies or law.",
     ],
-    link: { label: "Read Privacy Statement", href: "#" },
+    link: { label: "Read Privacy Statement", href: privacyPath },
   },
   copyright: {
     title: "Copyright & Licensing",

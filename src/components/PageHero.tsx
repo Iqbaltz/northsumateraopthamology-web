@@ -3,21 +3,26 @@ import { shell } from "@/components/landing/styles";
 
 /**
  * Tinted page header: breadcrumb, serif title and intro. `children` render under
- * the intro, e.g. a row of key facts.
+ * the intro, e.g. a row of key facts. `className` extends the tinted band, e.g. a
+ * minimum height for pages whose hero is their only content.
  */
 export function PageHero({
   breadcrumb,
   title,
   description,
   children,
+  className = "",
 }: {
   breadcrumb: BreadcrumbItem[];
   title: string;
-  description: string;
+  description: React.ReactNode;
   children?: React.ReactNode;
+  className?: string;
 }) {
   return (
-    <section className="bg-[linear-gradient(180deg,#eef3f5_0%,#f8fbfb_100%)] pt-8 pb-14 sm:pb-20">
+    <section
+      className={`bg-[linear-gradient(180deg,#eef3f5_0%,#f8fbfb_100%)] pt-8 pb-14 sm:pb-20 ${className}`}
+    >
       <div className={shell}>
         <Breadcrumb items={breadcrumb} />
 

@@ -62,7 +62,8 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="grid grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-[700px]:grid-cols-2 max-[700px]:gap-x-[30px] max-[700px]:gap-y-12">
+        {/* The link columns sit against the right edge, as in the design, until the footer stacks. */}
+        <div className="grid w-full max-w-[640px] grid-cols-3 gap-4 justify-self-end sm:gap-6 lg:gap-8 max-[1200px]:max-w-none max-[1200px]:justify-self-stretch max-[700px]:grid-cols-2 max-[700px]:gap-x-[30px] max-[700px]:gap-y-12">
           {content.columns.map((column, index) => (
             <FooterColumn key={column.title} {...column} delay={index * 70} />
           ))}

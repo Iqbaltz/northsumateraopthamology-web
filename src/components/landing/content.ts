@@ -1,8 +1,11 @@
 import { aboutAnchors, aboutPath } from "@/components/about/anchors";
+import { announcementsPath } from "@/components/announcements/path";
+import { contactPath } from "@/components/contact/path";
 import { editorialPath } from "@/components/editorial/path";
 import { ethicsPath } from "@/components/ethics/anchors";
 import { articlePath } from "@/components/issues/journal";
 import { policiesPath } from "@/components/policies/anchors";
+import { privacyPath } from "@/components/privacy/path";
 import { submissionAnchors } from "@/components/submission/content";
 import { ojsLinks } from "@/lib/links";
 
@@ -681,13 +684,13 @@ export const landingContent = {
     ] as GuideSection[],
   },
   footer: {
-    address: "Jl. Sei Mencirim No.77, Babura, Medan Baru, Medan City, North Sumatera 20154, Indonesia",
+    address: "Jl. Sei Mencirim No.77, Babura, Kec. Medan Baru, Kota Medan, Sumatera Utara 20154",
     copyright: "JONSON: Journal of North Sumatera Ophthalmology Nexus",
     hospital: "Part of Rumah Sakit Khusus Mata Mencirim 77 Medan",
     /** `href: "#"` marks the few entries that have no destination anywhere yet. */
     columns: [
       {
-        title: "For Authors",
+        title: "For Author",
         items: [
           { label: "Author Guidelines", href: `/submission#${submissionAnchors.preparation}` },
           { label: "Submission Process", href: `/submission#${submissionAnchors.howToSubmit}` },
@@ -698,34 +701,19 @@ export const landingContent = {
         ],
       },
       {
-        title: "For Reviewers",
+        title: "About Journal",
         items: [
-          { label: "Reviewer Guidelines", href: "#" },
-          { label: "Peer Review Process", href: aboutPath(aboutAnchors.peerReview) },
-          // Kept from the local side: /register exists now.
-          { label: "Become a Reviewer", href: "/register" },
-          { label: "Reviewer Ethics & Resources", href: "#" },
-        ],
-      },
-      {
-        title: "Journal Information",
-        items: [
-          { label: "About the Journal", href: aboutPath() },
+          { label: "About Us", href: aboutPath() },
           { label: "Editorial Board", href: editorialPath },
           { label: "Aims & Scope", href: aboutPath(aboutAnchors.aimsScope) },
-          // Kept from the local side: these two sections only exist on the landing page.
-          { label: "Journal Metrics", href: "/#journal-metrics" },
-          { label: "Indexing & Abstracting", href: "/#indexing" },
         ],
       },
       {
         title: "Support",
         items: [
-          // Kept from the local side: OJS is the only place these two live.
-          { label: "Contact Us", href: ojsLinks.contact },
-          { label: "FAQ", href: "#" },
-          { label: "Privacy Policy", href: `/submission#${submissionAnchors.privacy}` },
-          { label: "Publication Ethics & Malpractice", href: ethicsPath() },
+          { label: "Contact Us", href: contactPath },
+          { label: "Privacy Statement", href: privacyPath },
+          { label: "Editorial Policies", href: policiesPath() },
         ],
       },
     ] as FooterColumn[],
@@ -758,18 +746,16 @@ export const landingContent = {
         children: [
           { label: "About the Journal", href: aboutPath() },
           { label: "Submissions", href: "/submission" },
-          { label: "Editorial Masthead", href: editorialPath },
-          { label: "Privacy Statement", href: `/submission#${submissionAnchors.privacy}` },
-          // Nothing on the site or in OJS covers this one yet.
-          { label: "Reviewer Acknowledgement", href: "#" },
+          { label: "Publication Ethics", href: ethicsPath() },
+          { label: "Privacy Statement", href: privacyPath },
+          { label: "Contact Us", href: contactPath },
         ],
       },
-      // Kept from the local side: added from the 20 Sep navbar design.
-      { label: "Announcement", href: ojsLinks.announcements },
+      { label: "Announcement", href: announcementsPath },
       { label: "Editorial Board", href: editorialPath },
       { label: "Policies", href: policiesPath() },
     ] as NavItem[],
-    login: "Sign In",
+    login: "Login",
     submit: "Submit Manuscript",
     submitHref: "/submission",
     search: {

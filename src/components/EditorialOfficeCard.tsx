@@ -1,9 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
+import { contactPath } from "@/components/contact/path";
 import { Envelope } from "@/components/icons";
 import { journal } from "@/components/issues/journal";
 import { landingContent } from "@/components/landing/content";
 import { button } from "@/components/landing/styles";
-import { ojsLinks } from "@/lib/links";
 
 const contactLinkClass =
   "flex items-center gap-2 whitespace-nowrap rounded-sm transition-colors duration-200 hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f]";
@@ -39,13 +40,13 @@ export function EditorialOfficeCard({
             {text}
           </p>
         </div>
-        <a
-          href={ojsLinks.contact}
+        <Link
+          href={contactPath}
           className={`${button} shrink-0 gap-2.5 text-sm tracking-[0.04em] uppercase`}
         >
           {withIcon && <Envelope className="size-[18px]" />}
           {cta}
-        </a>
+        </Link>
       </div>
 
       <div className="flex items-center justify-between gap-x-8 gap-y-4 border-t border-[#e3eaef] px-6 py-4 sm:px-8 sm:py-5 max-[1200px]:flex-col max-[1200px]:items-start">
