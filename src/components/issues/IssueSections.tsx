@@ -45,13 +45,13 @@ export function IssueHeroSection({ issue }: { issue: IssueHero }) {
 
         <div className="mt-6 sm:mt-8 grid grid-cols-[minmax(0,1.62fr)_minmax(0,1fr)] items-start gap-8 lg:gap-14 max-[1200px]:grid-cols-1 max-[1200px]:gap-10">
           <div
-            className="group overflow-hidden rounded-xl border border-[#d5e0e2] bg-white shadow-[0_18px_40px_-28px_rgba(0,0,0,0.22)] transition-[border-color,box-shadow,transform] duration-500 ease-out motion-safe:hover:-translate-y-1 motion-safe:hover:border-[#b6d1d3]"
+            className="overflow-hidden rounded-xl border border-[#d5e0e2] bg-white shadow-[0_18px_40px_-28px_rgba(0,0,0,0.22)]"
             data-reveal
           >
             <div className="grid grid-cols-[minmax(0,340px)_minmax(0,1fr)] items-center gap-6 lg:gap-8 p-5 sm:p-6 max-[700px]:grid-cols-[120px_1fr] max-[700px]:gap-4 max-[700px]:p-4">
               <div className="relative h-[300px] lg:h-[390px] overflow-hidden rounded-lg max-[700px]:h-[170px]">
                 <Image
-                  className="object-contain transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
+                  className="object-contain"
                   src={coverSrc(content.cover)}
                   alt={content.coverAlt}
                   fill
