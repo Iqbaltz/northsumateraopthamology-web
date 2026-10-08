@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArticleCard } from "@/components/ArticleCard";
 import { Breadcrumb, type BreadcrumbItem } from "@/components/Breadcrumb";
 import { VolumeCard, type VolumeCatalogItem } from "@/components/VolumeCard";
-import { ojsLinks } from "@/lib/links";
 import { shell, textLink } from "@/components/landing/styles";
 import { articleMeta, coverSrc, type IssueArticle } from "./journal";
 import { issuesContent } from "./content";
@@ -21,7 +20,14 @@ export type IssueHero = {
   coverAlt: string;
   issnOnline: string;
   issnPrint: string;
+  /** The full-issue file. Without one the card offers no download. */
+  file?: {
+    downloadHref: string;
+    /** Opens in the browser's viewer; absent for a file hosted elsewhere. */
+    previewHref?: string;
+  };
   downloadLabel: string;
+  previewLabel: string;
   publishedOn: string;
   heading: string;
   p1: string;
@@ -94,19 +100,40 @@ export function IssueHeroSection({ issue }: { issue: IssueHero }) {
                   {content.issnPrint}
                 </small>
               </span>
-              <a
-                className="flex items-center gap-1.5 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
-                href={ojsLinks.currentIssue}
-              >
-                {content.downloadLabel}
-                <Image
-                  className="size-4 sm:size-5"
-                  src="/figma/download.svg"
-                  alt="Download icon"
-                  width={20}
-                  height={20}
-                />
-              </a>
+              {content.file && (
+                <span className="flex flex-wrap items-center justify-end gap-x-5 gap-y-1.5">
+                  {content.file.previewHref && (
+                    <a
+                      className="flex items-center gap-1.5 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-x-0.5 motion-safe:hover:[&_img]:-translate-y-0.5"
+                      href={content.file.previewHref}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      {content.previewLabel}
+                      <Image
+                        className="size-4 sm:size-5"
+                        src="/figma/arrow-up-right.svg"
+                        alt=""
+                        width={20}
+                        height={20}
+                      />
+                    </a>
+                  )}
+                  <a
+                    className="flex items-center gap-1.5 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
+                    href={content.file.downloadHref}
+                  >
+                    {content.downloadLabel}
+                    <Image
+                      className="size-4 sm:size-5"
+                      src="/figma/download.svg"
+                      alt="Download icon"
+                      width={20}
+                      height={20}
+                    />
+                  </a>
+                </span>
+              )}
             </div>
           </div>
 

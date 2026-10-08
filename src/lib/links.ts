@@ -52,10 +52,6 @@ export const ojsLinks = {
   galley: (submissionId: number, galleyId: number | string) =>
     `${OJS_PUBLIC_URL}/article/view/${submissionId}/${galleyId}`,
 
-  /** Direct galley download. */
-  galleyDownload: (submissionId: number, galleyId: number | string) =>
-    `${OJS_PUBLIC_URL}/article/download/${submissionId}/${galleyId}`,
-
   issue: (issueId: number) => `${OJS_PUBLIC_URL}/issue/view/${issueId}`,
 
   /** The issue OJS currently marks as current, whatever its id. */
@@ -90,4 +86,17 @@ export const ojsLinks = {
   editorialMasthead: `${OJS_PUBLIC_URL}/about/editorialMasthead`,
   privacy: `${OJS_PUBLIC_URL}/about/privacy`,
   contact: `${OJS_PUBLIC_URL}/about/contact`,
+} as const;
+
+/**
+ * Galley files served from this site: `app/files` streams them from OJS, so
+ * readers never leave for the journal subdomain. They open in the browser's
+ * viewer; `download` saves the file instead.
+ */
+export const fileLinks = {
+  article: (submissionId: number, galleyId: number | string, download = false) =>
+    `/files/article/${submissionId}/${galleyId}${download ? "?download" : ""}`,
+
+  issue: (issueId: number, galleyId: number | string, download = false) =>
+    `/files/issue/${issueId}/${galleyId}${download ? "?download" : ""}`,
 } as const;

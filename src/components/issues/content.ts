@@ -31,6 +31,7 @@ const hero: IssueHero = {
   issnOnline: journal.issnOnline,
   issnPrint: journal.issnPrint,
   downloadLabel: journal.downloadLabel,
+  previewLabel: journal.previewLabel,
   publishedOn: `Published: ${currentIssue.publishedOn}`,
   heading: "VOLUME 12 – NUMBER 1",
   p1: "This issue brings together recent clinical and scientific contributions in ophthalmology, with a focus on advances in the diagnosis, management, and treatment of eye diseases.",

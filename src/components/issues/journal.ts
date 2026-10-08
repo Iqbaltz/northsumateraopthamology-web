@@ -43,6 +43,7 @@ export const journal = {
   /** 10.0000 is a placeholder prefix — no DOIs are registered for the journal yet. */
   doiPrefix: "10.0000/jonson",
   downloadLabel: "Download This Journal",
+  previewLabel: "Preview",
   cover: "journal-cover.webp",
   issueDescription:
     "Explore the latest research on retinal diseases, glaucoma, corneal disorders and more.",

@@ -54,7 +54,6 @@ export function ArticleHeroSection({ detail }: { detail: ArticleDetail }) {
             <h1 className="font-serif text-[30px] sm:text-[40px] lg:text-[44px] font-bold leading-[1.15] text-[#0c0c0c]">
               {article.title}
             </h1>
-            <DoiLine doi={detail.doi} className="mt-5 sm:text-base" />
 
             <ul className="mt-6 divide-y divide-[#dfe7ea] border-y border-[#dfe7ea]">
               {article.authors.map((author) => (

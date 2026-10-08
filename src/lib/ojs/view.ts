@@ -10,7 +10,7 @@ import {
   type IssueArticle,
 } from "@/components/issues/journal";
 import { formatDate } from "../format";
-import { ojsLinks } from "../links";
+import { fileLinks, ojsLinks } from "../links";
 import { articleView, sectionTitle } from "./article";
 import { getCurrentIssue, getIssue, getIssues, getPublication } from "./index";
 import { localize } from "./localize";
@@ -272,8 +272,9 @@ function toIssueArticle(issue: Issue, article: NonNullable<Issue["articles"]>[nu
     pages: view.pages,
     format: galley ? galleyFormat(galley.label ?? "", galley.file?.mimetype) : "PDF",
     href: articlePath(title),
+    // A remote galley lives elsewhere (e.g. a shared drive); the rest are served from this site.
     downloadHref: galley
-      ? ojsLinks.galleyDownload(article.id, galley.id)
+      ? galley.urlRemote || fileLinks.article(article.id, galley.id, true)
       : ojsLinks.article(article.id),
   };
 }
@@ -318,6 +319,20 @@ export async function getAllArticles(): Promise<IssueArticle[]> {
   } catch {
     return [];
   }
+}
+
+/** The issue's full-text file, served from this site unless OJS links it elsewhere. */
+function issueFile(issue: Issue): IssueHero["file"] {
+  const [galley] = [...(issue.galleys ?? [])].sort((a, b) => (a.sequence ?? 0) - (b.sequence ?? 0));
+  if (!galley) return undefined;
+  if (galley.urlRemote) return { downloadHref: galley.urlRemote };
+
+  const galleyId = galley.urlPublished?.split("/").pop();
+  if (!galleyId) return undefined;
+  return {
+    previewHref: fileLinks.issue(issue.id, galleyId),
+    downloadHref: fileLinks.issue(issue.id, galleyId, true),
+  };
 }
 
 /** Splits an OJS rich-text field into the two paragraphs the issue hero shows. */
@@ -381,7 +396,9 @@ export async function getIssueView(slug: string): Promise<IssueView | undefined>
       coverAlt: `${journal.title} Volume ${issue.volume} Number ${issue.number} cover`,
       issnOnline: journal.issnOnline,
       issnPrint: journal.issnPrint,
+      file: issueFile(issue),
       downloadLabel: journal.downloadLabel,
+      previewLabel: journal.previewLabel,
       publishedOn: `Published: ${formatDate(issue.datePublished)}`,
       heading: `VOLUME ${issue.volume} – NUMBER ${issue.number}`,
       p1: p1 || journal.issueDescription,

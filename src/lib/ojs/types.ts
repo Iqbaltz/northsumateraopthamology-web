@@ -86,6 +86,16 @@ export interface Section {
   seq?: number;
 }
 
+/** A full-issue file. The API leaves the id off; it ends `urlPublished` (…/issue/view/1/1). */
+export interface IssueGalley {
+  fileId?: number;
+  label?: string;
+  locale?: string;
+  sequence?: number;
+  urlPublished?: string;
+  urlRemote?: string | null;
+}
+
 export interface Issue {
   id: number;
   title?: LocalizedString;
@@ -103,6 +113,7 @@ export interface Issue {
   coverImageAltText?: LocalizedString;
   articles?: Article[];
   sections?: Section[];
+  galleys?: IssueGalley[];
 }
 
 export interface Context {
