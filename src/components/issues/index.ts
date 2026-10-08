@@ -7,7 +7,6 @@ export {
 export { currentIssue, issuesContent } from "./content";
 export {
   articlePath,
-  articlesForIssue,
   authorLine,
   issueArticles,
   journal,

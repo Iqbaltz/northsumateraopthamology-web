@@ -1,18 +1,20 @@
-import Image from "next/image";
-import Link from "next/link";
 import { Breadcrumb } from "@/components/Breadcrumb";
+import { Pagination } from "@/components/Pagination";
 import { VolumeCard, type VolumeCatalogItem } from "@/components/VolumeCard";
-import { ojsLinks } from "@/lib/links";
-import { shell, textLink } from "@/components/landing/styles";
-import { archiveContent } from "./content";
+import { shell } from "@/components/landing/styles";
+import { archiveContent, archivePagePath } from "./content";
 
-/**
- * `volumes` carries the journal's published volumes when OJS has any; without
- * them the catalog falls back to the designed placeholder list.
- */
-export function ArchiveCatalogSection({ volumes }: { volumes?: VolumeCatalogItem[] } = {}) {
+/** One page of the volumes the journal has published in OJS, newest first. */
+export function ArchiveCatalogSection({
+  volumes,
+  page,
+  totalPages,
+}: {
+  volumes: VolumeCatalogItem[];
+  page: number;
+  totalPages: number;
+}) {
   const content = archiveContent;
-  const items = volumes?.length ? volumes : content.volumes;
 
   return (
     <section className="bg-white pt-16 sm:pt-24 pb-16 sm:pb-20">
@@ -26,23 +28,22 @@ export function ArchiveCatalogSection({ volumes }: { volumes?: VolumeCatalogItem
           <p className="mt-4 sm:mt-5 text-base leading-[25px] text-[#0c0c0c]">
             {content.description}
           </p>
-          <Link className={`${textLink} mt-6 sm:mt-8 text-sm uppercase`} href={ojsLinks.archive}>
-            {content.viewAll}
-            <Image
-              className="size-5"
-              src="/figma/caret-right.svg"
-              alt="Right caret icon"
-              width={20}
-              height={20}
-            />
-          </Link>
         </div>
 
-        <div className="mt-10 sm:mt-12 grid grid-cols-4 gap-x-6 gap-y-10 sm:gap-y-12 max-[1200px]:grid-cols-2 max-[700px]:grid-cols-1">
-          {items.map((volume) => (
-            <VolumeCard key={volume.label} volume={volume} />
-          ))}
-        </div>
+        {volumes.length ? (
+          <>
+            <div className="mt-10 sm:mt-12 grid grid-cols-4 gap-x-6 gap-y-10 sm:gap-y-12 max-[1200px]:grid-cols-2 max-[700px]:grid-cols-1">
+              {volumes.map((volume) => (
+                <VolumeCard key={volume.label} volume={volume} />
+              ))}
+            </div>
+            <Pagination page={page} totalPages={totalPages} hrefFor={archivePagePath} />
+          </>
+        ) : (
+          <p className="mt-10 sm:mt-12 text-sm leading-6 text-[#4a4a4a]" data-reveal>
+            {content.empty}
+          </p>
+        )}
       </div>
     </section>
   );

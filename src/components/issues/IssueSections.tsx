@@ -165,10 +165,9 @@ export function IssueArticlesSection({
   );
 }
 
-/** `volumes` carries the journal's published volumes; falls back to the designed set. */
-export function VolumeCatalogSection({ volumes }: { volumes?: VolumeCatalogItem[] } = {}) {
+/** `volumes` carries the journal's published volumes from OJS, newest first. */
+export function VolumeCatalogSection({ volumes }: { volumes: VolumeCatalogItem[] }) {
   const content = issuesContent.catalog;
-  const items = volumes?.length ? volumes : content.items;
 
   return (
     <section className="bg-white pb-16 sm:pb-24">
@@ -192,11 +191,17 @@ export function VolumeCatalogSection({ volumes }: { volumes?: VolumeCatalogItem[
           </Link>
         </div>
 
-        <div className="grid grid-cols-3 gap-6 max-[700px]:grid-cols-1">
-          {items.map((volume) => (
-            <VolumeCard key={volume.label} volume={volume} />
-          ))}
-        </div>
+        {volumes.length ? (
+          <div className="grid grid-cols-3 gap-6 max-[700px]:grid-cols-1">
+            {volumes.map((volume) => (
+              <VolumeCard key={volume.label} volume={volume} />
+            ))}
+          </div>
+        ) : (
+          <p className="self-center text-sm leading-6 text-[#4a4a4a]" data-reveal>
+            {content.empty}
+          </p>
+        )}
       </div>
     </section>
   );

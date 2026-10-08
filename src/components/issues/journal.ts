@@ -262,11 +262,6 @@ export const issueArticles: IssueArticle[] = seeds.map((seed) => ({
   })),
 }));
 
-/** The first `count` articles, clamped to what the placeholder list holds. */
-export function articlesForIssue(count: number): IssueArticle[] {
-  return issueArticles.slice(0, Math.min(count, issueArticles.length));
-}
-
 /**
  * Resolves a cover/image value to an `<Image src>`. Static content stores bare
  * filenames from /public/figma; OJS supplies absolute URLs.

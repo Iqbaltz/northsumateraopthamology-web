@@ -7,6 +7,7 @@ import {
 } from "@/components/about";
 import { VolumeCatalogSection } from "@/components/issues";
 import { MotionEffects } from "@/components/landing";
+import { getVolumeCards } from "@/lib/ojs/view";
 
 export const metadata: Metadata = {
   title: "About the Journal",
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
   return (
     <div className="overflow-hidden text-[#0c0c0c]">
       <MotionEffects />
@@ -32,7 +33,7 @@ export default function AboutPage() {
       <AimsScopeSection />
       <JournalInformationSection />
       <AboutPoliciesSections />
-      <VolumeCatalogSection />
+      <VolumeCatalogSection volumes={await getVolumeCards(3)} />
     </div>
   );
 }

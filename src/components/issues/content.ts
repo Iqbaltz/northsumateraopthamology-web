@@ -1,5 +1,4 @@
 import type { BreadcrumbItem } from "@/components/Breadcrumb";
-import { archiveIssueCard, archiveIssues } from "@/components/archive/content";
 import type { IssueHero } from "./IssueSections";
 import { issueArticles, issueDoiUrl, journal } from "./journal";
 
@@ -53,7 +52,7 @@ export const issuesContent = {
     description:
       "Published biannually in February and August, JONSON disseminates original research articles, review articles, case reports, and other scientific contributions relevant to ophthalmology and visual science.",
     viewAll: "VIEW ALL VOLUMES",
-    /** The three most recent archived volumes, so the cards link to real pages. */
-    items: archiveIssues.slice(0, 3).map(archiveIssueCard),
+    /** Shown in place of the volume cards while OJS has nothing published. */
+    empty: "No volumes have been published yet.",
   },
 };

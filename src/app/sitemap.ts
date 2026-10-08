@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
 import { announcementPath, announcements } from "@/components/announcements";
-import { archiveIssues } from "@/components/archive/content";
 import { issueArticles } from "@/components/issues/journal";
+import { getVolumeSlugs } from "@/lib/ojs/view";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://jonson.org";
   const now = new Date();
+  const volumeSlugs = await getVolumeSlugs();
 
   return [
     {
@@ -80,8 +81,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly" as const,
       priority: 0.5,
     })),
-    ...archiveIssues.map((issue) => ({
-      url: `${baseUrl}/archive/${issue.slug}`,
+    ...volumeSlugs.map((slug) => ({
+      url: `${baseUrl}/archive/${slug}`,
       lastModified: now,
       changeFrequency: "yearly" as const,
       priority: 0.6,

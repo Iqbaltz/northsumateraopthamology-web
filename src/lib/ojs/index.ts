@@ -26,13 +26,27 @@ export async function getContext(): Promise<Context> {
   }
 }
 
+/** OJS caps a list response at 100 items. */
+const ISSUES_PER_REQUEST = 100;
+
+/** Every issue, newest first. Walks the API's pages so the archive can list them all. */
 export async function getIssues(): Promise<Issue[]> {
   if (USE_FIXTURES) return fixtureIssues;
   try {
-    const data = await ojsFetch<ListResponse<Issue>>("issues", {
-      searchParams: { count: 50, orderBy: "datePublished", orderDirection: "DESC" },
-    });
-    return data.items ?? [];
+    const issues: Issue[] = [];
+    for (;;) {
+      const data = await ojsFetch<ListResponse<Issue>>("issues", {
+        searchParams: {
+          count: ISSUES_PER_REQUEST,
+          offset: issues.length,
+          orderBy: "datePublished",
+          orderDirection: "DESC",
+        },
+      });
+      const items = data.items ?? [];
+      issues.push(...items);
+      if (!items.length || issues.length >= (data.itemsMax ?? 0)) return issues;
+    }
   } catch {
     return fixtureIssues;
   }

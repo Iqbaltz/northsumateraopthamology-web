@@ -190,23 +190,49 @@ function toVolumeCard(issue: Issue, articleCount?: number): VolumeCatalogItem {
   };
 }
 
+/**
+ * The issue list omits the table of contents, so each issue is hydrated to
+ * count its articles. Responses are cached, so this costs one round trip per
+ * issue per revalidation window.
+ */
+function toHydratedVolumeCards(issues: Issue[]): Promise<VolumeCatalogItem[]> {
+  return Promise.all(
+    issues.map(async (summary) => {
+      const issue = (await getIssue(summary.id)) ?? summary;
+      return toVolumeCard(issue, issue.articles?.length);
+    }),
+  );
+}
+
 /** Published volumes, newest first. Empty when the journal has none. */
 export async function getVolumeCards(limit?: number): Promise<VolumeCatalogItem[]> {
   try {
     const issues = (await getIssues()).filter((issue) => issue.published);
-    const wanted = limit ? issues.slice(0, limit) : issues;
-
-    // The issue list omits the table of contents, so each issue is hydrated to
-    // count its articles. Responses are cached, so this costs one round trip
-    // per issue per revalidation window.
-    return Promise.all(
-      wanted.map(async (summary) => {
-        const issue = (await getIssue(summary.id)) ?? summary;
-        return toVolumeCard(issue, issue.articles?.length);
-      }),
-    );
+    return await toHydratedVolumeCards(limit ? issues.slice(0, limit) : issues);
   } catch {
     return [];
+  }
+}
+
+export type VolumeCardPage = {
+  volumes: VolumeCatalogItem[];
+  /** 1-based page number. */
+  page: number;
+  totalPages: number;
+};
+
+/** One page of published volumes, newest first. Only that page's issues are hydrated. */
+export async function getVolumeCardPage(page: number, perPage: number): Promise<VolumeCardPage> {
+  try {
+    const issues = (await getIssues()).filter((issue) => issue.published);
+    const start = (page - 1) * perPage;
+    return {
+      volumes: await toHydratedVolumeCards(issues.slice(start, start + perPage)),
+      page,
+      totalPages: Math.ceil(issues.length / perPage),
+    };
+  } catch {
+    return { volumes: [], page, totalPages: 0 };
   }
 }
 
