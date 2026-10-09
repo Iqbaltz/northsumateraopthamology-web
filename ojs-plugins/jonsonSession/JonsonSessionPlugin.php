@@ -10,6 +10,9 @@
  * Adds a `whoami` page to the journal. The branded site (a sibling subdomain of
  * this OJS host, so the session cookie is sent along) fetches it from the
  * browser to show the signed-in user's menu in its header.
+ *
+ * Signing out of OJS itself also lands on the branded site's login page rather
+ * than OJS's own.
  */
 
 namespace APP\plugins\generic\jonsonSession;
@@ -31,7 +34,10 @@ class JonsonSessionPlugin extends GenericPlugin
     public const ALLOWED_DOMAIN = 'northsumateraophthalmology.com';
 
     /** Where signing out lands when no acceptable `returnTo` is given. */
-    public const DEFAULT_RETURN_URL = 'https://northsumateraophthalmology.com/';
+    public const DEFAULT_RETURN_URL = 'https://www.northsumateraophthalmology.com/';
+
+    /** Where OJS's own sign-out (login/signOut) sends people. */
+    public const SIGNED_OUT_URL = 'https://www.northsumateraophthalmology.com/login';
 
     /**
      * @copydoc Plugin::register()
@@ -47,8 +53,24 @@ class JonsonSessionPlugin extends GenericPlugin
 
         if ($success && $this->getEnabled($mainContextId)) {
             Hook::add('LoadHandler', $this->setPageHandler(...));
+            Hook::add('Request::redirect', $this->redirectSignOut(...));
         }
         return $success;
+    }
+
+    /**
+     * Send OJS's own sign-out (dashboard user menu → login/signOut) to the
+     * branded login page instead of OJS's.
+     */
+    public function redirectSignOut(string $hookName, array $args): bool
+    {
+        $url = &$args[0];
+        $request = Application::get()->getRequest();
+
+        if ($request->getRequestedPage() === 'login' && $request->getRequestedOp() === 'signOut') {
+            $url = self::SIGNED_OUT_URL;
+        }
+        return Hook::CONTINUE;
     }
 
     /**

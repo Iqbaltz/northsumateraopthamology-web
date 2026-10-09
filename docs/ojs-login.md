@@ -82,7 +82,10 @@ The fix rewrites the cookie's domain on its way out, in the OJS docroot
 
 Check it with `curl -sI https://journal.northsumateraophthalmology.com/index.php/JONSON/login`:
 one `OJSSID=…; domain=.northsumateraophthalmology.com` and one expired
-`OJSSID=deleted; Domain=journal…`.
+`OJSSID=deleted; Domain=journal…`. Because of that expired cookie, anything that
+reads OJS's `Set-Cookie` headers (like `readSessionCookie` in
+`src/lib/ojs/auth.ts`) must skip cookies being deleted rather than take the first
+`OJSSID`.
 
 Then set `OJS_SESSION_COOKIE_DOMAIN=.northsumateraophthalmology.com` in the
 landing app's environment (see `.env.example`). Leave it **empty locally**: a host
@@ -148,7 +151,9 @@ Relevant code:
 | `POST {journal}/whoami/signOut` | Fields `csrfToken`, `returnTo`. Signs out when the token matches, then redirects to `returnTo` if it is on the same allowed domain, else to the home page. |
 
 OJS's own `login/signOut` can only redirect within the OJS host, hence the second
-endpoint. The allowed domain is `JonsonSessionPlugin::ALLOWED_DOMAIN` — update it
+endpoint. The plugin also hooks `Request::redirect` so that OJS's own sign-out
+(the dashboard user menu) lands on the branded `/login` instead of OJS's login
+page (`JonsonSessionPlugin::SIGNED_OUT_URL`). The allowed domain is `JonsonSessionPlugin::ALLOWED_DOMAIN` — update it
 if the branded site ever moves.
 
 The single-cookie requirement above applies here too: with two `OJSSID` cookies

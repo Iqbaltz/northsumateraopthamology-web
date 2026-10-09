@@ -41,12 +41,19 @@ function stripTags(html: string) {
     .trim();
 }
 
+/**
+ * The live session id among the response's cookies. OJS responses also clear
+ * cookies (the old journal-only one, and the previous session on sign-in), so
+ * skip any being deleted and keep the last one set.
+ */
 function readSessionCookie(response: Response): string | undefined {
+  let sessionId: string | undefined;
   for (const cookie of response.headers.getSetCookie()) {
     const match = cookie.match(new RegExp(`^${OJS_SESSION_COOKIE_NAME}=([^;]+)`));
-    if (match) return match[1];
+    if (!match || match[1] === "deleted" || /;\s*max-age=0\s*(;|$)/i.test(cookie)) continue;
+    sessionId = match[1];
   }
-  return undefined;
+  return sessionId;
 }
 
 /** Fetches an OJS form and returns its CSRF token plus the session it belongs to. */
