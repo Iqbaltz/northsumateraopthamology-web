@@ -80,6 +80,15 @@ export const ojsLinks = {
 
   login: `${OJS_PUBLIC_URL}/login`,
   register: `${OJS_PUBLIC_URL}/user/register`,
+
+  /**
+   * Who is signed in, as JSON. Served by the jonsonSession OJS plugin
+   * (ojs-plugins/jonsonSession) and readable only from this site's domain.
+   */
+  whoami: `${OJS_PUBLIC_URL}/whoami`,
+  /** POST target (same plugin) that signs out, then redirects to `returnTo` on this site. */
+  signOut: `${OJS_PUBLIC_URL}/whoami/signOut`,
+
   submit: `${OJS_PUBLIC_URL}/about/submissions`,
   about: `${OJS_PUBLIC_URL}/about`,
   /** OJS 3.5 renamed the editorial team page to the masthead; the old path 404s. */

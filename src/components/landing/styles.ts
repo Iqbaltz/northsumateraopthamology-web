@@ -7,6 +7,10 @@ export const button =
 export const outlineButton =
   "border-[#07868f] !bg-transparent !text-[#07868f] hover:!bg-[#e8f4f4]";
 
+/** A row in a header dropdown panel (nav submenus, account menu). */
+export const dropdownItem =
+  "block whitespace-nowrap rounded-md px-3 py-2 text-sm xl:text-[15px] leading-snug text-[#0c0c0c] transition-colors duration-200 hover:bg-[#eef3f5] hover:text-[#07868f] focus-visible:outline-none focus-visible:bg-[#eef3f5] focus-visible:text-[#07868f]";
+
 export const kicker =
   "font-sans text-sm leading-[18px] font-bold text-[#07868f] uppercase";
 

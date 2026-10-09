@@ -756,6 +756,12 @@ export const landingContent = {
       { label: "Policies", href: policiesPath() },
     ] as NavItem[],
     login: "Login",
+    account: {
+      menu: "Account menu",
+      dashboard: "Dashboard",
+      profile: "Edit Profile",
+      logout: "Logout",
+    },
     submit: "Submit Manuscript",
     submitHref: "/submission",
     search: {

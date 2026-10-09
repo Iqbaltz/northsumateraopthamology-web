@@ -6,14 +6,16 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { CaretDown, Chevron, MagnifyingGlass } from "@/components/icons";
 import { SearchDeck } from "@/components/SearchDeck";
-import { button, outlineButton, shell } from "@/components/landing/styles";
+import { MobileUserMenu, UserMenu } from "@/components/auth/UserMenu";
+import { useOjsSession } from "@/components/auth/useOjsSession";
+import { button, dropdownItem, outlineButton, shell } from "@/components/landing/styles";
 import { landingContent, type NavItem } from "@/components/landing/content";
 
 const navItemClass =
   "relative rounded-md px-2.5 py-1.5 text-sm xl:text-base leading-[19px] font-normal transition-colors duration-200 after:absolute after:right-2.5 after:bottom-0 after:left-2.5 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#07868f] after:transition-transform after:duration-200 hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] focus-visible:ring-offset-2 motion-safe:hover:after:scale-x-100";
 
-const dropdownItemClass =
-  "block whitespace-nowrap rounded-md px-3 py-2 text-sm xl:text-[15px] leading-snug text-[#0c0c0c] transition-colors duration-200 hover:bg-[#eef3f5] hover:text-[#07868f] focus-visible:outline-none focus-visible:bg-[#eef3f5] focus-visible:text-[#07868f]";
+/** `openMenu` value for the account menu; nav dropdowns use their labels. */
+const ACCOUNT_MENU = "__account";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -22,8 +24,16 @@ export function SiteHeader() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const content = landingContent.header;
+  // Still checking reads as signed out, so most visitors never see the header change.
+  const session = useOjsSession();
+  const signedIn = session.status === "signedIn" ? session : null;
 
   const closeSearch = useCallback(() => setSearchOpen(false), []);
+  const setAccountOpen = useCallback(
+    (value: boolean) =>
+      setOpenMenu((current) => (value ? ACCOUNT_MENU : current === ACCOUNT_MENU ? null : current)),
+    [],
+  );
 
   const isActive = (href: string) => {
     if (href === "/") {
@@ -160,7 +170,7 @@ export function SiteHeader() {
                         key={child.label}
                         href={child.href}
                         onClick={() => setOpenMenu(null)}
-                        className={`${dropdownItemClass} ${
+                        className={`${dropdownItem} ${
                           isActive(child.href) ? "bg-[#eef3f5] text-[#07868f]" : ""
                         }`}
                       >
@@ -190,12 +200,14 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2 max-[1200px]:hidden">
-          <Link
-            href="/login"
-            className={`${button} ${outlineButton} !min-h-5 px-4 py-[7px] text-xs font-semibold`}
-          >
-            {content.login}
-          </Link>
+          {!signedIn && (
+            <Link
+              href="/login"
+              className={`${button} ${outlineButton} !min-h-5 px-4 py-[7px] text-xs font-semibold`}
+            >
+              {content.login}
+            </Link>
+          )}
           <Link
             href={content.submitHref}
             onClick={closeMenus}
@@ -203,6 +215,14 @@ export function SiteHeader() {
           >
             {content.submit}
           </Link>
+          {signedIn && (
+            <UserMenu
+              session={signedIn}
+              labels={content.account}
+              open={openMenu === ACCOUNT_MENU}
+              onOpenChange={setAccountOpen}
+            />
+          )}
         </div>
 
         {/* Mobile / Tablet menu trigger */}
@@ -289,14 +309,17 @@ export function SiteHeader() {
                 </div>
               );
             })}
+            {signedIn && <MobileUserMenu session={signedIn} labels={content.account} />}
             <div className="mt-3 flex flex-wrap gap-3">
-              <Link
-                href="/login"
-                onClick={closeMenus}
-                className={`${button} ${outlineButton} flex-1 text-center justify-center`}
-              >
-                {content.login}
-              </Link>
+              {!signedIn && (
+                <Link
+                  href="/login"
+                  onClick={closeMenus}
+                  className={`${button} ${outlineButton} flex-1 text-center justify-center`}
+                >
+                  {content.login}
+                </Link>
+              )}
               <Link
                 href={content.submitHref}
                 onClick={closeMenus}
