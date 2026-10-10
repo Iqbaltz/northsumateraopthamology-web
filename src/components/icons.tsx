@@ -83,6 +83,15 @@ export function XMark({ className = "" }: IconProps) {
   );
 }
 
+export function Warning({ className = "" }: IconProps) {
+  return (
+    <svg {...strokeProps} strokeWidth={1.9} className={`size-5 shrink-0 ${className}`}>
+      <path d="M10.3 3.9 2.4 17.6A2 2 0 0 0 4.1 20.6h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+      <path d="M12 9.5v4.5M12 17.2v.01" />
+    </svg>
+  );
+}
+
 export function Phone({ className = "" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={`size-5 shrink-0 ${className}`}>

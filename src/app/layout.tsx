@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Besley, DM_Sans } from "next/font/google";
 import "./globals.css";
+import { DevelopmentNotice } from "@/components/DevelopmentNotice";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 
@@ -100,6 +101,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${dmSans.variable} ${besley.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-white text-ink">
+        <DevelopmentNotice />
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
