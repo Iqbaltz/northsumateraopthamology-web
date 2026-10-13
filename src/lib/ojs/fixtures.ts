@@ -17,7 +17,7 @@ export const fixtureContext: Context = {
   printIssn: "1111-1111",
   publisherInstitution: "North Sumatra Ophthalmology Society",
   contactName: "Editorial Office",
-  contactEmail: "editor@northsumatraophthalmology.com",
+  contactEmail: "editorial@northsumatraophthalmology.com",
   urlPath: "JONSON",
   currentIssueId: 2,
 };

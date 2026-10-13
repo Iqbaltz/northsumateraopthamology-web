@@ -729,7 +729,7 @@ export const landingContent = {
   header: {
     tagline: "Peer-reviewed. Open access. Advancing eye care worldwide",
     whatsapp: "Whatsapp: +62 823-2131-231",
-    email: "halo@jonson.org",
+    email: "editorial@northsumatraophthalmology.com",
     nav: [
       { label: "Home", href: "/" },
       {

@@ -27,7 +27,7 @@ export function StructuredData() {
           "@type": "ContactPoint",
           telephone: "+62-823-2131-231",
           contactType: "editorial",
-          email: "halo@jonson.org",
+          email: "editorial@northsumatraophthalmology.com",
         },
       },
     },
