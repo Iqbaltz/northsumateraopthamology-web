@@ -5,7 +5,8 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { CreativeCommonsBadge } from "@/components/CreativeCommonsBadge";
 import { articleMeta, coverSrc, journal, type IssueArticle } from "@/components/issues/journal";
 import { landingContent } from "@/components/landing/content";
-import { button, shell } from "@/components/landing/styles";
+import { BookOpen } from "@/components/icons";
+import { button, outlineButton, shell } from "@/components/landing/styles";
 import {
   articleContent,
   type AbstractPart,
@@ -14,6 +15,7 @@ import {
   type MonthlyDownloads,
 } from "./content";
 import { DownloadMetricsChart } from "./DownloadMetricsChart";
+import { ReadArticleButton } from "./ReadArticleButton";
 
 /** Abstract, metrics and references share a narrower column than the page shell. */
 const readingColumn = "mx-auto max-w-[1080px]";
@@ -33,9 +35,14 @@ function DoiLine({ doi, className = "" }: { doi: string; className?: string }) {
   return (
     <p className={`min-w-0 text-sm leading-6 text-[#0c0c0c] ${className}`}>
       <strong className="font-bold">{articleContent.doiLabel}</strong>{" "}
-      <a className={tealLinkClass} href={doi}>
-        {doi}
-      </a>
+      {doi ? (
+        <a className={tealLinkClass} href={doi}>
+          {doi}
+        </a>
+      ) : (
+        // No DOI assigned in OJS yet.
+        "-"
+      )}
     </p>
   );
 }
@@ -43,6 +50,8 @@ function DoiLine({ doi, className = "" }: { doi: string; className?: string }) {
 export function ArticleHeroSection({ detail }: { detail: ArticleDetail }) {
   const { article, issue } = detail;
   const license = landingContent.footer.license;
+  // The download link saves the file; the same link without the flag opens it in the browser.
+  const readHref = article.downloadHref.replace(/\?download$/, "");
 
   return (
     <section className="bg-[linear-gradient(180deg,#eef3f5_0%,#f8fbfb_100%)] pt-8 pb-14 sm:pb-20">
@@ -78,73 +87,72 @@ export function ArticleHeroSection({ detail }: { detail: ArticleDetail }) {
             data-reveal
             data-reveal-delay="120"
           >
-            <div className="grid grid-cols-[132px_minmax(0,1fr)] items-center gap-6 p-6 sm:p-7 max-[700px]:grid-cols-[92px_minmax(0,1fr)] max-[700px]:gap-4 max-[700px]:p-4">
-              <div className="relative h-[184px] overflow-hidden rounded-md shadow-[0_10px_20px_-14px_rgba(0,0,0,0.45)] max-[700px]:h-[128px]">
+            <div className="grid grid-cols-[200px_minmax(0,1fr)] items-center gap-8 p-7 sm:p-8 max-[700px]:grid-cols-[104px_minmax(0,1fr)] max-[700px]:gap-4 max-[700px]:p-4">
+              <div className="relative h-[262px] overflow-hidden rounded-md shadow-[0_10px_20px_-14px_rgba(0,0,0,0.45)] max-[700px]:h-[136px]">
                 <Image
                   className="object-contain"
                   src={coverSrc(issue.cover)}
                   alt={issue.coverAlt}
                   fill
-                  sizes="(max-width: 700px) 92px, 132px"
+                  sizes="(max-width: 700px) 104px, 200px"
                 />
               </div>
               <div className="min-w-0">
-                <p className="text-xs sm:text-sm font-semibold text-[#07868f]">
+                <p className="text-sm sm:text-lg font-medium text-[#07868f]">
                   {articleContent.publishedLabel} {issue.publishedOn}
                 </p>
-                <p className="mt-2 text-base sm:text-[22px] font-bold leading-tight text-[#07868f]">
+                <Link
+                  href={issue.href}
+                  className="mt-5 block rounded-sm text-lg sm:text-[26px] font-bold leading-tight text-[#0c0c0c] underline decoration-2 underline-offset-4 transition-colors duration-200 hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] max-[700px]:mt-3 [overflow-wrap:anywhere]"
+                >
                   {issue.citation}: <span className="uppercase">{journal.title}</span>
+                </Link>
+                <p className="mt-5 text-xs sm:text-sm leading-[1.6] text-[#0c0c0c] max-[700px]:mt-3">
+                  {journal.issnOnline}
+                  <br />
+                  {journal.issnPrint}
                 </p>
-                <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
-                  <Link
-                    href={issue.href}
-                    className={`${button} !min-h-0 px-4 py-2 text-xs tracking-[0.04em] max-[700px]:px-3 max-[700px]:py-1.5 max-[700px]:text-[10px]`}
-                  >
-                    {articleContent.viewIssue}
-                  </Link>
-                  <small className="text-[11px] leading-tight text-[#666]">
-                    {journal.issnOnline}
-                    <br />
-                    {journal.issnPrint}
-                  </small>
-                </div>
               </div>
             </div>
 
-            <div className="border-t border-[#e3eaef] px-6 py-5 sm:px-7 max-[700px]:px-4">
-              {/* The flex-basis lets the action drop below on narrow cards instead of squeezing the text. */}
-              <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
-                <DoiLine doi={detail.doi} className="flex-1 basis-[260px]" />
+            <div className="border-t border-[#e3eaef] px-7 py-6 sm:px-8 max-[700px]:px-4">
+              <DoiLine doi={detail.doi} className="text-base" />
+              <p className="mt-3 text-base leading-6 text-[#0c0c0c]">
+                <strong className="font-bold">{articleContent.sectionLabel}</strong> {article.tag}
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <ReadArticleButton
+                  href={readHref}
+                  title={article.title}
+                  className={`${button} gap-2.5 text-sm uppercase`}
+                  closeLabel={articleContent.closeLabel}
+                  downloadHref={article.downloadHref}
+                  downloadLabel={articleContent.downloadLabel}
+                >
+                  <BookOpen />
+                  {articleContent.readLabel}
+                </ReadArticleButton>
                 <a
-                  className="flex shrink-0 items-center gap-1.5 rounded-sm text-sm font-bold leading-6 text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
+                  className={`${button} ${outlineButton} gap-2.5 text-sm uppercase`}
                   href={article.downloadHref}
                   aria-label={`Download ${article.title} as ${article.format}`}
                 >
                   {articleContent.downloadLabel}
-                  <Image
-                    className="size-[18px]"
-                    src="/figma/download.svg"
-                    alt=""
-                    width={18}
-                    height={18}
-                  />
+                  <Image className="size-[18px]" src="/figma/download.svg" alt="" width={18} height={18} />
                 </a>
               </div>
-              <p className="mt-1.5 text-sm leading-6 text-[#0c0c0c]">
-                <strong className="font-bold">{articleContent.sectionLabel}</strong> {article.tag}
-              </p>
             </div>
 
-            <div className="border-t border-[#e3eaef] bg-[#f7f9fa] px-6 py-5 sm:px-7 max-[700px]:px-4">
+            <div className="border-t border-[#e3eaef] px-7 py-6 sm:px-8 max-[700px]:px-4">
               <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
-                <p className="min-w-0 flex-1 basis-[260px] text-sm leading-6 text-[#0c0c0c]">
+                <p className="min-w-0 flex-1 basis-[260px] text-base leading-7 text-[#0c0c0c]">
                   <strong className="font-bold">{articleContent.licenseLabel}</strong>{" "}
                   {detail.copyright.notice}{" "}
                   <span className="uppercase">{detail.copyright.holder}</span>
                 </p>
                 <CreativeCommonsBadge />
               </div>
-              <p className="mt-2 text-xs leading-5 text-[#5c6b73]">
+              <p className="mt-3 text-sm leading-6 text-[#5c6b73]">
                 {license.prefix}{" "}
                 <a
                   className={`${tealLinkClass} underline underline-offset-2`}

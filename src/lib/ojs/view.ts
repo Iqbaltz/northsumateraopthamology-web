@@ -4,7 +4,6 @@ import type { ArticlePreview } from "@/components/landing/content";
 import {
   articlePath,
   articleSlug,
-  issueDoiUrl,
   journal,
   type ArticleAuthor,
   type IssueArticle,
@@ -16,7 +15,13 @@ import { getCurrentIssue, getIssue, getIssues, getPublication } from "./index";
 import { localize } from "./localize";
 import type { AbstractPart, ArticleDetail } from "@/components/article/content";
 import type { IssueHero } from "@/components/issues/IssueSections";
-import type { Issue, Publication } from "./types";
+import type { DoiObject, Issue, Publication } from "./types";
+
+/** Resolvable link for a DOI assigned in OJS, or "" while there is none. */
+function doiUrl(doi?: DoiObject | null): string {
+  if (!doi?.doi) return "";
+  return doi.resolvingUrl || `https://doi.org/${doi.doi}`;
+}
 
 /**
  * Maps published OJS content onto the landing page's view shapes.
@@ -386,9 +391,7 @@ export async function getIssueView(slug: string): Promise<IssueView | undefined>
         { label: identification, href: isCurrent ? "/issues" : `/archive/${slug}` },
       ],
       kicker: isCurrent ? "NEW ISSUE" : "ARCHIVED",
-      doi: issue.volume && issue.number
-        ? issueDoiUrl(issue.volume, Number(issue.number))
-        : undefined,
+      doi: doiUrl(issue.doiObject),
       volumeTitle: `VOLUME ${issue.volume}\nNUMBER ${issue.number}`,
       publishMonth: formatDate(issue.datePublished),
       description: journal.issueDescription,
@@ -449,7 +452,7 @@ export async function getArticleDetail(slug: string): Promise<ArticleDetail | un
             { label: identification, href: `/archive/${issueSlug(issue)}` },
             { label: article.tag, href: article.href },
           ],
-          doi: publication?.doiObject?.doi ? `https://doi.org/${publication.doiObject.doi}` : "",
+          doi: doiUrl(publication?.doiObject),
           keywords: toKeywords(publication?.keywords),
           abstract: toAbstract(localize(publication?.abstract)),
           references: (publication?.citations ?? [])

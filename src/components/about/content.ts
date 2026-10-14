@@ -91,7 +91,7 @@ export const aboutContent = {
       { label: "Journal Title", value: journal.name },
       { label: "ISSN", value: journal.issn.print },
       { label: "eISSN", value: journal.issn.online },
-      { label: "DOI Prefix", value: journal.doiPrefix },
+      { label: "DOI Prefix", value: journal.doiPrefix || "-" },
       { label: "Publisher", value: journal.publisher },
       { label: "Language", value: journal.languages },
       { label: "Publication Frequency", value: journal.frequency },
@@ -129,8 +129,8 @@ export const aboutContent = {
     copyright: {
       title: "Copyright Notice",
       paragraph:
-        "Articles published in JONSON are distributed under the Creative Commons Attribution-ShareAlike 4.0 International License. Anyone may copy, redistribute, and adapt the material in any medium or format, provided they give appropriate credit to the original work and distribute any adaptations under the same license.",
-      link: { text: "Creative Commons Attribution-ShareAlike 4.0 International License", href: license.href },
+        `Articles published in JONSON are distributed under the ${license.name}. Anyone may copy, redistribute, and adapt the material in any medium or format for non-commercial purposes, provided they give appropriate credit to the original work and distribute any adaptations under the same license.`,
+      link: { text: license.name, href: license.href },
     },
   },
 };

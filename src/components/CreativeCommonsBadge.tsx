@@ -1,6 +1,6 @@
 import { landingContent } from "@/components/landing/content";
 
-/** Link to the journal's Creative Commons licence, shown as the CC · BY · SA marks. */
+/** Link to the journal's Creative Commons licence, shown as the CC · BY · NC · SA marks. */
 export function CreativeCommonsBadge({ className = "" }: { className?: string }) {
   const license = landingContent.footer.license;
 
@@ -18,7 +18,7 @@ export function CreativeCommonsBadge({ className = "" }: { className?: string })
   );
 }
 
-/** The CC, BY (attribution) and SA (share-alike) marks, drawn with currentColor. */
+/** The CC, BY (attribution), NC (non-commercial) and SA (share-alike) marks, drawn with currentColor. */
 function CreativeCommonsIcons() {
   const ring = { cx: 12, cy: 12, r: 10.25, fill: "none", stroke: "currentColor", strokeWidth: 1.6 };
 
@@ -38,6 +38,18 @@ function CreativeCommonsIcons() {
         <circle {...ring} />
         <circle cx="12" cy="6.9" r="1.65" fill="currentColor" />
         <path d="M9.4 9.6h5.2v4.6h-1.4V18h-2.4v-3.8H9.4z" fill="currentColor" />
+      </svg>
+      <svg className="size-[18px]" viewBox="0 0 24 24">
+        <circle {...ring} />
+        {/* A dollar sign struck through */}
+        <path
+          d="M14.5 9.5c-.4-.9-1.4-1.5-2.5-1.5-1.4 0-2.4.8-2.4 1.9 0 2.6 4.9 1.6 4.9 4.2 0 1.1-1.1 1.9-2.5 1.9-1.2 0-2.2-.6-2.6-1.6M12 6.3V8M12 15.9v1.8"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        <path d="M5 5l14 14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
       </svg>
       <svg className="size-[18px]" viewBox="0 0 24 24">
         <circle {...ring} />

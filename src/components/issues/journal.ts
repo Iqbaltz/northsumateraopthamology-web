@@ -40,10 +40,10 @@ export const journal = {
   languages: "English and Indonesian",
   frequency: "Biannual (February and August)",
   peerReview: "Double-blind peer review",
-  /** 10.0000 is a placeholder prefix — no DOIs are registered for the journal yet. */
-  doiPrefix: "10.0000/jonson",
-  downloadLabel: "Download This Journal",
-  previewLabel: "Preview",
+  /** The journal's registered DOI prefix (e.g. "10.12345"); empty until one is assigned. */
+  doiPrefix: "",
+  downloadLabel: "Download Issue",
+  previewLabel: "Read Issue",
   cover: "journal-cover.webp",
   issueDescription:
     "Explore the latest research on retinal diseases, glaucoma, corneal disorders and more.",
@@ -53,15 +53,6 @@ export const journal = {
   },
   articlesFactText: "Original research, reviews, and clinical reports",
 };
-
-/**
- * Resolvable DOI for an issue, e.g. "https://doi.org/10.0000/jonson.v12i1".
- * Built from `journal.doiPrefix`, so it stays a placeholder until real DOIs are
- * registered — see the note on that field.
- */
-export function issueDoiUrl(volume: number, number: number): string {
-  return `https://doi.org/${journal.doiPrefix}.v${volume}i${number}`;
-}
 
 /** URL-safe slug for an article title: "Use of VR in X" -> "use-of-vr-in-x". */
 export function articleSlug(title: string): string {

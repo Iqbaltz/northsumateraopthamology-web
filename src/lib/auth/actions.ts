@@ -9,7 +9,11 @@ import {
 } from "@/lib/config";
 import { register, signIn, type OjsSession } from "@/lib/ojs/auth";
 
-export type AuthFormState = { error?: string };
+export type AuthFormState = {
+  error?: string;
+  /** Registration succeeded and the session is handed off; the form takes it from here. */
+  registered?: boolean;
+};
 
 /**
  * Hands the OJS session to the browser scoped to the shared parent domain, so
@@ -81,5 +85,8 @@ export async function registerAction(
   if (!result.ok) return { error: result.error };
 
   await handOffSession(result.session);
-  redirect(result.session.redirectTo);
+  // New accounts go back to this site rather than OJS's "registration complete"
+  // page. Returned instead of redirect(): an in-app redirect is a client-side
+  // navigation, so the header would keep its signed-out state.
+  return { registered: true };
 }

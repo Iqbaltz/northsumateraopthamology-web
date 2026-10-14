@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/Breadcrumb";
-import { ScopeMark } from "@/components/icons";
 import { journal } from "@/components/issues/journal";
 import { button, kicker, shell } from "@/components/landing/styles";
 import { aboutAnchors } from "./anchors";
@@ -164,11 +163,14 @@ export function AimsScopeSection() {
         </div>
 
         <ul className="mt-6 grid grid-cols-3 gap-4 lg:gap-5 max-[1200px]:grid-cols-2 max-[700px]:grid-cols-1">
-          {content.areas.map((area) => (
+          {content.areas.map((area, index) => (
             <li key={area.title} className="flex" data-reveal-item>
               <div className="flex flex-1 items-center gap-4 rounded-lg border border-[#e3eaef] bg-white p-5 sm:p-6 transition-[border-color,box-shadow] duration-300 hover:border-[#b6d1d3] hover:shadow-[0_14px_28px_-24px_rgba(0,0,0,0.3)]">
-                <span className="grid size-12 shrink-0 place-items-center rounded-full bg-[#eef6f6] text-[#07868f]">
-                  <ScopeMark className="size-7" />
+                <span
+                  aria-hidden
+                  className="w-8 shrink-0 text-center font-serif text-[36px] font-bold leading-none text-[#07868f]"
+                >
+                  {index + 1}
                 </span>
                 <div>
                   <h4 className="text-base font-bold leading-snug text-[#0c0c0c]">{area.title}</h4>

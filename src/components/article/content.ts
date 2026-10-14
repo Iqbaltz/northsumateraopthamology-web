@@ -139,8 +139,9 @@ export const articleContent = {
   doiLabel: "DOI:",
   keywordsLabel: "Keywords:",
   publishedLabel: "Published:",
-  viewIssue: "VIEW ISSUE",
-  downloadLabel: "Download",
+  readLabel: "Read Article",
+  closeLabel: "Close preview",
+  downloadLabel: "Download PDF",
   sectionLabel: "Section:",
   licenseLabel: "License:",
   abstractTitle: "Abstract",
@@ -157,8 +158,6 @@ export function findArticle(slug: string): IssueArticle | undefined {
 }
 
 export function articleDetail(article: IssueArticle): ArticleDetail {
-  const position = String(issueArticles.indexOf(article) + 1).padStart(2, "0");
-
   return {
     article,
     // OJS article pages end the trail on the article's section, not its title.
@@ -168,7 +167,7 @@ export function articleDetail(article: IssueArticle): ArticleDetail {
       { label: `${currentIssue.identifier}: ${journal.name}`, href: currentIssue.href },
       { label: article.tag, href: article.href },
     ],
-    doi: `https://doi.org/${journal.doiPrefix}.v${currentIssue.volume}i${currentIssue.number}.${position}`,
+    doi: "",
     keywords: placeholderKeywords,
     abstract: placeholderAbstract,
     references: placeholderReferences,

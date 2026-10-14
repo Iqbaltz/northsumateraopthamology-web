@@ -10,8 +10,8 @@ const contactLinkClass =
   "flex items-center gap-2 whitespace-nowrap rounded-sm transition-colors duration-200 hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f]";
 
 /**
- * Call-to-action card for reaching the editorial office, with the office address,
- * WhatsApp and email underneath. Shared by the submission and editorial board pages.
+ * Call-to-action card for reaching the editorial office, with the office address
+ * (when shown), WhatsApp and email underneath. Shared by the submission and editorial board pages.
  */
 export function EditorialOfficeCard({
   title,
@@ -52,9 +52,11 @@ export function EditorialOfficeCard({
       <div className="flex items-center justify-between gap-x-8 gap-y-4 border-t border-[#e3eaef] px-6 py-4 sm:px-8 sm:py-5 max-[1200px]:flex-col max-[1200px]:items-start">
         <div>
           <p className="text-sm font-bold text-[#07868f]">JONSON – {journal.title}</p>
-          <p className="mt-0.5 text-xs sm:text-sm leading-relaxed text-[#5c6b73]">
-            {landingContent.footer.address}
-          </p>
+          {landingContent.footer.showAddress && (
+            <p className="mt-0.5 text-xs sm:text-sm leading-relaxed text-[#5c6b73]">
+              {landingContent.footer.address}
+            </p>
+          )}
         </div>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm font-semibold text-[#0c0c0c]">
           <a

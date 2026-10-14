@@ -27,6 +27,9 @@ export function SiteHeader() {
   // Still checking reads as signed out, so most visitors never see the header change.
   const session = useOjsSession();
   const signedIn = session.status === "signedIn" ? session : null;
+  // Signed-in users go straight to their OJS dashboard; readers have none, so
+  // they keep the submission guide, which offers to start a submission.
+  const submitHref = signedIn?.links.dashboard ?? content.submitHref;
 
   const closeSearch = useCallback(() => setSearchOpen(false), []);
   const setAccountOpen = useCallback(
@@ -209,7 +212,7 @@ export function SiteHeader() {
             </Link>
           )}
           <Link
-            href={content.submitHref}
+            href={submitHref}
             onClick={closeMenus}
             className={`${button} !min-h-5 px-4 py-[7px] text-xs font-semibold`}
           >
@@ -321,7 +324,7 @@ export function SiteHeader() {
                 </Link>
               )}
               <Link
-                href={content.submitHref}
+                href={submitHref}
                 onClick={closeMenus}
                 className={`${button} flex-1 text-center justify-center`}
               >

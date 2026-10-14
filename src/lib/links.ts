@@ -90,6 +90,8 @@ export const ojsLinks = {
   signOut: `${OJS_PUBLIC_URL}/whoami/signOut`,
 
   submit: `${OJS_PUBLIC_URL}/about/submissions`,
+  /** Starts a new submission (OJS 3.5 wizard); signed-out visitors are sent to login first. */
+  newSubmission: `${OJS_PUBLIC_URL}/submission`,
   about: `${OJS_PUBLIC_URL}/about`,
   /** OJS 3.5 renamed the editorial team page to the masthead; the old path 404s. */
   editorialMasthead: `${OJS_PUBLIC_URL}/about/editorialMasthead`,

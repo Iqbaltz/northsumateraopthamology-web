@@ -66,7 +66,6 @@ export const fixtureIssues: Issue[] = [
               en: "We evaluate optical coherence tomography biomarkers as predictors of progression in patients with non-proliferative diabetic retinopathy across a 24-month follow-up.",
             },
             authorsString: "Hasibuan R., Lubis M., Tanjung A.",
-            doiObject: { doi: "10.0000/jnso.2026.201" },
             galleys: [galley(301, "PDF"), galley(302, "HTML")],
             authors: [
               { id: 1, fullName: "Rina Hasibuan", affiliation: "Universitas Sumatera Utara", orcid: "https://orcid.org/0000-0000-0000-0001" },
@@ -93,7 +92,6 @@ export const fixtureIssues: Issue[] = [
               en: "A low-cost smartphone fundus adapter is compared against tabletop cameras for optic-disc assessment in a rural screening program.",
             },
             authorsString: "Siregar D., Nasution F.",
-            doiObject: { doi: "10.0000/jnso.2026.202" },
             galleys: [galley(303, "PDF")],
             authors: [
               { id: 4, fullName: "Dewi Siregar", affiliation: "Medan Eye Center" },
@@ -119,7 +117,6 @@ export const fixtureIssues: Issue[] = [
               en: "We report a case of bilateral acute angle-closure glaucoma precipitated by topiramate, with resolution after drug cessation and medical management.",
             },
             authorsString: "Putri S.",
-            doiObject: { doi: "10.0000/jnso.2026.203" },
             galleys: [galley(304, "PDF")],
             authors: [{ id: 6, fullName: "Sari Putri", affiliation: "Adam Malik General Hospital" }],
           },
@@ -158,7 +155,6 @@ export const fixtureIssues: Issue[] = [
               en: "A retrospective review of pediatric cataract presentations across three referral centers, examining etiology, age at surgery, and visual outcomes.",
             },
             authorsString: "Harahap B., Ginting K.",
-            doiObject: { doi: "10.0000/jnso.2025.150" },
             galleys: [galley(250, "PDF")],
             authors: [
               { id: 7, fullName: "Budi Harahap", affiliation: "Universitas Sumatera Utara" },

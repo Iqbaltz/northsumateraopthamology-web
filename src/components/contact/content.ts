@@ -2,7 +2,7 @@ import type { BreadcrumbItem } from "@/components/Breadcrumb";
 import { landingContent } from "@/components/landing/content";
 import { contactPath } from "./path";
 
-const address = landingContent.footer.address;
+const { address, showAddress } = landingContent.footer;
 
 export const contactContent = {
   breadcrumb: [
@@ -20,13 +20,18 @@ export const contactContent = {
   office: {
     kicker: "JONSON is part of",
     name: "Rumah Sakit Khusus Mata Mencirim 77 Medan",
-    address,
-    map: {
-      label: "Find us on map",
-      href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-        `Rumah Sakit Khusus Mata Mencirim 77, ${address}`,
-      )}`,
-    },
+    /** The address and its map link follow the site-wide `showAddress` switch. */
+    location: showAddress
+      ? {
+          address,
+          map: {
+            label: "Find us on map",
+            href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+              `Rumah Sakit Khusus Mata Mencirim 77, ${address}`,
+            )}`,
+          },
+        }
+      : null,
     telephone: "Telephone: (061) 12312312313",
     disclaimer:
       "The contact details listed above are our only official contact channels. We are not affiliated with any other phone numbers, email addresses, or contact accounts.",

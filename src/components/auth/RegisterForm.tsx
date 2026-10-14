@@ -1,7 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect } from "react";
 import { AuthError, authFieldClass, authLabelClass } from "@/components/auth/AuthShell";
+import { refreshOjsSession } from "@/components/auth/useOjsSession";
 import { button } from "@/components/landing/styles";
 import { registerAction, type AuthFormState } from "@/lib/auth/actions";
 
@@ -9,6 +11,16 @@ const initialState: AuthFormState = {};
 
 export function RegisterForm({ countries }: { countries: { value: string; label: string }[] }) {
   const [state, formAction, pending] = useActionState(registerAction, initialState);
+  const router = useRouter();
+
+  // Signed in by now: update the header first, so the home page opens with the
+  // new account's menu instead of Login. Replace, so Back skips the filled form.
+  useEffect(() => {
+    if (!state.registered) return;
+    void refreshOjsSession().then(() => router.replace("/"));
+  }, [state.registered, router]);
+
+  const busy = pending || Boolean(state.registered);
 
   return (
     <form action={formAction} noValidate>
@@ -138,8 +150,8 @@ export function RegisterForm({ countries }: { countries: { value: string; label:
         <span>Yes, I would like to be notified of new publications and announcements.</span>
       </label>
 
-      <button type="submit" disabled={pending} className={`${button} w-full disabled:opacity-60`}>
-        {pending ? "Creating account…" : "Create Account"}
+      <button type="submit" disabled={busy} className={`${button} w-full disabled:opacity-60`}>
+        {busy ? "Creating account…" : "Create Account"}
       </button>
     </form>
   );

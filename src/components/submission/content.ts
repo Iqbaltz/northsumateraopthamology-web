@@ -66,6 +66,9 @@ export const submissionContent = {
     login: { label: "Login to Submit Manuscript", href: "/login" },
     separator: "or",
     register: { label: "Register New Account", href: "/register" },
+    /** Shown instead of login/register once the visitor is signed in to OJS. */
+    newSubmission: "Start New Submission",
+    dashboard: "Go to Dashboard",
   },
   beforeSubmit: {
     title: "Before You Submit",
@@ -313,7 +316,7 @@ export const submissionContent = {
     title: "Copyright & Licensing",
     paragraphs: [
       "Copyright for articles published in JONSON is retained by [author / journal / publisher], subject to the terms of the journal's publication agreement.",
-      "Published articles are distributed under the Creative Commons Attribution-ShareAlike 4.0 International License, allowing readers to access and reuse the work according to the applicable licence terms.",
+      "Published articles are distributed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License, allowing readers to access and reuse the work for non-commercial purposes according to the applicable licence terms.",
     ],
     link: { label: "View Copyright & Licensing Policy", href: "#" },
   },

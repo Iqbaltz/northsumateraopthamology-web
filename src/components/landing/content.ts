@@ -67,15 +67,21 @@ export type IndexingPartner = {
   width: number;
   height: number;
   size: string;
+  /** Shown on the site only once the journal is actually indexed there. */
+  indexed: boolean;
 };
 
-export const indexingPartners: IndexingPartner[] = [
-  { image: "garuda.webp", name: "Garuda Ristekdikti", width: 177, height: 48, size: "h-12 w-[177px]" },
-  { image: "sinta.webp", name: "SINTA Kemendikbud", width: 136, height: 49, size: "h-[49px] w-[136px]" },
-  { image: "google-scholar.webp", name: "Google Scholar", width: 138, height: 61, size: "h-[61px] w-[138px]" },
-  { image: "dimensions.webp", name: "Dimensions", width: 213, height: 49, size: "h-[49px] w-[213px]" },
-  { image: "worldcat.webp", name: "WorldCat", width: 156, height: 61, size: "h-[61px] w-[156px]" },
+/** Every partner the design has a logo for; set `indexed` as each one is confirmed. */
+const allIndexingPartners: IndexingPartner[] = [
+  { image: "garuda.webp", name: "Garuda Ristekdikti", width: 177, height: 48, size: "h-12 w-[177px]", indexed: false },
+  { image: "sinta.webp", name: "SINTA Kemendikbud", width: 136, height: 49, size: "h-[49px] w-[136px]", indexed: false },
+  { image: "google-scholar.webp", name: "Google Scholar", width: 138, height: 61, size: "h-[61px] w-[138px]", indexed: false },
+  { image: "dimensions.webp", name: "Dimensions", width: 213, height: 49, size: "h-[49px] w-[213px]", indexed: false },
+  { image: "worldcat.webp", name: "WorldCat", width: 156, height: 61, size: "h-[61px] w-[156px]", indexed: false },
 ];
+
+/** Partners the journal is indexed in today. The landing strip and footer row hide while it is empty. */
+export const indexingPartners = allIndexingPartners.filter((partner) => partner.indexed);
 
 export const landingContent = {
   hero: {
@@ -187,11 +193,13 @@ export const landingContent = {
   },
   metrics: {
     title: "JOURNAL METRICS",
+    // Zero until real figures are wired in (e.g. from an API). Keep four items:
+    // the tablet and mobile layouts place them by index.
     items: [
-      { value: "3.2", label: "Impact Factor 2025" },
-      { value: "2.1", label: "CiteScore 2025" },
-      { value: "1.8", label: "SJR 2025" },
-      { value: "82%", label: "Acceptance Rate 2025" },
+      { value: "0", label: "Impact Factor 2026" },
+      { value: "0", label: "CiteScore 2026" },
+      { value: "0", label: "SJR 2026" },
+      { value: "0%", label: "Acceptance Rate 2026" },
     ],
     decorationAlt: "JONSON journal performance metrics graphic decoration",
   },
@@ -216,12 +224,20 @@ export const landingContent = {
         text: "All articles are freely available, ensuring your research achieves maximum reach and citations without paywalls.",
         alt: "Fully open access publishing model",
       },
-      {
-        image: "benefit-book.webp",
-        title: "Indexing & Archiving",
-        text: "Indexed in Garuda, SINTA, Google Scholar, Dimensions, WorldCat, with long-term preservation standards.",
-        alt: "Comprehensive indexing and digital preservation",
-      },
+      // Claims indexing only for partners switched on above.
+      indexingPartners.length > 0
+        ? {
+            image: "benefit-book.webp",
+            title: "Indexing & Archiving",
+            text: `Indexed in ${indexingPartners.map((partner) => partner.name).join(", ")}, with long-term preservation standards.`,
+            alt: "Comprehensive indexing and digital preservation",
+          }
+        : {
+            image: "benefit-book.webp",
+            title: "Long-term Archiving",
+            text: "Published articles are archived with long-term preservation standards, keeping your research accessible.",
+            alt: "Long-term digital preservation of published articles",
+          },
     ] as PublishingBenefit[],
   },
   submissionGuide: {
@@ -263,7 +279,7 @@ export const landingContent = {
             heading: "Copyright and Licensing",
             body: [
               "Authors retain the appropriate rights to their work in accordance with the journal's publishing agreement. Published articles are distributed under the journal's designated open-access license.",
-              "License: [Insert Creative Commons license, e.g. CC BY 4.0]",
+              "License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0).",
               "Authors are responsible for ensuring that any third-party material included in their manuscript is appropriately credited and permitted for use.",
             ],
           },
@@ -685,6 +701,18 @@ export const landingContent = {
   },
   footer: {
     address: "Jl. Sei Mencirim No.77, Babura, Kec. Medan Baru, Kota Medan, Sumatera Utara 20154",
+    /**
+     * Hidden site-wide for now: footer, office cards, contact page (with its map
+     * link) and structured data. Set to true to show the address again.
+     */
+    showAddress: false,
+    /** Official accounts; each icon appears in the footer once its `href` is filled in. */
+    social: [
+      { icon: "x.svg", label: "Twitter / X", href: "" },
+      { icon: "instagram.svg", label: "Instagram", href: "" },
+      { icon: "youtube.svg", label: "YouTube", href: "" },
+      { icon: "linkedin.svg", label: "LinkedIn", href: "" },
+    ],
     copyright: "JONSON: Journal of North Sumatera Ophthalmology Nexus",
     hospital: "Part of Rumah Sakit Khusus Mata Mencirim 77 Medan",
     /** `href: "#"` marks the few entries that have no destination anywhere yet. */
@@ -721,9 +749,9 @@ export const landingContent = {
       journal: "JONSON: Journal of North Sumatera Ophthalmology Nexus",
       statement: "is an open-access journal.",
       prefix: "This work is licensed under a",
-      name: "Creative Commons Attribution-ShareAlike 4.0 International License",
-      badge: "BY-SA 4.0",
-      href: "https://creativecommons.org/licenses/by-sa/4.0/",
+      name: "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License",
+      badge: "BY-NC-SA 4.0",
+      href: "https://creativecommons.org/licenses/by-nc-sa/4.0/",
     },
   },
   header: {

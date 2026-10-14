@@ -57,7 +57,7 @@ export interface Publication {
   sectionId?: number;
   issueId?: number;
   datePublished?: string;
-  doiObject?: DoiObject;
+  doiObject?: DoiObject | null;
   keywords?: Record<string, { name: string }[]> | LocalizedString;
   /** Plain strings in OJS 3.5; older builds wrapped them in an object. */
   citations?: (string | { rawCitation?: string })[];
@@ -109,6 +109,8 @@ export interface Issue {
   lastModified?: string;
   urlPath?: string;
   publishedUrl?: string;
+  /** Null until a DOI is assigned in OJS. */
+  doiObject?: DoiObject | null;
   coverImageUrl?: LocalizedString;
   coverImageAltText?: LocalizedString;
   articles?: Article[];

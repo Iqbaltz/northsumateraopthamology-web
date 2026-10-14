@@ -17,7 +17,10 @@ browser  ◀─Set-Cookie─  OJSSID scoped to the shared parent domain
 ```
 
 Registration is the same shape against `{OJS}/user/register`. The country list is
-scraped from that form (cached 24h) so the options never drift from OJS.
+scraped from that form (cached 24h) so the options never drift from OJS. Unlike
+login, a new account is sent back to this site's home page (signed in) instead of
+OJS's "registration complete" page: the action returns `{ registered: true }` and
+`RegisterForm` refreshes the header's session before navigating to `/`.
 
 Relevant code:
 
@@ -101,13 +104,17 @@ can only set cookies for a domain it belongs to, so the hand-off cannot work fro
   brute-forceable as OJS itself. Add throttling (per-IP, per-username) before
   this is publicly announced.
 - Both hops must stay HTTPS. The cookie is set `secure`, `httpOnly`, `sameSite=lax`.
-- `redirectTo` comes from OJS's own `Location` header, so each role lands on the
-  dashboard OJS chooses for it rather than a hardcoded path.
+- After login, `redirectTo` comes from OJS's own `Location` header, so each role
+  lands on the dashboard OJS chooses for it rather than a hardcoded path.
 
 ## Session status in the header
 
 The header shows who is signed in to OJS: an avatar menu with Dashboard, Edit
 Profile and Logout instead of the Login button. Signing in on either site counts.
+The same status points **Submit Manuscript** at the user's OJS dashboard, and
+swaps the `/submission` hero's Login/Register buttons for Start New Submission
+(`{OJS}/submission`) and Go to Dashboard. Readers have no dashboard, so they keep
+the submission guide and only get Start New Submission.
 
 ```
 browser (northsumateraophthalmology.com)

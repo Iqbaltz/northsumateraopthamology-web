@@ -52,19 +52,23 @@ export function ContactOfficeSection() {
             >
               {office.name}
             </h2>
-            <address className="mt-4 text-sm not-italic leading-6 text-[#3f3f3f] sm:text-base">
-              {office.address}
-            </address>
+            {office.location && (
+              <address className="mt-4 text-sm not-italic leading-6 text-[#3f3f3f] sm:text-base">
+                {office.location.address}
+              </address>
+            )}
           </div>
-          <a
-            href={office.map.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${button} shrink-0 gap-2.5 text-sm tracking-[0.04em] uppercase`}
-          >
-            <MapPin className="size-[18px]" />
-            {office.map.label}
-          </a>
+          {office.location && (
+            <a
+              href={office.location.map.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${button} shrink-0 gap-2.5 text-sm tracking-[0.04em] uppercase`}
+            >
+              <MapPin className="size-[18px]" />
+              {office.location.map.label}
+            </a>
+          )}
         </div>
 
         <div className="mt-6 border-t border-[#e3eaef] pt-6">

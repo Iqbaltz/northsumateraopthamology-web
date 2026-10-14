@@ -3,9 +3,14 @@ import Link from "next/link";
 import { ArticleCard } from "@/components/ArticleCard";
 import { Breadcrumb, type BreadcrumbItem } from "@/components/Breadcrumb";
 import { VolumeCard, type VolumeCatalogItem } from "@/components/VolumeCard";
-import { shell, textLink } from "@/components/landing/styles";
+import { ReadArticleButton } from "@/components/article/ReadArticleButton";
+import { BookOpen } from "@/components/icons";
+import { button, outlineButton, shell, textLink } from "@/components/landing/styles";
 import { articleMeta, coverSrc, type IssueArticle } from "./journal";
 import { issuesContent } from "./content";
+
+/** Small pill buttons for the card footer, overriding the full-size button padding. */
+const compactButton = "!min-h-0 gap-2 px-4 py-2 text-xs uppercase max-[700px]:px-3";
 
 /** Everything the issue hero renders, for the current issue or an archived one. */
 export type IssueHero = {
@@ -14,8 +19,8 @@ export type IssueHero = {
   volumeTitle: string;
   publishMonth: string;
   description: string;
-  /** Resolvable DOI for the issue, shown under the description. */
-  doi?: string;
+  /** Resolvable DOI assigned in OJS, shown under the description; "" (shown as "-") until then. */
+  doi: string;
   cover: string;
   coverAlt: string;
   issnOnline: string;
@@ -72,17 +77,19 @@ export function IssueHeroSection({ issue }: { issue: IssueHero }) {
                 <p className="mb-5 max-w-[300px] text-xs sm:text-sm leading-relaxed text-[#4a4a4a]">
                   {content.description}
                 </p>
-                {content.doi && (
-                  <p className="text-xs sm:text-sm leading-relaxed text-[#0c0c0c]">
-                    <strong className="font-bold">DOI:</strong>{" "}
+                <p className="text-xs sm:text-sm leading-relaxed text-[#0c0c0c]">
+                  <strong className="font-bold">DOI:</strong>{" "}
+                  {content.doi ? (
                     <a
                       className="rounded-sm break-all text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f]"
                       href={content.doi}
                     >
                       {content.doi}
                     </a>
-                  </p>
-                )}
+                  ) : (
+                    "-"
+                  )}
+                </p>
               </div>
             </div>
             <div className="flex items-center justify-between gap-4 border-t border-[#e3eaef] bg-[#f7f9fa] px-5 sm:px-6 py-4 max-[700px]:gap-2 max-[700px]:px-4 max-[700px]:py-3">
@@ -101,36 +108,26 @@ export function IssueHeroSection({ issue }: { issue: IssueHero }) {
                 </small>
               </span>
               {content.file && (
-                <span className="flex flex-wrap items-center justify-end gap-x-5 gap-y-1.5">
+                <span className="flex flex-wrap items-center justify-end gap-2.5">
                   {content.file.previewHref && (
-                    <a
-                      className="flex items-center gap-1.5 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-x-0.5 motion-safe:hover:[&_img]:-translate-y-0.5"
+                    <ReadArticleButton
                       href={content.file.previewHref}
-                      target="_blank"
-                      rel="noopener"
+                      title={content.heading}
+                      className={`${button} ${compactButton}`}
+                      closeLabel="Close preview"
+                      downloadHref={content.file.downloadHref}
+                      downloadLabel={content.downloadLabel}
                     >
+                      <BookOpen className="size-4" />
                       {content.previewLabel}
-                      <Image
-                        className="size-4 sm:size-5"
-                        src="/figma/arrow-up-right.svg"
-                        alt=""
-                        width={20}
-                        height={20}
-                      />
-                    </a>
+                    </ReadArticleButton>
                   )}
                   <a
-                    className="flex items-center gap-1.5 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
+                    className={`${button} ${outlineButton} ${compactButton}`}
                     href={content.file.downloadHref}
                   >
                     {content.downloadLabel}
-                    <Image
-                      className="size-4 sm:size-5"
-                      src="/figma/download.svg"
-                      alt="Download icon"
-                      width={20}
-                      height={20}
-                    />
+                    <Image className="size-4" src="/figma/download.svg" alt="" width={16} height={16} />
                   </a>
                 </span>
               )}

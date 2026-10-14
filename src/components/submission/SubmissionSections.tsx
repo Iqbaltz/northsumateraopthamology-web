@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { EditorialOfficeCard } from "@/components/EditorialOfficeCard";
-import { button, kicker, outlineButton, shell, textLink } from "@/components/landing/styles";
+import { kicker, shell, textLink } from "@/components/landing/styles";
 import { submissionAnchors, submissionContent } from "./content";
+import { SubmissionActions } from "./SubmissionActions";
 
 const sectionTitleClass = "text-2xl sm:text-[32px] font-bold leading-tight text-[#0c0c0c]";
 const proseClass = "text-base leading-[25px] text-[#4a4a4a]";
@@ -51,17 +52,7 @@ export function SubmissionHeroSection() {
             {content.title}
           </h1>
           <p className={`mt-4 sm:mt-5 ${proseClass}`}>{content.description}</p>
-          <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 max-[700px]:flex-col max-[700px]:items-stretch">
-            <Link href={content.login.href} className={button}>
-              {content.login.label}
-            </Link>
-            <span className="text-sm text-[#5c6b73] max-[700px]:text-center">
-              {content.separator}
-            </span>
-            <Link href={content.register.href} className={`${button} ${outlineButton}`}>
-              {content.register.label}
-            </Link>
-          </div>
+          <SubmissionActions />
         </div>
       </div>
     </section>

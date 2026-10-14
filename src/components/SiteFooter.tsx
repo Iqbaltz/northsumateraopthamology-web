@@ -14,6 +14,8 @@ const PARTNER_LOGO_SCALE = 0.72;
 export function SiteFooter() {
   const content = landingContent.footer;
   const year = new Date().getFullYear();
+  const social = content.social.filter((account) => account.href);
+  const showContact = content.showAddress || social.length > 0;
 
   return (
     <footer className="mt-0 bg-[#f7f9fa] text-[#0c0c0c]">
@@ -40,26 +42,27 @@ export function SiteFooter() {
               height={24}
             />
           </div>
-          <div className="flex flex-col gap-4 max-[1200px]:flex-1">
-            <p className="text-base leading-[25px]">{content.address}</p>
-            <div className="flex gap-4">
-              {[
-                ["x.svg", "Twitter / X"],
-                ["instagram.svg", "Instagram"],
-                ["youtube.svg", "YouTube"],
-                ["linkedin.svg", "LinkedIn"],
-              ].map(([icon, label]) => (
-                <a
-                  href="#"
-                  key={icon}
-                  aria-label={`Official JONSON ${label}`}
-                  className="rounded-full transition-[transform,opacity] duration-300 hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] motion-safe:hover:-translate-y-1"
-                >
-                  <Image src={`/figma/${icon}`} alt={`${label} icon`} width={24} height={24} />
-                </a>
-              ))}
+          {showContact && (
+            <div className="flex flex-col gap-4 max-[1200px]:flex-1">
+              {content.showAddress && <p className="text-base leading-[25px]">{content.address}</p>}
+              {social.length > 0 && (
+                <div className="flex gap-4">
+                  {social.map(({ icon, label, href }) => (
+                    <a
+                      href={href}
+                      key={icon}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Official JONSON ${label}`}
+                      className="rounded-full transition-[transform,opacity] duration-300 hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] motion-safe:hover:-translate-y-1"
+                    >
+                      <Image src={`/figma/${icon}`} alt={`${label} icon`} width={24} height={24} />
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
+          )}
         </div>
 
         {/* The link columns sit against the right edge, as in the design, until the footer stacks. */}
@@ -70,30 +73,32 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className={`${shell} border-t border-[#e3eaef] py-8`}>
-        <ul
-          className="flex flex-wrap items-center justify-between gap-x-8 gap-y-6 max-[1200px]:justify-center max-[1200px]:gap-x-10"
-          aria-label="Indexing partners"
-        >
-          {indexingPartners.map((partner) => (
-            <li key={partner.name} className="shrink-0">
-              {/* multiply drops the white matte some logo files ship with onto the tinted footer */}
-              <Image
-                className="object-contain mix-blend-multiply"
-                src={`/figma/${partner.image}`}
-                alt={`JONSON is indexed in ${partner.name}`}
-                width={partner.width}
-                height={partner.height}
-                style={{
-                  width: `${Math.round(partner.width * PARTNER_LOGO_SCALE)}px`,
-                  height: `${Math.round(partner.height * PARTNER_LOGO_SCALE)}px`,
-                  maxWidth: "100%",
-                }}
-              />
-            </li>
-          ))}
-        </ul>
-      </div>
+      {indexingPartners.length > 0 && (
+        <div className={`${shell} border-t border-[#e3eaef] py-8`}>
+          <ul
+            className="flex flex-wrap items-center justify-between gap-x-8 gap-y-6 max-[1200px]:justify-center max-[1200px]:gap-x-10"
+            aria-label="Indexing partners"
+          >
+            {indexingPartners.map((partner) => (
+              <li key={partner.name} className="shrink-0">
+                {/* multiply drops the white matte some logo files ship with onto the tinted footer */}
+                <Image
+                  className="object-contain mix-blend-multiply"
+                  src={`/figma/${partner.image}`}
+                  alt={`JONSON is indexed in ${partner.name}`}
+                  width={partner.width}
+                  height={partner.height}
+                  style={{
+                    width: `${Math.round(partner.width * PARTNER_LOGO_SCALE)}px`,
+                    height: `${Math.round(partner.height * PARTNER_LOGO_SCALE)}px`,
+                    maxWidth: "100%",
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div
         className={`${shell} flex items-center justify-between gap-x-10 gap-y-4 border-t border-[#e3eaef] py-6 max-[700px]:flex-col max-[700px]:items-start`}

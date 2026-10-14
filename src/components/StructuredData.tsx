@@ -1,3 +1,5 @@
+import { landingContent } from "@/components/landing/content";
+
 export function StructuredData() {
   const schemas = [
     // 1. Periodical / Scholarly Journal Schema
@@ -15,14 +17,17 @@ export function StructuredData() {
         "@type": "MedicalOrganization",
         name: "Rumah Sakit Khusus Mata Mencirim 77 Medan",
         url: "https://jonson.org",
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "Jl. Sei Mencirim No.77, Babura, Kec. Medan Baru",
-          addressLocality: "Kota Medan",
-          addressRegion: "Sumatera Utara",
-          postalCode: "20154",
-          addressCountry: "ID",
-        },
+        // Follows the site-wide address switch, so search engines don't show it either.
+        ...(landingContent.footer.showAddress && {
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Jl. Sei Mencirim No.77, Babura, Kec. Medan Baru",
+            addressLocality: "Kota Medan",
+            addressRegion: "Sumatera Utara",
+            postalCode: "20154",
+            addressCountry: "ID",
+          },
+        }),
         contactPoint: {
           "@type": "ContactPoint",
           telephone: "+62-823-2131-231",

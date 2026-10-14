@@ -103,7 +103,8 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col bg-white text-ink">
         <DevelopmentNotice />
         <SiteHeader />
-        <main className="flex-1">{children}</main>
+        {/* flex-1 pins the footer to the bottom; the 404 page opts out so it stays compact. */}
+        <main className="flex-1 has-[[data-not-found]]:flex-none">{children}</main>
         <SiteFooter />
       </body>
     </html>

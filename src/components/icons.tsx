@@ -83,6 +83,15 @@ export function XMark({ className = "" }: IconProps) {
   );
 }
 
+export function BookOpen({ className = "" }: IconProps) {
+  return (
+    <svg {...strokeProps} strokeWidth={1.9} className={`size-5 shrink-0 ${className}`}>
+      <path d="M3 5.5h6.5A2.5 2.5 0 0 1 12 8v11a2.5 2.5 0 0 0-2.5-2.5H3z" />
+      <path d="M21 5.5h-6.5A2.5 2.5 0 0 0 12 8v11a2.5 2.5 0 0 1 2.5-2.5H21z" />
+    </svg>
+  );
+}
+
 export function Warning({ className = "" }: IconProps) {
   return (
     <svg {...strokeProps} strokeWidth={1.9} className={`size-5 shrink-0 ${className}`}>

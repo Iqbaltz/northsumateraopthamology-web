@@ -138,6 +138,7 @@ export function AboutJournalSection({ issue }: { issue?: CurrentIssueSummary } =
 
 export function IndexingSection() {
   const content = landingContent.indexing;
+  if (indexingPartners.length === 0) return null;
 
   return (
     <section id="indexing" className="scroll-mt-8 bg-white py-12 max-[700px]:py-8">
