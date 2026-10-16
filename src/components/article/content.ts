@@ -43,7 +43,10 @@ const MONTH_NAMES = [
 ];
 
 /** Labels `values` as consecutive months ending at `end` (month is 1-based). */
-function monthlySeries(end: { year: number; month: number }, values: number[]): MonthlyDownloads[] {
+export function monthlySeries(
+  end: { year: number; month: number },
+  values: number[],
+): MonthlyDownloads[] {
   return values.map((value, index) => {
     const date = new Date(Date.UTC(end.year, end.month - 1 - (values.length - 1 - index), 1));
     const name = MONTH_NAMES[date.getUTCMonth()];

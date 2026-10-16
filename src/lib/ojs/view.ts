@@ -11,9 +11,21 @@ import {
 import { formatDate } from "../format";
 import { fileLinks, ojsLinks } from "../links";
 import { articleView, sectionTitle } from "./article";
-import { getCurrentIssue, getIssue, getIssues, getPublication } from "./index";
+import {
+  getCurrentIssue,
+  getDownloadTimeline,
+  getIssue,
+  getIssues,
+  getPublication,
+  type TimelinePoint,
+} from "./index";
 import { localize } from "./localize";
-import type { AbstractPart, ArticleDetail } from "@/components/article/content";
+import {
+  monthlySeries,
+  type AbstractPart,
+  type ArticleDetail,
+  type MonthlyDownloads,
+} from "@/components/article/content";
 import type { IssueHero } from "@/components/issues/IssueSections";
 import type { DoiObject, Issue, Publication } from "./types";
 
@@ -414,6 +426,16 @@ export async function getIssueView(slug: string): Promise<IssueView | undefined>
   };
 }
 
+/** The statistics API's consecutive `YYYY-MM` months, labelled for the chart. */
+function toMonthlyDownloads(timeline: TimelinePoint[]): MonthlyDownloads[] {
+  const [year, month] = (timeline.at(-1)?.date ?? "").split("-").map(Number);
+  if (!year || !month) return [];
+  return monthlySeries(
+    { year, month },
+    timeline.map((point) => point.value),
+  );
+}
+
 /**
  * An article page built from OJS. Sections the journal has not filled in yet
  * (abstract, keywords, references, download stats) come back empty so the page
@@ -435,9 +457,10 @@ export async function getArticleDetail(slug: string): Promise<ArticleDetail | un
 
         // The table of contents ships a summary only; abstract, keywords,
         // citations and affiliations need the full publication record.
-        const full = view.publication?.id
-          ? await getPublication(raw.id, view.publication.id)
-          : undefined;
+        const [full, timeline] = await Promise.all([
+          view.publication?.id ? getPublication(raw.id, view.publication.id) : undefined,
+          getDownloadTimeline(raw.id),
+        ]);
         const publication = full ?? view.publication;
 
         return {
@@ -463,8 +486,7 @@ export async function getArticleDetail(slug: string): Promise<ArticleDetail | un
               ),
             }))
             .filter((reference) => reference.text),
-          // OJS keeps usage stats behind a separate statistics API.
-          downloads: [],
+          downloads: toMonthlyDownloads(timeline),
           issue: {
             volume: issue.volume ?? 0,
             number: Number(issue.number ?? 0),

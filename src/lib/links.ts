@@ -79,6 +79,8 @@ export const ojsLinks = {
   },
 
   login: `${OJS_PUBLIC_URL}/login`,
+  /** OJS asks for the account's email and sends a password reset link. */
+  lostPassword: `${OJS_PUBLIC_URL}/login/lostPassword`,
   register: `${OJS_PUBLIC_URL}/user/register`,
 
   /**

@@ -751,6 +751,7 @@ export const landingContent = {
       prefix: "This work is licensed under a",
       name: "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License",
       badge: "BY-NC-SA 4.0",
+      badgeImage: "/figma/cc-by-nc-sa.svg",
       href: "https://creativecommons.org/licenses/by-nc-sa/4.0/",
     },
   },

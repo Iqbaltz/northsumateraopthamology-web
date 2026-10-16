@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { AuthError, authFieldClass, authLabelClass } from "@/components/auth/AuthShell";
 import { button } from "@/components/landing/styles";
 import { loginAction, type AuthFormState } from "@/lib/auth/actions";
+import { ojsLinks } from "@/lib/links";
 
 const initialState: AuthFormState = {};
 
@@ -30,9 +31,17 @@ export function LoginForm() {
       </div>
 
       <div className="mb-5">
-        <label className={authLabelClass} htmlFor="password">
-          Password
-        </label>
+        <div className="flex items-baseline justify-between gap-4">
+          <label className={authLabelClass} htmlFor="password">
+            Password
+          </label>
+          <a
+            className="mb-1.5 rounded-sm text-sm font-semibold text-[#07868f] transition-colors duration-200 hover:text-[#066e75] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] focus-visible:ring-offset-2"
+            href={ojsLinks.lostPassword}
+          >
+            Forgot password?
+          </a>
+        </div>
         <input
           id="password"
           name="password"

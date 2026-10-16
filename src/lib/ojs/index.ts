@@ -89,6 +89,51 @@ export async function findArticle(
   return undefined;
 }
 
+/** One month of usage from the OJS statistics API, e.g. `{ date: "2025-10", value: 4 }`. */
+export type TimelinePoint = { date: string; value: number };
+
+/** Months of download history shown on an article page, ending last month or this one. */
+const DOWNLOAD_MONTHS = 12;
+
+/** YYYY-MM-DD in UTC, the form the statistics API takes. */
+function isoDate(date: Date): string {
+  return date.toISOString().slice(0, 10);
+}
+
+/**
+ * Monthly file downloads (PDF/HTML galleys) for one article over the last year,
+ * oldest first with empty months as zero. OJS only allows the statistics API to
+ * managers and editors, so the API token must belong to one; without stats this
+ * returns [] and the page leaves the chart out.
+ */
+export async function getDownloadTimeline(submissionId: number): Promise<TimelinePoint[]> {
+  if (USE_FIXTURES) return [];
+  // Usage logs are processed overnight, and OJS rejects an end date after yesterday.
+  const end = new Date();
+  end.setUTCDate(end.getUTCDate() - 1);
+  const start = new Date(
+    Date.UTC(end.getUTCFullYear(), end.getUTCMonth() - (DOWNLOAD_MONTHS - 1), 1),
+  );
+  try {
+    const timeline = await ojsFetch<TimelinePoint[]>(
+      `stats/publications/${submissionId}/timeline`,
+      {
+        searchParams: {
+          type: "files",
+          timelineInterval: "month",
+          dateStart: isoDate(start),
+          dateEnd: isoDate(end),
+        },
+      },
+    );
+    return Array.isArray(timeline)
+      ? timeline.map(({ date, value }) => ({ date, value: Number(value) || 0 }))
+      : [];
+  } catch {
+    return [];
+  }
+}
+
 export type { Article, Context, Issue, Publication } from "./types";
 
 /**
