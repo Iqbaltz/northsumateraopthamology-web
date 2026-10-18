@@ -145,6 +145,8 @@ export const articleContent = {
   readLabel: "Read Article",
   closeLabel: "Close preview",
   downloadLabel: "Download PDF",
+  /** Shown under the disabled buttons while OJS has no PDF for the article. */
+  noFileNote: "The full text (PDF) of this article is not available yet.",
   sectionLabel: "Section:",
   licenseLabel: "License:",
   abstractTitle: "Abstract",
@@ -177,6 +179,8 @@ export function articleDetail(article: IssueArticle): ArticleDetail {
     downloads: placeholderDownloads,
     issue: {
       ...currentIssue,
+      // Same shape as OJS issue identification: "Vol. 1 No. 02 (2026): <issue title>".
+      citation: `${currentIssue.citation}: ${journal.name}`,
       cover: journal.cover,
       coverAlt: `JONSON Journal ${currentIssue.citation} cover`,
     },

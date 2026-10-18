@@ -26,20 +26,21 @@ export function SiteFooter() {
           className="flex flex-col max-[1200px]:flex-row max-[1200px]:items-center max-[1200px]:justify-between max-[1200px]:gap-24 max-[700px]:flex-col max-[700px]:items-start max-[700px]:gap-6"
           data-reveal
         >
-          <div className="relative mb-6 h-[42px] w-[185px] shrink-0 max-[1200px]:mb-0">
+          {/* Same lockup geometry as the desktop header logo. */}
+          <div className="relative mb-6 h-[60px] w-[265px] shrink-0 max-[1200px]:mb-0">
             <Image
-              className="absolute top-0 left-[97px] h-[42px] w-[60px]"
+              className="absolute top-0 left-[139px] h-[60px] w-[86px]"
               src="/figma/logo-symbol.svg"
               alt=""
-              width={60}
-              height={42}
+              width={86}
+              height={60}
             />
             <Image
-              className="absolute top-[9px] left-0 h-6 w-[185px]"
+              className="absolute top-[13px] left-0 h-[34px] w-[265px]"
               src="/figma/logo-word.svg"
               alt="JONSON"
-              width={185}
-              height={24}
+              width={265}
+              height={34}
             />
           </div>
           {showContact && (
@@ -103,23 +104,22 @@ export function SiteFooter() {
       <div
         className={`${shell} flex items-center justify-between gap-x-10 gap-y-4 border-t border-[#e3eaef] py-6 max-[700px]:flex-col max-[700px]:items-start`}
       >
-        <p className="max-w-[960px] text-xs leading-5 text-[#4a4a4a]">
-          <strong className="font-bold uppercase text-[#0c0c0c]">{content.license.journal}</strong>{" "}
-          {content.license.statement} {content.license.prefix}{" "}
+        <p className="text-base leading-[27px] max-[700px]:text-sm max-[700px]:leading-6">
+          <span className="uppercase">{content.license.journal}.</span> {content.license.statement}{" "}
           <a
-            className="rounded-sm font-semibold text-[#07868f] underline underline-offset-2 transition-colors duration-200 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f]"
+            className="rounded-sm text-[#07868f] underline underline-offset-2 transition-colors duration-200 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f]"
             href={content.license.href}
             target="_blank"
             rel="license noopener noreferrer"
           >
             {content.license.name}
-          </a>
-          .
+          </a>{" "}
+          (CC {content.license.badge}).
         </p>
-        <CreativeCommonsBadge />
+        <CreativeCommonsBadge imageClassName="h-[46px] w-[131px]" />
       </div>
 
-      <div className="flex min-h-10 items-center justify-between gap-5 bg-[#07868f] px-[max(20px,calc((100%_-_1320px)/2))] py-2 text-sm leading-6 text-white max-[1200px]:px-[58px] max-[1200px]:text-[11px] max-[700px]:flex-col max-[700px]:items-start max-[700px]:px-4 max-[700px]:text-[11px] max-[700px]:leading-5">
+      <div className="flex min-h-10 items-center justify-between gap-5 bg-[#07868f] px-[max(20px,calc((100%_-_1320px)/2))] py-2 text-base leading-6 text-white max-[1200px]:px-[58px] max-[1200px]:text-[11px] max-[700px]:flex-col max-[700px]:items-start max-[700px]:px-4 max-[700px]:text-[11px] max-[700px]:leading-5">
         <p>
           © {year} {content.copyright}
         </p>

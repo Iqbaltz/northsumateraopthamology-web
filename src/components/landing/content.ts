@@ -744,7 +744,7 @@ export const landingContent = {
     ] as FooterColumn[],
     license: {
       journal: "JONSON: Journal of North Sumatera Ophthalmology Nexus",
-      statement: "is an open-access journal.",
+      statement: "This is an open-access journal distributed under the terms of the",
       prefix: "This work is licensed under a",
       name: "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License",
       badge: "BY-NC-SA 4.0",

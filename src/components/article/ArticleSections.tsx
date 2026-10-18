@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArticleCard } from "@/components/ArticleCard";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { CreativeCommonsBadge } from "@/components/CreativeCommonsBadge";
-import { articleMeta, coverSrc, issnLines, journal, type IssueArticle } from "@/components/issues/journal";
+import { articleMeta, coverSrc, issnLines, type IssueArticle } from "@/components/issues/journal";
 import { landingContent } from "@/components/landing/content";
 import { BookOpen } from "@/components/icons";
 import { button, outlineButton, shell } from "@/components/landing/styles";
@@ -54,6 +54,7 @@ export async function ArticleHeroSection({ detail }: { detail: ArticleDetail }) 
   const license = landingContent.footer.license;
   // The download link saves the file; the same link without the flag opens it in the browser.
   const readHref = article.downloadHref.replace(/\?download$/, "");
+  const hasFile = Boolean(article.downloadHref);
 
   return (
     <section className="bg-[linear-gradient(180deg,#eef3f5_0%,#f8fbfb_100%)] pt-8 pb-14 sm:pb-20">
@@ -107,7 +108,7 @@ export async function ArticleHeroSection({ detail }: { detail: ArticleDetail }) 
                   href={issue.href}
                   className="mt-5 block rounded-sm text-lg sm:text-[26px] font-bold leading-tight text-[#0c0c0c] underline decoration-2 underline-offset-4 transition-colors duration-200 hover:text-[#07868f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] max-[700px]:mt-3 [overflow-wrap:anywhere]"
                 >
-                  {issue.citation}: <span className="uppercase">{journal.title}</span>
+                  {issue.citation}
                 </Link>
                 <p className="mt-5 text-xs sm:text-sm leading-[1.6] text-[#0c0c0c] max-[700px]:mt-3">
                   {issn.online}
@@ -123,26 +124,53 @@ export async function ArticleHeroSection({ detail }: { detail: ArticleDetail }) 
                 <strong className="font-bold">{articleContent.sectionLabel}</strong> {article.tag}
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <ReadArticleButton
-                  href={readHref}
-                  title={article.title}
-                  className={`${button} gap-2.5 text-sm uppercase`}
-                  closeLabel={articleContent.closeLabel}
-                  downloadHref={article.downloadHref}
-                  downloadLabel={articleContent.downloadLabel}
-                >
-                  <BookOpen />
-                  {articleContent.readLabel}
-                </ReadArticleButton>
-                <a
-                  className={`${button} ${outlineButton} gap-2.5 text-sm uppercase`}
-                  href={article.downloadHref}
-                  aria-label={`Download ${article.title} as ${article.format}`}
-                >
-                  {articleContent.downloadLabel}
-                  <Image className="size-[18px]" src="/figma/download.svg" alt="" width={18} height={18} />
-                </a>
+                {hasFile ? (
+                  <>
+                    <ReadArticleButton
+                      href={readHref}
+                      title={article.title}
+                      className={`${button} gap-2.5 text-sm uppercase`}
+                      closeLabel={articleContent.closeLabel}
+                      downloadHref={article.downloadHref}
+                      downloadLabel={articleContent.downloadLabel}
+                    >
+                      <BookOpen />
+                      {articleContent.readLabel}
+                    </ReadArticleButton>
+                    <a
+                      className={`${button} ${outlineButton} gap-2.5 text-sm uppercase`}
+                      href={article.downloadHref}
+                      aria-label={`Download ${article.title} as ${article.format}`}
+                    >
+                      {articleContent.downloadLabel}
+                      <Image className="size-[18px]" src="/figma/download.svg" alt="" width={18} height={18} />
+                    </a>
+                  </>
+                ) : (
+                  // No PDF in OJS yet: keep the buttons in place, but inert.
+                  <>
+                    <button
+                      type="button"
+                      disabled
+                      className={`${button} pointer-events-none gap-2.5 text-sm uppercase opacity-45`}
+                    >
+                      <BookOpen />
+                      {articleContent.readLabel}
+                    </button>
+                    <button
+                      type="button"
+                      disabled
+                      className={`${button} ${outlineButton} pointer-events-none gap-2.5 text-sm uppercase opacity-45`}
+                    >
+                      {articleContent.downloadLabel}
+                      <Image className="size-[18px]" src="/figma/download.svg" alt="" width={18} height={18} />
+                    </button>
+                  </>
+                )}
               </div>
+              {!hasFile && (
+                <p className="mt-3 text-sm leading-6 text-[#5c6b73]">{articleContent.noFileNote}</p>
+              )}
             </div>
 
             <div className="border-t border-[#e3eaef] px-7 py-6 sm:px-8 max-[700px]:px-4">

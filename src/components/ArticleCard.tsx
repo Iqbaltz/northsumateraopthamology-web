@@ -52,20 +52,23 @@ export function ArticleCard({
         <div className="mt-auto pt-5">
           <div className="flex items-center justify-between gap-3 border-t border-[#eef1f3] pt-3 text-xs sm:text-sm">
             <span className="text-[#8d8d8d]">{meta}</span>
-            <a
-              className="flex items-center gap-1.5 rounded-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
-              href={article.downloadHref}
-              aria-label={`Download ${article.title} as ${article.format}`}
-            >
-              {article.format}
-              <Image
-                className="size-4 sm:size-[18px]"
-                src="/figma/download.svg"
-                alt=""
-                width={18}
-                height={18}
-              />
-            </a>
+            {/* Only once OJS has a file for the article. */}
+            {article.downloadHref && (
+              <a
+                className="flex items-center gap-1.5 rounded-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
+                href={article.downloadHref}
+                aria-label={`Download ${article.title} as ${article.format}`}
+              >
+                {article.format}
+                <Image
+                  className="size-4 sm:size-[18px]"
+                  src="/figma/download.svg"
+                  alt=""
+                  width={18}
+                  height={18}
+                />
+              </a>
+            )}
           </div>
         </div>
       </div>

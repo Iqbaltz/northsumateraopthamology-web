@@ -2,7 +2,14 @@ import Image from "next/image";
 import { landingContent } from "@/components/landing/content";
 
 /** Link to the journal's Creative Commons licence, shown as the official CC BY-NC-SA button. */
-export function CreativeCommonsBadge({ className = "" }: { className?: string }) {
+export function CreativeCommonsBadge({
+  className = "",
+  imageClassName = "h-[31px] w-[88px]",
+}: {
+  className?: string;
+  /** Rendered size of the button; keep the 88:31 ratio of the official artwork. */
+  imageClassName?: string;
+}) {
   const license = landingContent.footer.license;
 
   return (
@@ -13,7 +20,7 @@ export function CreativeCommonsBadge({ className = "" }: { className?: string })
       rel="license noopener noreferrer"
     >
       <Image
-        className="h-[31px] w-[88px]"
+        className={imageClassName}
         src={license.badgeImage}
         alt={license.name}
         width={88}

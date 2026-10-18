@@ -23,7 +23,7 @@ export type IssueArticle = {
   format: "PDF" | "DOCX" | "HTML";
   /** The article's page on this site. */
   href: string;
-  /** Full-text galley; a placeholder until galleys come from OJS. */
+  /** Full-text galley (PDF) to download; empty while OJS has no file for the article. */
   downloadHref: string;
 };
 
@@ -249,7 +249,7 @@ export const issueArticles: IssueArticle[] = seeds.map((seed) => ({
   ...seed,
   slug: articleSlug(seed.title),
   href: articlePath(seed.title),
-  downloadHref: "#",
+  downloadHref: "",
   authors: seed.authors.map(([name, credentials]) => ({
     name,
     credentials,

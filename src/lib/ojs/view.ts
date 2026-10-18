@@ -12,7 +12,7 @@ import {
   type JournalIssn,
 } from "@/components/issues/journal";
 import { formatDate } from "../format";
-import { fileLinks, ojsLinks } from "../links";
+import { fileLinks } from "../links";
 import { articleView, sectionTitle } from "./article";
 import {
   getContext,
@@ -306,10 +306,9 @@ function toIssueArticle(issue: Issue, article: NonNullable<Issue["articles"]>[nu
     pages: view.pages,
     format: galley ? galleyFormat(galley.label ?? "", galley.file?.mimetype) : "PDF",
     href: articlePath(title),
-    // A remote galley lives elsewhere (e.g. a shared drive); the rest are served from this site.
-    downloadHref: galley
-      ? galley.urlRemote || fileLinks.article(article.id, galley.id, true)
-      : ojsLinks.article(article.id),
+    // A remote galley lives elsewhere (e.g. a shared drive); the rest are served from this
+    // site. No galley in OJS means no file yet, and the buttons show as unavailable.
+    downloadHref: galley ? galley.urlRemote || fileLinks.article(article.id, galley.id, true) : "",
   };
 }
 
