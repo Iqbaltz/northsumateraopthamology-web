@@ -102,7 +102,9 @@ function MemberCard({ member }: { member: BoardMember }) {
         <h3 className="mt-1.5 text-xl sm:text-2xl font-bold leading-snug text-[#0c0c0c]">
           {member.name}
         </h3>
-        <p className="mt-2.5 text-sm font-medium text-[#07868f]">{member.affiliation}</p>
+        {member.affiliation && (
+          <p className="mt-2.5 text-sm font-medium text-[#07868f]">{member.affiliation}</p>
+        )}
         <p className="mt-4 text-sm leading-6 text-[#4a4a4a]">{member.bio}</p>
       </div>
 

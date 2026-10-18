@@ -56,6 +56,8 @@ export interface Publication {
   pages?: string;
   sectionId?: number;
   issueId?: number;
+  /** 3 once published; 1 while queued (e.g. a new version or an unpublished article). */
+  status?: number;
   datePublished?: string;
   doiObject?: DoiObject | null;
   keywords?: Record<string, { name: string }[]> | LocalizedString;
@@ -124,8 +126,9 @@ export interface Context {
   description?: LocalizedString;
   acronym?: LocalizedString;
   abbreviation?: LocalizedString;
-  onlineIssn?: string;
-  printIssn?: string;
+  /** Null until set in Journal Settings. */
+  onlineIssn?: string | null;
+  printIssn?: string | null;
   publisherInstitution?: string;
   contactName?: string;
   contactEmail?: string;

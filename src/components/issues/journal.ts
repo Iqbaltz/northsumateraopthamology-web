@@ -27,16 +27,19 @@ export type IssueArticle = {
   downloadHref: string;
 };
 
-const ISSN_ONLINE = "2460-545X";
-const ISSN_PRINT = "0126-1193";
+/** The journal's ISSNs as set in OJS (Journal Settings); "-" for one not registered yet. */
+export type JournalIssn = { online: string; print: string };
+
+export const missingIssn: JournalIssn = { online: "-", print: "-" };
+
+/** The "Online ISSN : …" / "Print ISSN : …" pair shown beside issues and articles. */
+export function issnLines(issn: JournalIssn) {
+  return { online: `Online ISSN : ${issn.online}`, print: `Print ISSN : ${issn.print}` };
+}
 
 export const journal = {
   name: "JONSON: Journal of North Sumatera Ophthalmology Nexus",
   title: "Journal of North Sumatera Ophthalmology Nexus",
-  issn: { online: ISSN_ONLINE, print: ISSN_PRINT },
-  issnOnline: `Online ISSN : ${ISSN_ONLINE}`,
-  issnPrint: `Print ISSN : ${ISSN_PRINT}`,
-  publisher: "Rumah Sakit Khusus Mata Mencirim 77 Medan",
   languages: "English and Indonesian",
   frequency: "Biannual (February and August)",
   peerReview: "Double-blind peer review",

@@ -13,8 +13,6 @@ export const fixtureContext: Context = {
   },
   acronym: { en: "JNSO" },
   abbreviation: { en: "J. North Sumatra Ophthalmol." },
-  onlineIssn: "0000-0000",
-  printIssn: "1111-1111",
   publisherInstitution: "North Sumatra Ophthalmology Society",
   contactName: "Editorial Office",
   contactEmail: "editorial@northsumatraophthalmology.com",

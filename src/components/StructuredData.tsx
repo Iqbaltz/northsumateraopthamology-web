@@ -1,6 +1,11 @@
-import { landingContent } from "@/components/landing/content";
+import { missingIssn } from "@/components/issues/journal";
+import { getJournalIssn } from "@/lib/ojs/view";
 
-export function StructuredData() {
+export async function StructuredData() {
+  // Only ISSNs actually set in OJS; none while they are still "-".
+  const { online, print } = await getJournalIssn();
+  const issn = [online, print].filter((value) => value !== missingIssn.online);
+
   const schemas = [
     // 1. Periodical / Scholarly Journal Schema
     {
@@ -8,33 +13,11 @@ export function StructuredData() {
       "@type": "Periodical",
       name: "Journal of North Sumatera Ophthalmology Nexus",
       alternateName: ["JONSON", "North Sumatera Ophthalmology"],
-      issn: ["2460-545X", "0126-1193"],
+      ...(issn.length > 0 && { issn }),
       url: "https://jonson.org",
       description:
-        "A peer-reviewed, open-access journal in ophthalmology and vision science published by Rumah Sakit Khusus Mata Mencirim 77.",
+        "A peer-reviewed, open-access journal in ophthalmology and vision science.",
       inLanguage: ["en"],
-      publisher: {
-        "@type": "MedicalOrganization",
-        name: "Rumah Sakit Khusus Mata Mencirim 77 Medan",
-        url: "https://jonson.org",
-        // Follows the site-wide address switch, so search engines don't show it either.
-        ...(landingContent.footer.showAddress && {
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Jl. Sei Mencirim No.77, Babura, Kec. Medan Baru",
-            addressLocality: "Kota Medan",
-            addressRegion: "Sumatera Utara",
-            postalCode: "20154",
-            addressCountry: "ID",
-          },
-        }),
-        contactPoint: {
-          "@type": "ContactPoint",
-          telephone: "+62-823-2131-231",
-          contactType: "editorial",
-          email: "editorial@northsumatraophthalmology.com",
-        },
-      },
     },
 
     // 2. WebSite Schema

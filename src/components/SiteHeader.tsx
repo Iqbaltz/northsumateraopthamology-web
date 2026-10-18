@@ -79,16 +79,6 @@ export function SiteHeader() {
           <div className="flex shrink-0 items-center gap-4 lg:gap-8 font-sans font-semibold text-xs lg:text-sm">
             <span className="flex items-center gap-2 whitespace-nowrap">
               <Image
-                src="/figma/whatsapp.svg"
-                alt="WhatsApp"
-                width={20}
-                height={20}
-                className="sm:size-6"
-              />
-              {content.whatsapp}
-            </span>
-            <span className="flex items-center gap-2 whitespace-nowrap">
-              <Image
                 src="/figma/envelope.svg"
                 alt="Email"
                 width={20}

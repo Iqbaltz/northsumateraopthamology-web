@@ -1,5 +1,5 @@
 import type { BreadcrumbItem } from "@/components/Breadcrumb";
-import { journal } from "@/components/issues/journal";
+import { journal, missingIssn, type JournalIssn } from "@/components/issues/journal";
 import { landingContent } from "@/components/landing/content";
 import { submissionAnchors } from "@/components/submission/content";
 import { aboutPath } from "./anchors";
@@ -14,6 +14,8 @@ export type JournalFact = {
   label: string;
   value: string;
   href?: string;
+  /** Filled in from OJS by the section, since the ISSNs live in OJS's journal settings. */
+  issn?: keyof JournalIssn;
 };
 
 const license = landingContent.footer.license;
@@ -27,7 +29,7 @@ export const aboutContent = {
     title: "About the Journal",
     journalName: journal.name,
     issnLabels: { print: "P-ISSN", online: "E-ISSN" },
-    description: `is a scientific journal published by ${journal.publisher}. It accepts articles written in ${journal.languages} and aims to be a medium for conveying scientific discoveries and innovations in medicine and allied health fields to practitioners and academics. The journal is published twice a year, in February and August, and selects articles through peer review. It publishes case reports, systematic reviews, and clinical research related to visual science for ophthalmologists, eye nurses, and medical support professionals in other fields of ophthalmology.`,
+    description: `is a peer-reviewed scientific journal. It accepts articles written in ${journal.languages} and aims to be a medium for conveying scientific discoveries and innovations in medicine and allied health fields to practitioners and academics. The journal is published twice a year, in February and August, and selects articles through peer review. It publishes case reports, systematic reviews, and clinical research related to visual science for ophthalmologists, eye nurses, and medical support professionals in other fields of ophthalmology.`,
     submit: { label: "SUBMIT MANUSCRIPT", href: "/submission" },
     coverAlt: "Cover of JONSON: Journal of North Sumatera Ophthalmology Nexus",
   },
@@ -89,10 +91,9 @@ export const aboutContent = {
     coverAlt: "JONSON: Journal of North Sumatera Ophthalmology Nexus cover",
     facts: [
       { label: "Journal Title", value: journal.name },
-      { label: "ISSN", value: journal.issn.print },
-      { label: "eISSN", value: journal.issn.online },
+      { label: "ISSN", value: missingIssn.print, issn: "print" },
+      { label: "eISSN", value: missingIssn.online, issn: "online" },
       { label: "DOI Prefix", value: journal.doiPrefix || "-" },
-      { label: "Publisher", value: journal.publisher },
       { label: "Language", value: journal.languages },
       { label: "Publication Frequency", value: journal.frequency },
       { label: "Peer Review", value: journal.peerReview },

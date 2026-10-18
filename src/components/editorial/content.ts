@@ -9,7 +9,8 @@ export type ProfileKind = (typeof profileKinds)[number];
 export type BoardMember = {
   role: string;
   name: string;
-  affiliation: string;
+  /** Left off for now where it would name the hospital. */
+  affiliation?: string;
   bio: string;
   email: string;
   /** Profile URLs; a badge without one renders as a plain, unlinked mark. */
@@ -28,7 +29,6 @@ const members: BoardMember[] = [
   {
     role: "Managing Editor",
     name: "dr. M. Mubarak Hazazi, M.Ked. (Oph) Sp.M",
-    affiliation: journal.publisher,
     bio: "Dr. M. Mubarak Hazazi, M.Ked. (Oph), Sp.M is an ophthalmologist and medical researcher based in Indonesia, specializing in clinical ophthalmology and vision sciences. He serves as the Managing Editor of the journal, overseeing editorial workflows, manuscript peer-review processes, and the strategic curation of high-quality ophthalmic research.",
     email: "77.hazazi@gmail.com",
     profiles: {},
@@ -36,7 +36,6 @@ const members: BoardMember[] = [
   {
     role: "Editor",
     name: "Dimas Aditya Syahputra, SKM., M.K.M",
-    affiliation: journal.publisher,
     bio: "Dimas Aditya Syahputra, SKM., M.K.M is an ophthalmologist and medical researcher from Indonesia, focusing on clinical ophthalmology and vision sciences. He holds the position of Editorial Director for the journal, where he manages editorial processes, oversees the peer-review of manuscripts, and strategically curates top-tier ophthalmic research.",
     email: "dimazaditya02@gmail.com",
     profiles: {},
@@ -44,8 +43,7 @@ const members: BoardMember[] = [
   {
     role: "Reviewer",
     name: "dr. Annisa Dhiya Zafira, MARS., FISQUA",
-    affiliation: journal.publisher,
-    bio: `Dr. Annisa Dhiya Zafira, MARS., FISQUA is a medical doctor and healthcare management executive based in Indonesia, serving as the Hospital Director of ${journal.publisher}. She joins the journal as a Peer Reviewer, bringing extensive expertise in healthcare quality assurance, hospital administration, and clinical governance to ensure the rigorous evaluation and scientific integrity of submitted manuscripts.`,
+    bio: `Dr. Annisa Dhiya Zafira, MARS., FISQUA is a medical doctor and healthcare management executive based in Indonesia. She joins the journal as a Peer Reviewer, bringing extensive expertise in healthcare quality assurance, hospital administration, and clinical governance to ensure the rigorous evaluation and scientific integrity of submitted manuscripts.`,
     email: "Annisa.Dhiya@gmail.com",
     profiles: {},
   },

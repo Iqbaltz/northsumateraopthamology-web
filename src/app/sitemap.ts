@@ -1,12 +1,11 @@
 import type { MetadataRoute } from "next";
 import { announcementPath, announcements } from "@/components/announcements";
-import { issueArticles } from "@/components/issues/journal";
-import { getVolumeSlugs } from "@/lib/ojs/view";
+import { getAllArticles, getVolumeSlugs } from "@/lib/ojs/view";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://jonson.org";
   const now = new Date();
-  const volumeSlugs = await getVolumeSlugs();
+  const [volumeSlugs, articles] = await Promise.all([getVolumeSlugs(), getAllArticles()]);
 
   return [
     {
@@ -87,7 +86,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "yearly" as const,
       priority: 0.6,
     })),
-    ...issueArticles.map((article) => ({
+    // Only the journal's real, published articles; never the designed placeholders.
+    ...articles.map((article) => ({
       url: `${baseUrl}${article.href}`,
       lastModified: now,
       changeFrequency: "monthly" as const,

@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/Breadcrumb";
-import { journal } from "@/components/issues/journal";
+import { issnLines, journal } from "@/components/issues/journal";
 import { button, kicker, shell } from "@/components/landing/styles";
+import { getJournalIssn } from "@/lib/ojs/view";
 import { aboutAnchors } from "./anchors";
 import { aboutContent, type JournalFact } from "./content";
 
@@ -76,8 +77,10 @@ function TemplateBanner({ inset = false, className = "" }: { inset?: boolean; cl
   );
 }
 
-export function AboutHeroSection() {
+export async function AboutHeroSection() {
   const content = aboutContent.hero;
+  const issn = await getJournalIssn();
+  const lines = issnLines(issn);
 
   return (
     <section className="bg-[linear-gradient(180deg,#eef3f5_0%,#f8fbfb_100%)] pt-8 pb-14 sm:pb-20">
@@ -93,8 +96,8 @@ export function AboutHeroSection() {
               <strong className="font-bold uppercase text-[#0c0c0c]">{content.journalName}</strong> (
               {/* An ISSN must not wrap at its hyphen. */}
               {content.issnLabels.print}:{" "}
-              <span className="whitespace-nowrap">{journal.issn.print}</span>, {content.issnLabels.online}:{" "}
-              <span className="whitespace-nowrap">{journal.issn.online}</span>) {content.description}
+              <span className="whitespace-nowrap">{issn.print}</span>, {content.issnLabels.online}:{" "}
+              <span className="whitespace-nowrap">{issn.online}</span>) {content.description}
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-[#d5e0e2] pt-7">
               <Link
@@ -104,9 +107,9 @@ export function AboutHeroSection() {
                 {content.submit.label}
               </Link>
               <small className="text-xs leading-tight text-[#666]">
-                {journal.issnOnline}
+                {lines.online}
                 <br />
-                {journal.issnPrint}
+                {lines.print}
               </small>
             </div>
           </div>
@@ -194,8 +197,10 @@ function FactValue({ fact }: { fact: JournalFact }) {
   );
 }
 
-export function JournalInformationSection() {
+export async function JournalInformationSection() {
   const content = aboutContent.information;
+  const issn = await getJournalIssn();
+  const facts = content.facts.map((fact) => (fact.issn ? { ...fact, value: issn[fact.issn] } : fact));
 
   return (
     <section id={aboutAnchors.information} className={`${anchorSectionClass} pb-14 sm:pb-20`}>
@@ -220,7 +225,7 @@ export function JournalInformationSection() {
                 {content.title}
               </h2>
               <dl className="mt-6 divide-y divide-[#e6edef] border-y border-[#e6edef]">
-                {content.facts.map((fact) => (
+                {facts.map((fact) => (
                   <div
                     key={fact.label}
                     className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-0.5 py-3"

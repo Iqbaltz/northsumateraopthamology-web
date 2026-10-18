@@ -1,5 +1,6 @@
 import "server-only";
 import { OJS_JOURNAL_PATH, USE_FIXTURES } from "../config";
+import { currentPublication } from "./article";
 import { ojsFetch } from "./client";
 import { fixtureContext, fixtureIssue, fixtureIssues } from "./fixtures";
 import type { Article, Context, Issue, ListResponse, Publication } from "./types";
@@ -9,7 +10,29 @@ import type { Article, Context, Issue, ListResponse, Publication } from "./types
  * API token is configured (see config.ts: USE_FIXTURES), then hits the live,
  * token-authed OJS REST API. On a live failure we degrade gracefully rather than
  * crashing the page.
+ *
+ * The token belongs to an editor, so OJS hands back unpublished work too. Only
+ * published issues and articles leave this module; deleted ones simply stop
+ * coming back from the API.
  */
+
+/** OJS status of a published submission or publication (`STATUS_PUBLISHED`). */
+const STATUS_PUBLISHED = 3;
+
+function isPublishedArticle(article: Article): boolean {
+  return (
+    article.status === STATUS_PUBLISHED &&
+    currentPublication(article)?.status === STATUS_PUBLISHED
+  );
+}
+
+/**
+ * An issue's table of contents lists every submission assigned to it, which
+ * still includes an article unpublished after the issue went out.
+ */
+function withPublishedArticles(issue: Issue): Issue {
+  return issue.articles ? { ...issue, articles: issue.articles.filter(isPublishedArticle) } : issue;
+}
 
 export async function getContext(): Promise<Context> {
   if (USE_FIXTURES) return fixtureContext;
@@ -19,8 +42,10 @@ export async function getContext(): Promise<Context> {
     const data = await ojsFetch<ListResponse<Context>>("contexts", {
       searchParams: { count: 100 },
     });
-    const context = data.items?.find((c) => c.urlPath === OJS_JOURNAL_PATH);
-    return context ?? fixtureContext;
+    const listed = data.items?.find((c) => c.urlPath === OJS_JOURNAL_PATH);
+    if (!listed) return fixtureContext;
+    // The list is a summary; settings such as the ISSNs only come with the full record.
+    return await ojsFetch<Context>(`contexts/${listed.id}`);
   } catch {
     return fixtureContext;
   }
@@ -29,7 +54,7 @@ export async function getContext(): Promise<Context> {
 /** OJS caps a list response at 100 items. */
 const ISSUES_PER_REQUEST = 100;
 
-/** Every issue, newest first. Walks the API's pages so the archive can list them all. */
+/** Every published issue, newest first. Walks the API's pages so the archive can list them all. */
 export async function getIssues(): Promise<Issue[]> {
   if (USE_FIXTURES) return fixtureIssues;
   try {
@@ -37,6 +62,8 @@ export async function getIssues(): Promise<Issue[]> {
     for (;;) {
       const data = await ojsFetch<ListResponse<Issue>>("issues", {
         searchParams: {
+          // OJS reads 1/0 here; "true"/"false" are silently ignored.
+          isPublished: 1,
           count: ISSUES_PER_REQUEST,
           offset: issues.length,
           orderBy: "datePublished",
@@ -45,17 +72,20 @@ export async function getIssues(): Promise<Issue[]> {
       });
       const items = data.items ?? [];
       issues.push(...items);
-      if (!items.length || issues.length >= (data.itemsMax ?? 0)) return issues;
+      if (!items.length || issues.length >= (data.itemsMax ?? 0)) {
+        return issues.filter((issue) => issue.published);
+      }
     }
   } catch {
     return fixtureIssues;
   }
 }
 
+/** One issue with its table of contents, limited to published articles. */
 export async function getIssue(id: number): Promise<Issue | undefined> {
   if (USE_FIXTURES) return fixtureIssue(id);
   try {
-    return await ojsFetch<Issue>(`issues/${id}`);
+    return withPublishedArticles(await ojsFetch<Issue>(`issues/${id}`));
   } catch {
     return fixtureIssue(id);
   }

@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     template: "%s · JONSON",
   },
   description:
-    "A peer-reviewed, open-access journal in ophthalmology and vision science published by Rumah Sakit Khusus Mata Mencirim 77 Medan.",
+    "A peer-reviewed, open-access journal in ophthalmology and vision science.",
   keywords: [
     "Ophthalmology",
     "Journal of North Sumatera Ophthalmology",
@@ -44,15 +44,11 @@ export const metadata: Metadata = {
     "Cataract",
     "Kesehatan Mata",
     "Jurnal Dokter Mata",
-    "Rumah Sakit Mata Mencirim 77",
     "Open Access Journal",
     "Peer Reviewed",
     "Medan",
     "Sumatera Utara",
   ],
-  authors: [{ name: "Rumah Sakit Khusus Mata Mencirim 77", url: baseUrl }],
-  creator: "Rumah Sakit Khusus Mata Mencirim 77",
-  publisher: "Rumah Sakit Khusus Mata Mencirim 77",
   formatDetection: {
     email: false,
     address: false,

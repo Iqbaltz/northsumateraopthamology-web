@@ -141,8 +141,6 @@ export const landingContent = {
     issueDescription:
       "Explore the latest research on retinal diseases, glaucoma, corneal disorders and advanced ophthalmic surgical techniques.",
     viewIssueButton: "VIEW ISSUE",
-    issnOnline: "Online ISSN : 2460-545X",
-    issnPrint: "Print ISSN : 0126-1193",
     submitBanner: "Submit your journal with us",
     downloadTemplate: "Download Jonson Journal Template",
     coverAlt: "JONSON Journal Volume 12 Issue 1 Cover",
@@ -714,7 +712,6 @@ export const landingContent = {
       { icon: "linkedin.svg", label: "LinkedIn", href: "" },
     ],
     copyright: "JONSON: Journal of North Sumatera Ophthalmology Nexus",
-    hospital: "Part of Rumah Sakit Khusus Mata Mencirim 77 Medan",
     /** `href: "#"` marks the few entries that have no destination anywhere yet. */
     columns: [
       {
@@ -757,7 +754,6 @@ export const landingContent = {
   },
   header: {
     tagline: "Peer-reviewed. Open access. Advancing eye care worldwide",
-    whatsapp: "Whatsapp: +62 823-2131-231",
     email: "editorial@northsumatraophthalmology.com",
     nav: [
       { label: "Home", href: "/" },

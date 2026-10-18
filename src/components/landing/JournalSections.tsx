@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { aboutPath } from "@/components/about/anchors";
-import { coverSrc, journal } from "@/components/issues/journal";
+import { coverSrc, issnLines, journal } from "@/components/issues/journal";
 import { submissionAnchors } from "@/components/submission/content";
-import type { CurrentIssueSummary } from "@/lib/ojs/view";
+import { getJournalIssn, type CurrentIssueSummary } from "@/lib/ojs/view";
 import { indexingPartners, landingContent } from "./content";
 import { button, kicker, shell, textLink } from "./styles";
 
@@ -11,8 +11,9 @@ import { button, kicker, shell, textLink } from "./styles";
  * `issue` carries the current issue from OJS when one is published; without it
  * the card falls back to the designed placeholder issue.
  */
-export function AboutJournalSection({ issue }: { issue?: CurrentIssueSummary } = {}) {
+export async function AboutJournalSection({ issue }: { issue?: CurrentIssueSummary } = {}) {
   const content = landingContent.aboutJournal;
+  const issn = issnLines(await getJournalIssn());
 
   return (
     <section id="about-journal" className="scroll-mt-8 bg-white py-16 sm:py-24">
@@ -98,9 +99,9 @@ export function AboutJournalSection({ issue }: { issue?: CurrentIssueSummary } =
                   {content.viewIssueButton}
                 </Link>
                 <small className="text-xs leading-tight text-[#666]">
-                  {content.issnOnline}
+                  {issn.online}
                   <br />
-                  {content.issnPrint}
+                  {issn.print}
                 </small>
               </div>
             </div>

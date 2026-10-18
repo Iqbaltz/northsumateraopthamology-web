@@ -11,7 +11,7 @@ const contactLinkClass =
 
 /**
  * Call-to-action card for reaching the editorial office, with the office address
- * (when shown), WhatsApp and email underneath. Shared by the submission and editorial board pages.
+ * (when shown) and email underneath. Shared by the submission and editorial board pages.
  */
 export function EditorialOfficeCard({
   title,
@@ -26,7 +26,6 @@ export function EditorialOfficeCard({
   withIcon?: boolean;
 }) {
   const contact = landingContent.header;
-  const whatsappNumber = contact.whatsapp.replace(/\D/g, "");
 
   return (
     <div
@@ -59,15 +58,6 @@ export function EditorialOfficeCard({
           )}
         </div>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm font-semibold text-[#0c0c0c]">
-          <a
-            className={contactLinkClass}
-            href={`https://wa.me/${whatsappNumber}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image src="/figma/whatsapp.svg" alt="" width={20} height={20} />
-            {contact.whatsapp}
-          </a>
           <a className={contactLinkClass} href={`mailto:${contact.email}`}>
             <Image src="/figma/envelope.svg" alt="" width={20} height={20} />
             {contact.email}

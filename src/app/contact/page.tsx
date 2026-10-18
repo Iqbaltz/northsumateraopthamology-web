@@ -5,7 +5,7 @@ import { MotionEffects } from "@/components/landing";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Official contact channels of JONSON: Journal of North Sumatera Ophthalmology Nexus, part of Rumah Sakit Khusus Mata Mencirim 77 Medan: WhatsApp, telephone, and email.",
+    "Official contact channels of JONSON: Journal of North Sumatera Ophthalmology Nexus.",
   alternates: {
     canonical: "/contact",
   },

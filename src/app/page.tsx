@@ -17,7 +17,7 @@ import { getCurrentIssueSummary, getLatestArticles } from "@/lib/ojs/view";
 export const metadata: Metadata = {
   title: "JONSON · Journal of North Sumatera Ophthalmology Nexus",
   description:
-    "A peer-reviewed, open-access journal in ophthalmology and vision science. Published by Rumah Sakit Khusus Mata Mencirim 77 Medan.",
+    "A peer-reviewed, open-access journal in ophthalmology and vision science.",
   alternates: {
     canonical: "/",
   },

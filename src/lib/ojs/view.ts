@@ -4,14 +4,18 @@ import type { ArticlePreview } from "@/components/landing/content";
 import {
   articlePath,
   articleSlug,
+  issnLines,
   journal,
+  missingIssn,
   type ArticleAuthor,
   type IssueArticle,
+  type JournalIssn,
 } from "@/components/issues/journal";
 import { formatDate } from "../format";
 import { fileLinks, ojsLinks } from "../links";
 import { articleView, sectionTitle } from "./article";
 import {
+  getContext,
   getCurrentIssue,
   getDownloadTimeline,
   getIssue,
@@ -42,6 +46,19 @@ function doiUrl(doi?: DoiObject | null): string {
  * can fall back to its designed placeholder content whenever the journal has
  * nothing published yet or the API is unreachable.
  */
+
+/** The journal's ISSNs from OJS's journal settings; "-" for any not set there yet. */
+export async function getJournalIssn(): Promise<JournalIssn> {
+  try {
+    const context = await getContext();
+    return {
+      online: context.onlineIssn || missingIssn.online,
+      print: context.printIssn || missingIssn.print,
+    };
+  } catch {
+    return missingIssn;
+  }
+}
 
 /** Issue artwork uploaded in OJS, falling back to the journal's stock cover. */
 function issueCover(issue: Issue): string {
@@ -142,7 +159,7 @@ function toPreview(issue: Issue, article: NonNullable<Issue["articles"]>[number]
 export async function getLatestArticles(limit: number): Promise<ArticlePreview[]> {
   try {
     const issue = await getCurrentIssue();
-    if (!issue?.published || !issue.articles?.length) return [];
+    if (!issue?.articles?.length) return [];
 
     return issue.articles.slice(0, limit).map((article) => toPreview(issue, article));
   } catch {
@@ -166,7 +183,7 @@ export type CurrentIssueSummary = {
 export async function getCurrentIssueSummary(): Promise<CurrentIssueSummary | undefined> {
   try {
     const issue = await getCurrentIssue();
-    if (!issue?.published) return undefined;
+    if (!issue) return undefined;
 
     const volume = issue.volume ? `VOLUME ${issue.volume}` : "";
     const number = issue.number ? `NUMBER ${issue.number}` : "";
@@ -224,7 +241,7 @@ function toHydratedVolumeCards(issues: Issue[]): Promise<VolumeCatalogItem[]> {
 /** Published volumes, newest first. Empty when the journal has none. */
 export async function getVolumeCards(limit?: number): Promise<VolumeCatalogItem[]> {
   try {
-    const issues = (await getIssues()).filter((issue) => issue.published);
+    const issues = await getIssues();
     return await toHydratedVolumeCards(limit ? issues.slice(0, limit) : issues);
   } catch {
     return [];
@@ -241,7 +258,7 @@ export type VolumeCardPage = {
 /** One page of published volumes, newest first. Only that page's issues are hydrated. */
 export async function getVolumeCardPage(page: number, perPage: number): Promise<VolumeCardPage> {
   try {
-    const issues = (await getIssues()).filter((issue) => issue.published);
+    const issues = await getIssues();
     const start = (page - 1) * perPage;
     return {
       volumes: await toHydratedVolumeCards(issues.slice(start, start + perPage)),
@@ -256,7 +273,7 @@ export async function getVolumeCardPage(page: number, perPage: number): Promise<
 /** Slugs for every published volume, for `generateStaticParams`. */
 export async function getVolumeSlugs(): Promise<string[]> {
   try {
-    return (await getIssues()).filter((i) => i.published).map(issueSlug);
+    return (await getIssues()).map(issueSlug);
   } catch {
     return [];
   }
@@ -305,7 +322,7 @@ export type OjsIssueView = {
 /** One published volume with its table of contents, addressed by our slug. */
 export async function getIssueBySlug(slug: string): Promise<OjsIssueView | undefined> {
   try {
-    const match = (await getIssues()).find((i) => i.published && issueSlug(i) === slug);
+    const match = (await getIssues()).find((i) => issueSlug(i) === slug);
     if (!match) return undefined;
 
     // The list omits the table of contents; hydrate it.
@@ -323,7 +340,7 @@ export async function getIssueBySlug(slug: string): Promise<OjsIssueView | undef
 /** Every published article across every volume, for article pages. */
 export async function getAllArticles(): Promise<IssueArticle[]> {
   try {
-    const issues = (await getIssues()).filter((i) => i.published);
+    const issues = await getIssues();
     const results: IssueArticle[] = [];
 
     for (const summary of issues) {
@@ -373,7 +390,7 @@ export type IssueView = {
 export async function getCurrentIssueSlug(): Promise<string | undefined> {
   try {
     const issue = await getCurrentIssue();
-    return issue?.published ? issueSlug(issue) : undefined;
+    return issue ? issueSlug(issue) : undefined;
   } catch {
     return undefined;
   }
@@ -391,6 +408,7 @@ export async function getIssueView(slug: string): Promise<IssueView | undefined>
   const { issue, identification, articles } = found;
   const [p1, p2] = twoParagraphs(localize(issue.description));
   const isCurrent = (await getCurrentIssueSlug()) === slug;
+  const issn = issnLines(await getJournalIssn());
 
   return {
     identifier: identification,
@@ -409,8 +427,8 @@ export async function getIssueView(slug: string): Promise<IssueView | undefined>
       description: journal.issueDescription,
       cover: issueCover(issue),
       coverAlt: `${journal.title} Volume ${issue.volume} Number ${issue.number} cover`,
-      issnOnline: journal.issnOnline,
-      issnPrint: journal.issnPrint,
+      issnOnline: issn.online,
+      issnPrint: issn.print,
       file: issueFile(issue),
       downloadLabel: journal.downloadLabel,
       previewLabel: journal.previewLabel,
@@ -443,7 +461,7 @@ function toMonthlyDownloads(timeline: TimelinePoint[]): MonthlyDownloads[] {
  */
 export async function getArticleDetail(slug: string): Promise<ArticleDetail | undefined> {
   try {
-    const issues = (await getIssues()).filter((i) => i.published);
+    const issues = await getIssues();
 
     for (const summary of issues) {
       const issue = (await getIssue(summary.id)) ?? summary;

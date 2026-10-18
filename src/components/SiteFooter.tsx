@@ -123,7 +123,6 @@ export function SiteFooter() {
         <p>
           © {year} {content.copyright}
         </p>
-        <p className="font-bold">{content.hospital}</p>
       </div>
     </footer>
   );

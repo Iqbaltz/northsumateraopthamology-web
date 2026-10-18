@@ -1,6 +1,6 @@
 import type { BreadcrumbItem } from "@/components/Breadcrumb";
 import type { IssueHero } from "./IssueSections";
-import { issueArticles, journal } from "./journal";
+import { issnLines, issueArticles, journal, missingIssn } from "./journal";
 
 /** The issue /issues presents. Its articles cite it on their own pages. */
 export const currentIssue = {
@@ -28,8 +28,8 @@ const hero: IssueHero = {
   doi: "",
   cover: journal.cover,
   coverAlt: "JONSON Journal Volume 12 Number 1 cover",
-  issnOnline: journal.issnOnline,
-  issnPrint: journal.issnPrint,
+  issnOnline: issnLines(missingIssn).online,
+  issnPrint: issnLines(missingIssn).print,
   downloadLabel: journal.downloadLabel,
   previewLabel: journal.previewLabel,
   publishedOn: `Published: ${currentIssue.publishedOn}`,

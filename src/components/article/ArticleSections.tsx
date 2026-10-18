@@ -3,10 +3,11 @@ import Link from "next/link";
 import { ArticleCard } from "@/components/ArticleCard";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { CreativeCommonsBadge } from "@/components/CreativeCommonsBadge";
-import { articleMeta, coverSrc, journal, type IssueArticle } from "@/components/issues/journal";
+import { articleMeta, coverSrc, issnLines, journal, type IssueArticle } from "@/components/issues/journal";
 import { landingContent } from "@/components/landing/content";
 import { BookOpen } from "@/components/icons";
 import { button, outlineButton, shell } from "@/components/landing/styles";
+import { getJournalIssn } from "@/lib/ojs/view";
 import {
   articleContent,
   type AbstractPart,
@@ -47,8 +48,9 @@ function DoiLine({ doi, className = "" }: { doi: string; className?: string }) {
   );
 }
 
-export function ArticleHeroSection({ detail }: { detail: ArticleDetail }) {
+export async function ArticleHeroSection({ detail }: { detail: ArticleDetail }) {
   const { article, issue } = detail;
+  const issn = issnLines(await getJournalIssn());
   const license = landingContent.footer.license;
   // The download link saves the file; the same link without the flag opens it in the browser.
   const readHref = article.downloadHref.replace(/\?download$/, "");
@@ -108,9 +110,9 @@ export function ArticleHeroSection({ detail }: { detail: ArticleDetail }) {
                   {issue.citation}: <span className="uppercase">{journal.title}</span>
                 </Link>
                 <p className="mt-5 text-xs sm:text-sm leading-[1.6] text-[#0c0c0c] max-[700px]:mt-3">
-                  {journal.issnOnline}
+                  {issn.online}
                   <br />
-                  {journal.issnPrint}
+                  {issn.print}
                 </p>
               </div>
             </div>
