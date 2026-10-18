@@ -41,7 +41,7 @@ export const journal = {
   name: "JONSON: Journal of North Sumatera Ophthalmology Nexus",
   title: "Journal of North Sumatera Ophthalmology Nexus",
   languages: "English and Indonesian",
-  frequency: "Biannual (February and August)",
+  frequency: "Quarterly",
   peerReview: "Double-blind peer review",
   /** The journal's registered DOI prefix (e.g. "10.12345"); empty until one is assigned. */
   doiPrefix: "",

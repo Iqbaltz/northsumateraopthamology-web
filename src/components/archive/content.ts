@@ -7,7 +7,7 @@ export const archiveContent = {
   ] as BreadcrumbItem[],
   title: "Archive Catalog",
   description:
-    "Published biannually in February and August, JONSON disseminates original research articles, review articles, case reports, and other scientific contributions relevant to ophthalmology and visual science.",
+    "Published quarterly, JONSON disseminates original research articles, review articles, case reports, and other scientific contributions relevant to ophthalmology and visual science.",
   /** Three full rows of the four-column grid. */
   perPage: 12,
   articlesTitle: "ARTICLES FROM THIS ISSUE",

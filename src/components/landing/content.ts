@@ -127,7 +127,7 @@ export const landingContent = {
     kicker: "ABOUT THE JOURNAL",
     title: "A Global Platform for Ophthalmic Research",
     p1: "We publish high-quality original research, reviews, case reports, and clinical studies that contribute to the understanding and treatment of eye diseases and visual disorders.",
-    p2: "Published biannually in February and August, JONSON disseminates original research articles, review articles, case reports, and other scientific contributions relevant to ophthalmology and visual science.",
+    p2: "Published quarterly, JONSON disseminates original research articles, review articles, case reports, and other scientific contributions relevant to ophthalmology and visual science.",
     learnMore: "Learn More about JONSON",
     values: [
       "Open Access – Free for readers worldwide",

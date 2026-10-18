@@ -51,7 +51,7 @@ export const issuesContent = {
   catalog: {
     title: "Volume\nCatalog",
     description:
-      "Published biannually in February and August, JONSON disseminates original research articles, review articles, case reports, and other scientific contributions relevant to ophthalmology and visual science.",
+      "Published quarterly, JONSON disseminates original research articles, review articles, case reports, and other scientific contributions relevant to ophthalmology and visual science.",
     viewAll: "VIEW ALL VOLUMES",
     /** Shown in place of the volume cards while OJS has nothing published. */
     empty: "No volumes have been published yet.",

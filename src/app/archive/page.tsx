@@ -22,7 +22,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   return {
     title: page > 1 ? `Archive Catalog · Page ${page}` : "Archive Catalog",
     description:
-      "Every published volume of JONSON. Issued biannually in February and August with original research, review articles, and case reports in ophthalmology and visual science.",
+      "Every published volume of JONSON. Issued quarterly with original research, review articles, and case reports in ophthalmology and visual science.",
     alternates: {
       canonical: path,
     },
