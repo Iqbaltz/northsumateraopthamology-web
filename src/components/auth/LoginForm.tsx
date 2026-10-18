@@ -12,7 +12,8 @@ export function LoginForm() {
   const [state, formAction, pending] = useActionState(loginAction, initialState);
 
   return (
-    <form action={formAction} noValidate>
+    // Remounts after a rejected sign-in so the username stays filled in.
+    <form key={state.attempt ?? 0} action={formAction} noValidate>
       <AuthError message={state.error} />
 
       <div className="mb-4">
@@ -27,6 +28,7 @@ export function LoginForm() {
           required
           className={authFieldClass}
           placeholder="Your journal username"
+          defaultValue={state.values?.username}
         />
       </div>
 

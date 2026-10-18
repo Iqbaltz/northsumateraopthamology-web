@@ -14,6 +14,8 @@ export type AuthorResource = {
   title: string;
   text: string;
   href: string;
+  /** Set for files the browser should save rather than open. */
+  download?: boolean;
 };
 
 export type ArticleType = {
@@ -53,6 +55,9 @@ export const submissionAnchors = {
   privacy: "privacy",
   copyright: "copyright",
 } as const;
+
+/** Manuscript template served from `public/`, behind every "Download template" link. */
+export const manuscriptTemplateHref = "/Manuscript_template_Original_Article_Jonson.docx";
 
 export const submissionContent = {
   breadcrumb: [
@@ -114,7 +119,8 @@ export const submissionContent = {
       {
         title: "Jonson Journal Template",
         text: "Official templates for preparing your manuscript.",
-        href: "#",
+        href: manuscriptTemplateHref,
+        download: true,
       },
       {
         title: "Author Guidelines",

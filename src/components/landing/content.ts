@@ -6,7 +6,7 @@ import { ethicsPath } from "@/components/ethics/anchors";
 import { articlePath } from "@/components/issues/journal";
 import { policiesPath } from "@/components/policies/anchors";
 import { privacyPath } from "@/components/privacy/path";
-import { submissionAnchors } from "@/components/submission/content";
+import { manuscriptTemplateHref, submissionAnchors } from "@/components/submission/content";
 import { ojsLinks } from "@/lib/links";
 
 export type QuickLink = {
@@ -136,13 +136,14 @@ export const landingContent = {
       "Ethical Publishing – Transparency and integrity",
     ],
     issueKicker: "NEW ISSUE",
-    volumeTitle: "VOLUME 12\nNUMBER 1",
+    volumeTitle: "Vol. 12 No. 1 (2026): JONSON: Journal of North Sumatera Ophthalmology Nexus",
     publishDate: "June 2026",
     issueDescription:
       "Explore the latest research on retinal diseases, glaucoma, corneal disorders and advanced ophthalmic surgical techniques.",
     viewIssueButton: "VIEW ISSUE",
     submitBanner: "Submit your journal with us",
     downloadTemplate: "Download Jonson Journal Template",
+    templateHref: manuscriptTemplateHref,
     coverAlt: "JONSON Journal Volume 12 Issue 1 Cover",
   },
   indexing: {

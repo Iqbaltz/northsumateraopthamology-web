@@ -69,6 +69,7 @@ function TemplateBanner({ inset = false, className = "" }: { inset?: boolean; cl
       <a
         className="flex items-center gap-1.5 rounded-sm text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
         href={content.href}
+        download
       >
         {content.download}
         <Image className="size-[18px] sm:size-5" src="/figma/download.svg" alt="" width={20} height={20} />

@@ -68,7 +68,7 @@ export function IssueHeroSection({ issue }: { issue: IssueHero }) {
                 <p className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.14em] text-[#5c5c5c]">
                   {content.kicker}
                 </p>
-                <h1 className="mt-2.5 mb-1.5 text-xl sm:text-[32px] font-bold leading-tight whitespace-pre-line text-[#0c0c0c]">
+                <h1 className="mt-2.5 mb-2 text-lg sm:text-[26px] font-bold leading-tight text-[#0c0c0c]">
                   {content.volumeTitle}
                 </h1>
                 <p className="mb-3 text-base sm:text-xl font-semibold leading-tight text-[#0c0c0c]">
@@ -138,7 +138,7 @@ export function IssueHeroSection({ issue }: { issue: IssueHero }) {
             <p className="text-xs sm:text-sm font-semibold text-[#07868f]">
               {content.publishedOn}
             </p>
-            <h2 className="mt-3 text-lg sm:text-2xl font-bold leading-tight uppercase text-[#0c0c0c]">
+            <h2 className="mt-3 text-lg sm:text-2xl font-bold leading-tight text-[#0c0c0c]">
               {content.heading}
             </h2>
             <p className="mt-4 text-sm leading-6 text-[#4a4a4a]">{content.p1}</p>
@@ -176,12 +176,7 @@ export function IssueArticlesSection({
         </h2>
         <div className="grid grid-cols-4 gap-6 max-[1200px]:grid-cols-2 max-[700px]:grid-cols-1">
           {items.map((article) => (
-            <ArticleCard
-              key={article.slug}
-              article={article}
-              meta={articleMeta(article)}
-              withImage={false}
-            />
+            <ArticleCard key={article.slug} article={article} meta={articleMeta(article)} />
           ))}
         </div>
       </div>

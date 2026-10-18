@@ -22,7 +22,7 @@ const hero: IssueHero = {
     { label: `${currentIssue.identifier}: ${journal.name}`, href: currentIssue.href },
   ] as BreadcrumbItem[],
   kicker: "NEW ISSUE",
-  volumeTitle: "VOLUME 12\nNUMBER 1",
+  volumeTitle: `${currentIssue.citation}: ${journal.name}`,
   publishMonth: "June 2026",
   description: journal.issueDescription,
   doi: "",
@@ -33,7 +33,7 @@ const hero: IssueHero = {
   downloadLabel: journal.downloadLabel,
   previewLabel: journal.previewLabel,
   publishedOn: `Published: ${currentIssue.publishedOn}`,
-  heading: "VOLUME 12 – NUMBER 1",
+  heading: `${currentIssue.citation}: ${journal.name}`,
   p1: "This issue brings together recent clinical and scientific contributions in ophthalmology, with a focus on advances in the diagnosis, management, and treatment of eye diseases.",
   p2: "Featuring original research, clinical studies, review articles, and case reports covering retinal diseases, glaucoma, corneal disorders, and other conditions affecting ocular health and vision.",
   facts: [

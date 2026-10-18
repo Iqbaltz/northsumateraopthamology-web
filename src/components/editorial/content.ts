@@ -13,7 +13,7 @@ export type BoardMember = {
   affiliation?: string;
   bio: string;
   email: string;
-  /** Profile URLs; a badge without one renders as a plain, unlinked mark. */
+  /** Profile URLs; only the services listed here get a badge. */
   profiles: Partial<Record<ProfileKind, string>>;
 };
 
@@ -24,7 +24,12 @@ const members: BoardMember[] = [
     affiliation: "Universitas Sumatera Utara",
     bio: `dr. Endi T. Pasaribu, M.si. Med. Sp.B. Subsp.Onk (K) serves as the Editor-in-Chief of ${journal.name}, overseeing the journal's editorial direction, scholarly standards, and publication policies. The Editor-in-Chief is responsible for ensuring that editorial decisions are made independently, fairly, and in accordance with the journal's aims, scope, and publication ethics.`,
     email: "endi_pasaribu@usu.ac.id",
-    profiles: {},
+    profiles: {
+      scopus: "https://www.scopus.com/authid/detail.uri?authorId=58186375100",
+      orcid: "https://orcid.org/0000-0002-6770-4681",
+      sinta: "https://sinta.kemdiktisaintek.go.id/authors/profile/6744454",
+      scholar: "https://scholar.google.com/citations?user=nDr58rgAAAAJ&hl=id",
+    },
   },
   {
     role: "Managing Editor",
@@ -58,7 +63,7 @@ export const editorialContent = {
     title: "Meet the Editorial Team",
     description: `Meet the editors and editorial board members responsible for maintaining the scholarly quality, integrity, and editorial standards of ${journal.name}.`,
     stats: [
-      { label: "Editorial Leadership", value: `${members.length} Editors & Board Members` },
+      { label: "Editorial Leadership", value: `${members.length} Board Members` },
       { label: "Peer Review", value: journal.peerReview },
       { label: "Publication Frequency", value: journal.frequency },
     ],

@@ -30,6 +30,15 @@ const CSRF_PATTERN = /name="csrfToken"[^>]*value="([^"]+)"/;
 /** OJS re-renders the form with this block when it rejects a submission. */
 const ERROR_PATTERN = /class="[^"]*(?:pkp_form_error|form__error)[^"]*"[^>]*>([\s\S]{0,300}?)</g;
 
+/**
+ * Under that block's heading, OJS lists each problem:
+ * `<ul class="pkp_form_error_list"><li><a href="#password">The passwords do not match.</a></li></ul>`.
+ */
+const ERROR_LIST_PATTERN = /<ul[^>]*class="[^"]*pkp_form_error_list[^"]*"[^>]*>([\s\S]*?)<\/ul>/;
+
+/** The heading above that list; it says nothing about what went wrong. */
+const ERROR_HEADING = /^errors occurred processing this form:?$/i;
+
 function stripTags(html: string) {
   return html
     .replace(/<[^>]*>/g, " ")
@@ -91,9 +100,16 @@ async function postForm(path: string, sessionId: string, body: URLSearchParams) 
  * with validation errors.
  */
 function firstFormError(html: string, fallback: string) {
-  const matches = [...html.matchAll(ERROR_PATTERN)]
+  const list = html.match(ERROR_LIST_PATTERN)?.[1] ?? "";
+  const listed = [...list.matchAll(/<li[^>]*>([\s\S]*?)<\/li>/g)]
     .map((match) => stripTags(match[1]))
     .filter(Boolean);
+  if (listed.length) return listed.join(" ");
+
+  // The login form shows a single message instead of a list.
+  const matches = [...html.matchAll(ERROR_PATTERN)]
+    .map((match) => stripTags(match[1]))
+    .filter((message) => message && !ERROR_HEADING.test(message));
   return matches[0] || fallback;
 }
 
@@ -142,7 +158,14 @@ export type RegistrationFields = {
   emailConsent: boolean;
 };
 
-export async function register(fields: RegistrationFields): Promise<AuthResult> {
+/**
+ * With email verification on (OJS `require_validation`), OJS creates the account
+ * disabled, signs no one in, and answers with a "Registration awaiting
+ * verification" message page instead of redirecting.
+ */
+export type RegisterResult = AuthResult | { ok: true; awaitingVerification: true };
+
+export async function register(fields: RegistrationFields): Promise<RegisterResult> {
   let form;
   try {
     form = await openForm("user/register");
@@ -168,6 +191,11 @@ export async function register(fields: RegistrationFields): Promise<AuthResult> 
 
   if (response.status !== 302) {
     const html = await response.text();
+    // The form is gone and a message page took its place: the account exists and
+    // waits for its email link.
+    if (!html.includes('id="register"') && html.includes("page_message")) {
+      return { ok: true, awaitingVerification: true };
+    }
     return {
       ok: false,
       error: firstFormError(html, "Registration could not be completed. Please check your details."),

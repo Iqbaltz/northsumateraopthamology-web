@@ -4,19 +4,20 @@ import { shell } from "@/components/landing/styles";
 import { PageHero } from "@/components/PageHero";
 import { editorialContent, profileKinds, type BoardMember, type ProfileKind } from "./content";
 
-const badgeFrameClass =
-  "inline-flex h-10 w-[104px] items-center justify-center rounded-md border border-[#d5e0e2] bg-white px-2.5";
-
 /** The service's mark: a logo file where we have one, otherwise its wordmark set in type. */
 function ProfileMark({ kind }: { kind: ProfileKind }) {
   const label = editorialContent.profileLabels[kind];
 
   switch (kind) {
     case "scopus":
-      return <span className="text-[19px] font-medium tracking-tight text-[#e9711c]">{label}</span>;
+      return (
+        <span className="text-[19px] sm:text-[27px] font-medium tracking-tight text-[#e9711c]">
+          {label}
+        </span>
+      );
     case "orcid":
       return (
-        <span className="text-[18px] font-medium tracking-[0.02em] text-[#8d9194]">
+        <span className="text-[18px] sm:text-[26px] font-medium tracking-[0.02em] text-[#8d9194]">
           <span aria-hidden>
             ORC<span className="text-[#a6ce39]">iD</span>
           </span>
@@ -26,7 +27,7 @@ function ProfileMark({ kind }: { kind: ProfileKind }) {
     case "sinta":
       return (
         <Image
-          className="h-7 w-auto object-contain"
+          className="h-7 sm:h-8 w-auto object-contain"
           src="/figma/sinta.webp"
           alt={label}
           width={136}
@@ -36,7 +37,7 @@ function ProfileMark({ kind }: { kind: ProfileKind }) {
     case "scholar":
       return (
         <Image
-          className="h-8 w-auto object-contain"
+          className="h-8 sm:h-9 w-auto object-contain"
           src="/figma/google-scholar.webp"
           alt={label}
           width={138}
@@ -46,20 +47,10 @@ function ProfileMark({ kind }: { kind: ProfileKind }) {
   }
 }
 
-function ProfileBadge({ member, kind }: { member: BoardMember; kind: ProfileKind }) {
-  const href = member.profiles[kind];
-
-  if (!href) {
-    return (
-      <span className={badgeFrameClass}>
-        <ProfileMark kind={kind} />
-      </span>
-    );
-  }
-
+function ProfileBadge({ member, kind, href }: { member: BoardMember; kind: ProfileKind; href: string }) {
   return (
     <a
-      className={`${badgeFrameClass} transition-[border-color,box-shadow,transform] duration-200 hover:border-[#07868f] hover:shadow-[0_8px_18px_-12px_rgba(7,134,143,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] motion-safe:hover:-translate-y-0.5`}
+      className="inline-flex h-10 w-[104px] items-center justify-center rounded-md border border-[#d5e0e2] bg-white px-2.5 transition-[border-color,box-shadow,transform] duration-200 hover:border-[#07868f] hover:shadow-[0_8px_18px_-12px_rgba(7,134,143,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] motion-safe:hover:-translate-y-0.5 sm:h-[50px] sm:w-[143px]"
       href={href}
       target="_blank"
       rel="noopener noreferrer"
@@ -78,6 +69,7 @@ export function EditorialHeroSection() {
       breadcrumb={editorialContent.breadcrumb}
       title={content.title}
       description={content.description}
+      wide
     >
       <dl className="mt-7 grid grid-cols-3 gap-6 border-t border-[#d5e0e2] pt-6 max-[700px]:grid-cols-1 max-[700px]:gap-4">
         {content.stats.map((stat) => (
@@ -92,14 +84,20 @@ export function EditorialHeroSection() {
 }
 
 function MemberCard({ member }: { member: BoardMember }) {
+  // Members without a profile on a service get no badge for it, as in the design.
+  const profiles = profileKinds.flatMap((kind) => {
+    const href = member.profiles[kind];
+    return href ? [{ kind, href }] : [];
+  });
+
   return (
     <article
       className="overflow-hidden rounded-xl border border-[#e3eaef] bg-white shadow-[0_14px_30px_-24px_rgba(0,0,0,0.25)]"
       data-reveal
     >
       <div className="p-6 sm:p-8">
-        <p className="text-sm sm:text-base font-semibold text-[#3f3f3f]">{member.role}</p>
-        <h3 className="mt-1.5 text-xl sm:text-2xl font-bold leading-snug text-[#0c0c0c]">
+        <p className="text-base sm:text-xl font-medium text-[#0c0c0c]">{member.role}</p>
+        <h3 className="mt-1.5 sm:mt-2 text-xl sm:text-[28px] font-bold leading-snug text-[#0c0c0c]">
           {member.name}
         </h3>
         {member.affiliation && (
@@ -109,13 +107,15 @@ function MemberCard({ member }: { member: BoardMember }) {
       </div>
 
       <div className="mx-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-t border-[#e3eaef] py-5 sm:mx-8">
-        <ul className="flex flex-wrap gap-2.5" aria-label={`${member.name}'s research profiles`}>
-          {profileKinds.map((kind) => (
-            <li key={kind}>
-              <ProfileBadge member={member} kind={kind} />
-            </li>
-          ))}
-        </ul>
+        {profiles.length > 0 && (
+          <ul className="flex flex-wrap gap-2.5" aria-label={`${member.name}'s research profiles`}>
+            {profiles.map(({ kind, href }) => (
+              <li key={kind}>
+                <ProfileBadge member={member} kind={kind} href={href} />
+              </li>
+            ))}
+          </ul>
+        )}
         <a
           className="flex min-w-0 items-center gap-2 rounded-sm text-sm font-medium text-[#07868f] transition-colors duration-200 hover:text-[#066e75] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [overflow-wrap:anywhere]"
           href={`mailto:${member.email}`}
@@ -130,12 +130,12 @@ function MemberCard({ member }: { member: BoardMember }) {
 
 export function EditorialTeamSection() {
   return (
-    <section className="bg-white pt-10 sm:pt-14 pb-14 sm:pb-20" aria-labelledby="editorial-team">
+    <section className="bg-white pt-10 sm:pt-14 pb-14 sm:pb-28" aria-labelledby="editorial-team">
       <div className={shell}>
         <h2 id="editorial-team" className="sr-only">
           {editorialContent.teamHeading}
         </h2>
-        <div className="grid gap-6 sm:gap-8">
+        <div className="grid gap-6 sm:gap-14">
           {editorialContent.members.map((member) => (
             <MemberCard key={member.email} member={member} />
           ))}
@@ -149,7 +149,7 @@ export function EditorialIndependenceSection() {
   const content = editorialContent.independence;
 
   return (
-    <section className="bg-white pb-14 sm:pb-20">
+    <section className="bg-white pb-14 sm:pb-28">
       <div className={shell}>
         <div data-reveal>
           <h2 className="text-2xl sm:text-[28px] font-bold leading-tight text-[#0c0c0c]">
@@ -166,7 +166,7 @@ export function EditorialContactSection() {
   const content = editorialContent.contact;
 
   return (
-    <section className="bg-white pb-16 sm:pb-24">
+    <section className="bg-white pb-14 sm:pb-16">
       <div className={shell}>
         <EditorialOfficeCard title={content.title} text={content.text} cta={content.cta} withIcon />
       </div>

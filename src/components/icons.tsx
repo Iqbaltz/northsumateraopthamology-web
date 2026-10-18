@@ -75,6 +75,17 @@ export function Envelope({ className = "" }: IconProps) {
   );
 }
 
+/** An envelope with a check mark: "we've sent you an email". */
+export function EnvelopeCheck({ className = "" }: IconProps) {
+  return (
+    <svg {...strokeProps} strokeWidth={1.8} className={`size-14 shrink-0 ${className}`}>
+      <path d="M12.5 19H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6" />
+      <path d="m3.5 6 8.5 7 8.5-7" />
+      <path d="m15.5 18.5 2.2 2.2 4.3-4.4" />
+    </svg>
+  );
+}
+
 export function XMark({ className = "" }: IconProps) {
   return (
     <svg {...strokeProps} strokeWidth={2.2} className={`size-4 shrink-0 ${className}`}>

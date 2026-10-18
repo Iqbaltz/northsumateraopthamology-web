@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { aboutPath } from "@/components/about/anchors";
 import { coverSrc, issnLines, journal } from "@/components/issues/journal";
-import { submissionAnchors } from "@/components/submission/content";
 import { getJournalIssn, type CurrentIssueSummary } from "@/lib/ojs/view";
 import { indexingPartners, landingContent } from "./content";
 import { button, kicker, shell, textLink } from "./styles";
@@ -81,7 +80,7 @@ export async function AboutJournalSection({ issue }: { issue?: CurrentIssueSumma
             </div>
             <div className="flex flex-col justify-center">
               <p className={kicker}>{content.issueKicker}</p>
-              <h3 className="mt-2 mb-1 font-sans text-xl sm:text-[32px] font-bold leading-tight whitespace-pre-line text-[#0c0c0c]">
+              <h3 className="mt-2 mb-2 font-sans text-base sm:text-[26px] font-bold leading-tight text-[#0c0c0c] [overflow-wrap:anywhere]">
                 {issue?.volumeTitle ?? content.volumeTitle}
               </h3>
               <h4 className="mb-2 text-base sm:text-2xl font-semibold leading-tight text-[#07868f]">
@@ -117,9 +116,10 @@ export async function AboutJournalSection({ issue }: { issue?: CurrentIssueSumma
               />
               {content.submitBanner}
             </span>
-            <Link
+            <a
               className="flex items-center gap-1.5 rounded-sm text-xs sm:text-sm font-bold text-[#07868f] transition-colors duration-300 hover:text-[#066e75] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] [&_img]:transition-transform [&_img]:duration-300 motion-safe:hover:[&_img]:translate-y-0.5"
-              href={`/submission#${submissionAnchors.resources}`}
+              href={content.templateHref}
+              download
             >
               {content.downloadTemplate}{" "}
               <Image
@@ -129,7 +129,7 @@ export async function AboutJournalSection({ issue }: { issue?: CurrentIssueSumma
                 height={18}
                 className="sm:size-6"
               />
-            </Link>
+            </a>
           </div>
         </div>
       </div>

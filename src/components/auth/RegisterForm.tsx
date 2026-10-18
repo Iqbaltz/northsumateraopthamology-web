@@ -21,9 +21,11 @@ export function RegisterForm({ countries }: { countries: { value: string; label:
   }, [state.registered, router]);
 
   const busy = pending || Boolean(state.registered);
+  // After a rejected submission the form remounts with what was typed (passwords aside).
+  const values = state.values ?? {};
 
   return (
-    <form action={formAction} noValidate>
+    <form key={state.attempt ?? 0} action={formAction} noValidate>
       <AuthError message={state.error} />
 
       <div className="mb-4 grid gap-4 sm:grid-cols-2">
@@ -31,13 +33,24 @@ export function RegisterForm({ countries }: { countries: { value: string; label:
           <label className={authLabelClass} htmlFor="givenName">
             First name
           </label>
-          <input id="givenName" name="givenName" required className={authFieldClass} />
+          <input
+            id="givenName"
+            name="givenName"
+            required
+            className={authFieldClass}
+            defaultValue={values.givenName}
+          />
         </div>
         <div>
           <label className={authLabelClass} htmlFor="familyName">
             Last name
           </label>
-          <input id="familyName" name="familyName" className={authFieldClass} />
+          <input
+            id="familyName"
+            name="familyName"
+            className={authFieldClass}
+            defaultValue={values.familyName}
+          />
         </div>
       </div>
 
@@ -50,6 +63,7 @@ export function RegisterForm({ countries }: { countries: { value: string; label:
           name="affiliation"
           required
           className={authFieldClass}
+          defaultValue={values.affiliation}
           placeholder="Your institution"
         />
       </div>
@@ -58,7 +72,13 @@ export function RegisterForm({ countries }: { countries: { value: string; label:
         <label className={authLabelClass} htmlFor="country">
           Country
         </label>
-        <select id="country" name="country" required className={authFieldClass} defaultValue="">
+        <select
+          id="country"
+          name="country"
+          required
+          className={authFieldClass}
+          defaultValue={values.country ?? ""}
+        >
           <option value="" disabled>
             Select your country
           </option>
@@ -81,6 +101,7 @@ export function RegisterForm({ countries }: { countries: { value: string; label:
           autoComplete="email"
           required
           className={authFieldClass}
+          defaultValue={values.email}
         />
       </div>
 
@@ -94,6 +115,7 @@ export function RegisterForm({ countries }: { countries: { value: string; label:
           autoComplete="username"
           required
           className={authFieldClass}
+          defaultValue={values.username}
         />
       </div>
 
@@ -132,6 +154,7 @@ export function RegisterForm({ countries }: { countries: { value: string; label:
           name="privacyConsent"
           value="1"
           required
+          defaultChecked={values.privacyConsent === "1"}
           className="mt-1 size-4 shrink-0 accent-[#07868f]"
         />
         <span>
@@ -145,6 +168,7 @@ export function RegisterForm({ countries }: { countries: { value: string; label:
           type="checkbox"
           name="emailConsent"
           value="1"
+          defaultChecked={values.emailConsent === "1"}
           className="mt-1 size-4 shrink-0 accent-[#07868f]"
         />
         <span>Yes, I would like to be notified of new publications and announcements.</span>

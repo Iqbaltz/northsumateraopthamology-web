@@ -12,12 +12,15 @@ export function PageHero({
   description,
   children,
   className = "",
+  wide = false,
 }: {
   breadcrumb: BreadcrumbItem[];
   title: string;
   description: React.ReactNode;
   children?: React.ReactNode;
   className?: string;
+  /** Run the intro and `children` the full shell width, flush with the content below. */
+  wide?: boolean;
 }) {
   return (
     <section
@@ -26,7 +29,7 @@ export function PageHero({
       <div className={shell}>
         <Breadcrumb items={breadcrumb} />
 
-        <div className="mt-8 sm:mt-10 max-w-[1100px]" data-reveal>
+        <div className={`mt-8 sm:mt-10 ${wide ? "" : "max-w-[1100px]"}`} data-reveal>
           <h1 className="font-serif text-[32px] sm:text-[40px] lg:text-[44px] font-bold leading-[1.15] text-[#0c0c0c]">
             {title}
           </h1>

@@ -36,7 +36,7 @@ export const aboutContent = {
   templateBanner: {
     text: landingContent.aboutJournal.submitBanner,
     download: landingContent.aboutJournal.downloadTemplate,
-    href: "#",
+    href: landingContent.aboutJournal.templateHref,
   },
   aimsScope: {
     kicker: "ABOUT THE JOURNAL",

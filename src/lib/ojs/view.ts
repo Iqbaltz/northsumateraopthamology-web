@@ -168,7 +168,7 @@ export async function getLatestArticles(limit: number): Promise<ArticlePreview[]
 }
 
 export type CurrentIssueSummary = {
-  /** "VOLUME 1\nNUMBER 1" — the two-line heading the issue card shows. */
+  /** The issue card heading: OJS's identification, as the article page shows it. */
   volumeTitle: string;
   publishMonth: string;
   description: string;
@@ -179,17 +179,31 @@ export type CurrentIssueSummary = {
   coverAlt: string;
 };
 
+/**
+ * The issue's full name as OJS shows it, e.g. "Vol. 1 No. 02 (2026): <issue title>",
+ * falling back to the same "Vol. 1 No. 02 (2026)" shape when OJS sends none.
+ */
+function issueTitle(issue: Issue): string {
+  return (
+    localize(issue.identification) ||
+    [
+      issue.volume && `Vol. ${issue.volume}`,
+      issue.number && `No. ${issue.number}`,
+      issue.year && `(${issue.year})`,
+    ]
+      .filter(Boolean)
+      .join(" ")
+  );
+}
+
 /** Headline facts about the issue OJS currently marks as current. */
 export async function getCurrentIssueSummary(): Promise<CurrentIssueSummary | undefined> {
   try {
     const issue = await getCurrentIssue();
     if (!issue) return undefined;
 
-    const volume = issue.volume ? `VOLUME ${issue.volume}` : "";
-    const number = issue.number ? `NUMBER ${issue.number}` : "";
-
     return {
-      volumeTitle: [volume, number].filter(Boolean).join("\n") || localize(issue.identification),
+      volumeTitle: issueTitle(issue),
       publishMonth: formatDate(issue.datePublished),
       // Full text; the card clamps it to five lines.
       description: plainText(localize(issue.description)) || journal.issueDescription,
@@ -217,7 +231,7 @@ function toVolumeCard(issue: Issue, articleCount?: number): VolumeCatalogItem {
   return {
     cover: issueCover(issue),
     alt: `${journal.title} Volume ${issue.volume} Number ${issue.number} cover`,
-    label: `VOLUME ${issue.volume} • NUMBER ${issue.number}`,
+    label: issueTitle(issue),
     published: `Published ${formatDate(issue.datePublished)}`,
     href: `/archive/${issueSlug(issue)}`,
     articleCount,
@@ -328,7 +342,7 @@ export async function getIssueBySlug(slug: string): Promise<OjsIssueView | undef
     const issue = (await getIssue(match.id)) ?? match;
     return {
       issue,
-      identification: localize(issue.identification),
+      identification: issueTitle(issue),
       articles: (issue.articles ?? []).map((article) => toIssueArticle(issue, article)),
     };
   } catch {
@@ -421,7 +435,7 @@ export async function getIssueView(slug: string): Promise<IssueView | undefined>
       ],
       kicker: isCurrent ? "NEW ISSUE" : "ARCHIVED",
       doi: doiUrl(issue.doiObject),
-      volumeTitle: `VOLUME ${issue.volume}\nNUMBER ${issue.number}`,
+      volumeTitle: identification,
       publishMonth: formatDate(issue.datePublished),
       description: journal.issueDescription,
       cover: issueCover(issue),
@@ -432,7 +446,7 @@ export async function getIssueView(slug: string): Promise<IssueView | undefined>
       downloadLabel: journal.downloadLabel,
       previewLabel: journal.previewLabel,
       publishedOn: `Published: ${formatDate(issue.datePublished)}`,
-      heading: `VOLUME ${issue.volume} – NUMBER ${issue.number}`,
+      heading: identification,
       p1: p1 || journal.issueDescription,
       p2,
       facts: [

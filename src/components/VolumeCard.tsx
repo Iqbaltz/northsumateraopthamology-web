@@ -30,7 +30,7 @@ export function VolumeCard({ volume }: { volume: VolumeCatalogItem }) {
         />
       </div>
       <div className="border-t border-[#eef1f3] px-4 py-5 sm:px-5 sm:py-6">
-        <p className="text-xs sm:text-sm font-bold uppercase tracking-[0.04em] text-[#0c0c0c]">
+        <p className="text-xs sm:text-sm font-bold leading-snug text-[#0c0c0c]">
           {volume.label}
         </p>
         {volume.articleCount !== undefined && (
