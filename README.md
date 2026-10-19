@@ -7,10 +7,10 @@ Design tokens are ported from the Ideko template (primary `#FFCF01`, dark
 
 ## Architecture (hybrid)
 
-Next.js owns the **branded public pages** — home, issue archive, issue TOC, and
-article landing — and reads journal data from the OJS REST API **server-side**.
-Everything OJS renders itself (full-text galleys/PDF viewer, search, login,
-registration, submissions) stays on OJS via **deep links** (see `src/lib/links.ts`).
+Next.js owns the **branded public pages** — home, issue archive, issue TOC,
+article landing, and article search — and reads journal data from the OJS REST
+API **server-side**. Everything OJS renders itself (full-text galleys/PDF viewer,
+login, registration, submissions) stays on OJS via **deep links** (see `src/lib/links.ts`).
 
 ```
 src/
@@ -18,7 +18,8 @@ src/
   components/          SiteHeader, SiteFooter, Button, *Card, GalleyLinks, Container
   lib/
     config.ts          env-driven config (server-only secrets + public deep-link URL)
-    links.ts           OJS deep links (search/login/submit/galley/...)
+    links.ts           OJS deep links (login/submit/galley/...)
+    search.ts          article search: matching, ranking, paging (/search)
     ojs/               REST data layer: client (Bearer), endpoints, types, fixtures
 ```
 
