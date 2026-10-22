@@ -156,6 +156,8 @@ Relevant code:
 |---|---|
 | `GET {journal}/whoami` | Status JSON. CORS only for `https://` origins on `northsumateraophthalmology.com` or its subdomains. `Cache-Control: no-store`. |
 | `POST {journal}/whoami/signOut` | Fields `csrfToken`, `returnTo`. Signs out when the token matches, then redirects to `returnTo` if it is on the same allowed domain, else to the home page. |
+| `GET {journal}/whoami/activation?id=…&key=…` | Where a new account's activation link stands: `{"status": "pending" \| "activated" \| "expired" \| "invalid"}`. Changes nothing. |
+| `POST {journal}/whoami/activation` | Fields `id`, `key`. Activates the account if the link is still `pending`, then answers as above. See [Account activation](#account-activation). |
 
 OJS's own `login/signOut` can only redirect within the OJS host, hence the second
 endpoint. The plugin also hooks `Request::redirect` so that OJS's own sign-out
@@ -176,6 +178,54 @@ serve the app from a subdomain of the shared domain:
 2. `npx next dev --experimental-https --hostname local.northsumateraophthalmology.com`
 3. Sign in on the journal, then open `https://local.northsumateraophthalmology.com:3000`
    (the generated certificate is issued for `localhost`, so accept the warning).
+
+## Account activation
+
+With email verification on, OJS 3.5 creates a new account disabled and emails a
+link to `{journal}/invitation/accept?id=…&key=…`. Left alone, that opens OJS's own
+"Confirm and activate your account" page, then its "Thank you for activating"
+page and its own login, all in the default OJS theme. With the plugin installed
+the whole journey stays on this site:
+
+```
+email link  {journal}/invitation/accept?id&key
+   │  jonsonSession: a registration link? → 302
+   ▼
+/register/activate?id&key                       ← GET whoami/activation (status only)
+   │  pending: Activate Account button (a form, so mail scanners can't use the link up)
+   ▼
+server action  → POST whoami/activation         ← activates the account
+   │  activated → /login?activated  ("Your account is now active")
+   └  expired / invalid → back to /register/activate, which says which
+```
+
+The page also covers a link opened again later: already active → Sign in;
+expired or broken → contact the editorial office. Only registration links are
+redirected. Editor and reviewer invitations use the same `invitation/accept` URL
+and still go to OJS.
+
+The id and key in the link are the only credential, as they are for OJS's own
+link, so the endpoint takes no session or CSRF token. It is called from this
+site's server, so it sends no CORS headers.
+
+Relevant code:
+
+- `ojs-plugins/jonsonSession/` — `redirectActivationLink` and `activation`
+- `src/lib/ojs/activation.ts` — calls the endpoint
+- `src/app/register/activate/page.tsx`, `src/components/auth/ActivateForm.tsx`
+- `activateAction` in `src/lib/auth/actions.ts`
+
+The branded page's address is `JonsonSessionPlugin::ACTIVATE_URL`, which must
+match `ACTIVATE_PATH` in `src/lib/auth/registration.ts`. Check it after
+installing the plugin (version 1.1.0.0 or later):
+
+```bash
+curl -s "https://journal.northsumateraophthalmology.com/index.php/JONSON/whoami/activation?id=1&key=x"
+```
+
+Expect `{"status":"invalid"}`. An HTML 404 means OJS is still running the older
+plugin. Before the plugin is updated, the email link keeps opening OJS's own
+pages, so nothing breaks in the meantime.
 
 ## Verified
 

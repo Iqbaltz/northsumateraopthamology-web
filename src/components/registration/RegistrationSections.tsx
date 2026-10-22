@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ActivateForm } from "@/components/auth/ActivateForm";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { EnvelopeCheck } from "@/components/icons";
-import { shell } from "@/components/landing/styles";
-import { checkEmailContent, type NextStep } from "./content";
+import { button, shell } from "@/components/landing/styles";
+import type { ActivationLink, ActivationStatus } from "@/lib/auth/registration";
+import { activateContent, checkEmailContent, type NextStep } from "./content";
 
 /** A whole-row link: title and line on the left, the teal call to action on the right. */
 function NextStepCard({ step }: { step: NextStep }) {
@@ -66,6 +68,62 @@ export function CheckEmailSection({ email }: { email?: string }) {
         <p className="mt-7 text-base leading-[26px] text-[#3f3f3f]" data-reveal>
           {content.closing}
         </p>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * The page the confirmation email's link opens. A pending link gets the Activate
+ * Account button; any other gets what happened and a way forward.
+ */
+export function ActivateSection({
+  link,
+  status,
+}: {
+  link: ActivationLink;
+  status: ActivationStatus;
+}) {
+  const content = activateContent;
+  const outcome = status === "pending" ? null : content.outcomes[status];
+  // On narrow screens the address wraps after the @ rather than mid-domain.
+  const [mailbox, domain] = content.email.split("@");
+
+  return (
+    <section className="bg-[linear-gradient(180deg,#eef3f5_0%,#f8fbfb_100%)] pt-8 pb-16 sm:pb-24">
+      <div className={shell}>
+        <Breadcrumb items={content.breadcrumb} />
+
+        <div className="mt-10 sm:mt-14" data-reveal>
+          <h1 className="font-serif text-[30px] sm:text-[36px] lg:text-[40px] font-bold leading-[1.15] text-[#0c0c0c]">
+            {outcome ? outcome.title : content.title}
+          </h1>
+          {outcome && (
+            <p className="mt-4 max-w-[760px] text-base leading-[26px] text-[#3f3f3f]">{outcome.text}</p>
+          )}
+
+          <div className="mt-6">
+            {outcome ? (
+              <Link href={outcome.cta.href} className={`${button} uppercase`}>
+                {outcome.cta.label}
+              </Link>
+            ) : (
+              <ActivateForm link={link} label={content.submit} busyLabel={content.submitting} />
+            )}
+          </div>
+
+          <p className="mt-7 text-base leading-[26px] text-[#3f3f3f]">
+            {content.assistance}{" "}
+            <a
+              className="rounded-sm font-semibold text-[#07868f] [overflow-wrap:anywhere] transition-colors duration-200 hover:text-[#066e75] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07868f] focus-visible:ring-offset-2"
+              href={`mailto:${content.email}`}
+            >
+              {mailbox}@<wbr />
+              {domain}
+            </a>
+            .
+          </p>
+        </div>
       </div>
     </section>
   );

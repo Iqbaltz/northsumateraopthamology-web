@@ -49,6 +49,18 @@ export function AuthShell({
   );
 }
 
+/** Good news above a form, e.g. that a new account is now active. */
+export function AuthNotice({ message }: { message: string }) {
+  return (
+    <p
+      role="status"
+      className="mb-5 rounded-lg border border-[#b9dcdd] bg-[#eef7f7] px-4 py-3 text-sm text-[#05666d]"
+    >
+      {message}
+    </p>
+  );
+}
+
 export function AuthError({ message }: { message?: string }) {
   if (!message) return null;
   return (

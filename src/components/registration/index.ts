@@ -1,2 +1,2 @@
-export { CheckEmailSection } from "./RegistrationSections";
-export { checkEmailContent, type NextStep } from "./content";
+export { ActivateSection, CheckEmailSection } from "./RegistrationSections";
+export { activateContent, checkEmailContent, type ActivationOutcome, type NextStep } from "./content";

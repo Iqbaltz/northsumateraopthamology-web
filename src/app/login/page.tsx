@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AuthShell } from "@/components/auth/AuthShell";
+import { AuthNotice, AuthShell } from "@/components/auth/AuthShell";
 import { LoginForm } from "@/components/auth/LoginForm";
 
 export const metadata: Metadata = {
@@ -10,7 +10,14 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
-export default function LoginPage() {
+type PageProps = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export default async function LoginPage({ searchParams }: PageProps) {
+  // Where the activation page sends a just-activated account (ACTIVATED_LOGIN_PATH).
+  const activated = (await searchParams).activated !== undefined;
+
   return (
     <AuthShell
       kicker="JOURNAL ACCESS"
@@ -22,6 +29,9 @@ export default function LoginPage() {
         href: "/register",
       }}
     >
+      {activated && (
+        <AuthNotice message="Your account is now active. Sign in with the username and password you registered with." />
+      )}
       <LoginForm />
     </AuthShell>
   );
