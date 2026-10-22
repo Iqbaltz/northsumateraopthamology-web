@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition, type ComponentProps, type ReactNode } from "react";
 import { Chevron, UserCircle } from "@/components/icons";
 import { searchContent, type ArticleType, type SearchValues } from "./content";
-import { DateField, fieldClass, inputClass } from "./fields";
+import { DateField, fieldClass, inputClass, SearchButton } from "./fields";
 import { activeFilterCount, searchPath, unfilteredSearchPath } from "./path";
 
 const smallLink =
@@ -123,14 +123,9 @@ export function SearchForm({
               onChange={(event) => update({ query: event.target.value })}
               onBlur={commit}
             />
+            <SearchButton label={content.submit} />
           </div>
         </div>
-        <button
-          type="submit"
-          className="sr-only focus:not-sr-only focus:mt-3 focus:inline-block focus:rounded-lg focus:border focus:border-[#07868f] focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-[#07868f]"
-        >
-          {content.submit}
-        </button>
       </div>
 
       <aside

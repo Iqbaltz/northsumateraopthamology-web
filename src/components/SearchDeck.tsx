@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, type SubmitEvent } from "react";
 import { UserCircle, XMark } from "@/components/icons";
 import { landingContent } from "@/components/landing/content";
 import { shell } from "@/components/landing/styles";
-import { DateField, fieldClass, inputClass } from "@/components/search/fields";
+import { DateField, fieldClass, inputClass, SearchButton } from "@/components/search/fields";
 import { parseSearchValues, searchPath } from "@/components/search/path";
 
 export function SearchDeck({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -78,6 +78,7 @@ export function SearchDeck({ open, onClose }: { open: boolean; onClose: () => vo
                 placeholder={content.query}
                 aria-label={content.query}
               />
+              <SearchButton label={content.submit} />
             </div>
 
             <DateField
@@ -104,13 +105,6 @@ export function SearchDeck({ open, onClose }: { open: boolean; onClose: () => vo
               />
             </div>
           </div>
-
-          <button
-            type="submit"
-            className="sr-only focus:not-sr-only focus:rounded-lg focus:border focus:border-[#07868f] focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-[#07868f]"
-          >
-            {content.submit}
-          </button>
 
           <button
             type="button"
