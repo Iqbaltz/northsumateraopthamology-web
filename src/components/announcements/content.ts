@@ -13,20 +13,11 @@ export type Announcement = {
   signature: string;
 };
 
-export const announcements: Announcement[] = [
-  {
-    slug: "call-for-papers-volume-12-issue-2",
-    title: "Call for Papers: Volume 12, Issue 2",
-    date: "2026-09-18",
-    paragraphs: [
-      "We are pleased to announce the opening of submissions for Volume 12, Issue 2 of Jonson.",
-      "This issue welcomes high-quality manuscripts addressing current developments in ophthalmology, including clinical research, diagnostic approaches, surgical techniques, and advances in patient care.",
-      "Authors are encouraged to review the journal's submission requirements and author guidelines before preparing their manuscripts.",
-    ],
-    closing: ["Thank you for your attention and continued cooperation.", "Sincerely,"],
-    signature: `Chief Editor, ${journal.name}`,
-  },
-];
+/**
+ * Announcements are kept here, newest first. Each gets a page at
+ * /announcements/<slug>; while the list is empty the page shows `empty`.
+ */
+export const announcements: Announcement[] = [];
 
 export const announcementsContent = {
   breadcrumb: [
@@ -38,7 +29,10 @@ export const announcementsContent = {
     description: `News, calls for papers, and updates from the editorial office of ${journal.name}.`,
   },
   readMore: "Read announcement",
-  empty: "There are no announcements yet.",
+  empty: {
+    title: "No announcements yet",
+    text: "News, calls for papers, and updates from the editorial office will appear here once they are published.",
+  },
 };
 
 export function findAnnouncement(slug: string): Announcement | undefined {

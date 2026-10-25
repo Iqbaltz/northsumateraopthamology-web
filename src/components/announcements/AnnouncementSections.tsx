@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/Breadcrumb";
+import { Envelope } from "@/components/icons";
 import { shell, textLink } from "@/components/landing/styles";
 import {
   announcementBreadcrumb,
@@ -56,7 +57,20 @@ export function AnnouncementListSection() {
     <div className="bg-white pt-12 sm:pt-16 pb-16 sm:pb-24">
       <div className={shell}>
         {announcements.length === 0 ? (
-          <p className="text-base text-[#5c6b73]">{announcementsContent.empty}</p>
+          <div
+            className="flex min-h-[320px] flex-col items-center justify-center rounded-xl border border-dashed border-[#d5e0e2] bg-[#f8fafb] p-6 text-center sm:p-10"
+            data-reveal
+          >
+            <span className="flex size-16 items-center justify-center rounded-full bg-[#e8f4f4] text-[#07868f]">
+              <Envelope className="size-8" />
+            </span>
+            <h2 className="mt-6 text-xl font-bold leading-tight text-[#0c0c0c] sm:text-[26px]">
+              {announcementsContent.empty.title}
+            </h2>
+            <p className="mt-3 max-w-[480px] text-sm leading-relaxed text-[#4a4a4a] sm:text-base">
+              {announcementsContent.empty.text}
+            </p>
+          </div>
         ) : (
           <ul className="grid gap-5">
             {announcements.map((announcement) => (

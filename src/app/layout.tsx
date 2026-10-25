@@ -95,12 +95,17 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${besley.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${dmSans.variable} ${besley.variable} h-full antialiased`}
+    >
       <body className="flex min-h-full flex-col bg-white text-ink">
-        <DevelopmentNotice />
+        {/* <DevelopmentNotice /> */}
         <SiteHeader />
         {/* flex-1 pins the footer to the bottom; the 404 page opts out so it stays compact. */}
-        <main className="flex-1 has-[[data-not-found]]:flex-none">{children}</main>
+        <main className="flex-1 has-[[data-not-found]]:flex-none">
+          {children}
+        </main>
         <SiteFooter />
       </body>
     </html>
