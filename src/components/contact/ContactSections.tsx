@@ -19,6 +19,10 @@ export function ContactHeroSection() {
           <a className={inlineLinkClass} href={officialSite.href}>
             {officialSite.href}
           </a>
+          {" or "}
+          <a className={inlineLinkClass} href={officialSite.href2}>
+            {officialSite.href2}
+          </a>
           . {officialSite.suffix}
         </>
       }
@@ -76,7 +80,9 @@ export function ContactOfficeSection() {
               <span className="font-normal">{email}</span>
             </span>
           </a>
-          <p className="mt-5 text-xs leading-5 text-[#4a4a4a] sm:text-sm">{office.disclaimer}</p>
+          <p className="mt-5 text-xs leading-5 text-[#4a4a4a] sm:text-sm">
+            {office.disclaimer}
+          </p>
         </div>
       </section>
     </div>

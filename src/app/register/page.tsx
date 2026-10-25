@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AuthShell } from "@/components/auth/AuthShell";
 import { RegisterForm } from "@/components/auth/RegisterForm";
+import { MotionEffects } from "@/components/landing";
 import { countryOptions } from "@/lib/ojs/auth";
 
 export const metadata: Metadata = {
@@ -26,6 +27,7 @@ export default async function RegisterPage() {
         href: "/login",
       }}
     >
+      <MotionEffects />
       <RegisterForm countries={countries} />
     </AuthShell>
   );

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MotionEffects } from "@/components/landing";
 import { shell } from "@/components/landing/styles";
 
 export const metadata: Metadata = {
@@ -9,6 +10,8 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <section data-not-found className="bg-[linear-gradient(180deg,#eef3f5_0%,#f8fbfb_100%)] py-20 sm:py-28">
+      {/* Reveals the footer, whose logo and link columns start hidden. */}
+      <MotionEffects />
       <div className={`${shell} text-center`}>
         <p className="font-serif text-[96px] font-bold leading-none text-[#07868f] sm:text-[120px]">
           404

@@ -13,9 +13,12 @@ export const contactContent = {
   hero: {
     title: "Contact",
     officialSite: {
-      prefix: "JONSON: Journal of North Sumatera Ophthalmology Nexus official website is only",
+      prefix:
+        "JONSON: Journal of North Sumatera Ophthalmology Nexus official website is only",
       href: "https://www.northsumateraophthalmology.com/",
-      suffix: "We do not operate any other websites apart from this official site.",
+      href2: "https://journal.northsumateraophthalmology.com/",
+      suffix:
+        "We do not operate any other websites apart from this official site.",
     },
   },
   office: {
