@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import {
   IssueArticlesSection,
+  IssueEmptySection,
   IssueHeroSection,
   VolumeCatalogSection,
   issuesContent,
@@ -30,18 +31,21 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function IssuesPage() {
-  // "New issue" is simply the latest published volume; the designed placeholder
-  // issue only stands in while the journal has nothing published.
+  // "New issue" is simply the latest published volume; while the journal has
+  // nothing published the page says so.
   const current = await getCurrentIssueView();
 
   return (
     <div className="overflow-hidden text-[#0c0c0c]">
       <MotionEffects />
-      <IssueHeroSection issue={current?.hero ?? issuesContent.hero} />
-      <IssueArticlesSection
-        title={issuesContent.articles.title}
-        items={current?.articles ?? issuesContent.articles.items}
-      />
+      {current ? (
+        <>
+          <IssueHeroSection issue={current.hero} />
+          <IssueArticlesSection title={issuesContent.articles.title} items={current.articles} />
+        </>
+      ) : (
+        <IssueEmptySection />
+      )}
       <VolumeCatalogSection volumes={await getVolumeCards(3)} />
     </div>
   );

@@ -1,7 +1,3 @@
-import type { BreadcrumbItem } from "@/components/Breadcrumb";
-import type { IssueHero } from "./IssueSections";
-import { issnLines, issueArticles, journal, missingIssn } from "./journal";
-
 /** The issue /issues presents. Its articles cite it on their own pages. */
 export const currentIssue = {
   volume: 12,
@@ -15,38 +11,20 @@ export const currentIssue = {
   href: "/issues",
 };
 
-const hero: IssueHero = {
-  breadcrumb: [
-    { label: "Homepage", href: "/" },
-    { label: "Archive", href: "/archive" },
-    { label: `${currentIssue.identifier}: ${journal.name}`, href: currentIssue.href },
-  ] as BreadcrumbItem[],
-  kicker: "NEW ISSUE",
-  volumeTitle: `${currentIssue.citation}: ${journal.name}`,
-  publishMonth: "June 2026",
-  description: journal.issueDescription,
-  doi: "",
-  cover: journal.cover,
-  coverAlt: "JONSON Journal Volume 12 Number 1 cover",
-  issnOnline: issnLines(missingIssn).online,
-  issnPrint: issnLines(missingIssn).print,
-  downloadLabel: journal.downloadLabel,
-  previewLabel: journal.previewLabel,
-  publishedOn: `Published: ${currentIssue.publishedOn}`,
-  heading: `${currentIssue.citation}: ${journal.name}`,
-  p1: "This issue brings together recent clinical and scientific contributions in ophthalmology, with a focus on advances in the diagnosis, management, and treatment of eye diseases.",
-  p2: "Featuring original research, clinical studies, review articles, and case reports covering retinal diseases, glaucoma, corneal disorders, and other conditions affecting ocular health and vision.",
-  facts: [
-    { title: `${issueArticles.length} Articles`, text: journal.articlesFactText },
-    journal.openAccessFact,
-  ],
-};
-
 export const issuesContent = {
-  hero,
+  /** Shown on /issues in place of the issue while OJS has nothing published. */
+  empty: {
+    breadcrumb: [
+      { label: "Homepage", href: "/" },
+      { label: "Current Issue", href: "/issues" },
+    ],
+    kicker: "NEW ISSUE",
+    title: "No issue published yet",
+    text: "The latest issue of JONSON and its articles will appear here as soon as it is published. Manuscripts are welcome in the meantime.",
+    submitButton: "SUBMIT A MANUSCRIPT",
+  },
   articles: {
     title: "ARTICLES FROM CURRENT ISSUE",
-    items: issueArticles,
   },
   catalog: {
     title: "Volume\nCatalog",

@@ -1,5 +1,6 @@
 export {
   IssueArticlesSection,
+  IssueEmptySection,
   IssueHeroSection,
   VolumeCatalogSection,
   type IssueHero,

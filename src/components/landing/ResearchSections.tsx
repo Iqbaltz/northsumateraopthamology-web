@@ -5,13 +5,11 @@ import { landingContent, type ArticlePreview } from "./content";
 import { kicker, shell, textLink } from "./styles";
 
 /**
- * `items` carries the journal's published articles when OJS has any; without it
- * the section falls back to the designed placeholder list so the page is never
- * empty while the journal is still being filled in.
+ * `items` carries the journal's published articles from OJS; while there are
+ * none the section says so instead of showing cards.
  */
-export function LatestArticlesSection({ items }: { items?: ArticlePreview[] } = {}) {
+export function LatestArticlesSection({ items = [] }: { items?: ArticlePreview[] } = {}) {
   const content = landingContent.articlesSection;
-  const articles = items?.length ? items : content.items;
 
   return (
     <section className="bg-white py-12 sm:py-24">
@@ -37,8 +35,16 @@ export function LatestArticlesSection({ items }: { items?: ArticlePreview[] } = 
             />
           </Link>
         </div>
+        {items.length === 0 && (
+          <p
+            className="rounded-xl border border-dashed border-[#d5e0e2] bg-[#f8fafb] px-6 py-12 text-center text-sm sm:text-base leading-relaxed text-[#4a4a4a]"
+            data-reveal
+          >
+            {content.empty}
+          </p>
+        )}
         <div className="grid grid-cols-4 gap-6 lg:gap-8 max-[1200px]:grid-cols-1 max-[1200px]:gap-8 max-[700px]:gap-8">
-          {articles.map((article) => (
+          {items.map((article) => (
             <article
               className="group overflow-hidden rounded-xl border border-[#d5e0e2] bg-white shadow-sm transition-[border-color,box-shadow,transform] duration-200 motion-safe:hover:-translate-y-1 motion-safe:hover:border-[#a9cacc] [&:nth-child(2)]:delay-[60ms] [&:nth-child(3)]:delay-[120ms] [&:nth-child(4)]:delay-[180ms]"
               key={article.title}

@@ -158,6 +158,40 @@ export function IssueHeroSection({ issue }: { issue: IssueHero }) {
   );
 }
 
+/** Takes the hero's place on /issues while OJS has no published issue. */
+export function IssueEmptySection() {
+  const content = issuesContent.empty;
+
+  return (
+    <section className="bg-[linear-gradient(180deg,#eef3f5_0%,#f8fbfb_100%)] pt-8 pb-14 sm:pb-20">
+      <div className={shell}>
+        <Breadcrumb items={content.breadcrumb} />
+
+        <div
+          className="mt-6 sm:mt-8 flex min-h-[360px] flex-col items-center justify-center rounded-xl border border-[#d5e0e2] bg-white p-6 sm:p-10 text-center shadow-[0_18px_40px_-28px_rgba(0,0,0,0.22)]"
+          data-reveal
+        >
+          <span className="flex size-16 items-center justify-center rounded-full bg-[#e8f4f4] text-[#07868f]">
+            <BookOpen className="size-8" />
+          </span>
+          <p className="mt-6 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.14em] text-[#5c5c5c]">
+            {content.kicker}
+          </p>
+          <h1 className="mt-2.5 text-xl sm:text-[26px] font-bold leading-tight text-[#0c0c0c]">
+            {content.title}
+          </h1>
+          <p className="mt-3 max-w-[480px] text-sm sm:text-base leading-relaxed text-[#4a4a4a]">
+            {content.text}
+          </p>
+          <Link href="/submission" className={`${button} mt-6`}>
+            {content.submitButton}
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function IssueArticlesSection({
   title,
   items,

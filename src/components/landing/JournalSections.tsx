@@ -1,14 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { aboutPath } from "@/components/about/anchors";
-import { coverSrc, issnLines, journal } from "@/components/issues/journal";
+import { BookOpen } from "@/components/icons";
+import { coverSrc, issnLines } from "@/components/issues/journal";
 import { getJournalIssn, type CurrentIssueSummary } from "@/lib/ojs/view";
 import { indexingPartners, landingContent } from "./content";
 import { button, kicker, shell, textLink } from "./styles";
 
 /**
  * `issue` carries the current issue from OJS when one is published; without it
- * the card falls back to the designed placeholder issue.
+ * the card says no issue is out yet.
  */
 export async function AboutJournalSection({ issue }: { issue?: CurrentIssueSummary } = {}) {
   const content = landingContent.aboutJournal;
@@ -68,43 +69,61 @@ export async function AboutJournalSection({ issue }: { issue?: CurrentIssueSumma
           data-reveal
           data-reveal-delay="100"
         >
-          <div className="grid min-h-[440px] grid-cols-[385px_1fr] max-[1200px]:grid-cols-[333px_1fr] items-center gap-6 sm:gap-8 p-6 sm:p-8 max-[700px]:grid-cols-[135px_1fr] max-[700px]:gap-3.5 max-[700px]:p-3.5 max-[700px]:min-h-0">
-            <div className="relative h-[240px] sm:h-[389px] lg:h-[450px] overflow-hidden rounded-lg">
-              <Image
-                className="object-contain transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
-                src={coverSrc(issue?.cover ?? journal.cover)}
-                alt={issue?.coverAlt ?? content.coverAlt}
-                fill
-                sizes="(max-width: 700px) 135px, (max-width: 1200px) 333px, 385px"
-              />
-            </div>
-            <div className="flex flex-col justify-center">
-              <p className={kicker}>{content.issueKicker}</p>
-              <h3 className="mt-2 mb-2 font-sans text-base sm:text-[26px] font-bold leading-tight text-[#0c0c0c] [overflow-wrap:anywhere]">
-                {issue?.volumeTitle ?? content.volumeTitle}
-              </h3>
-              <h4 className="mb-2 text-base sm:text-2xl font-semibold leading-tight text-[#07868f]">
-                {issue?.publishMonth ?? content.publishDate}
-              </h4>
-              {/* OJS descriptions run long; cut them off at five lines. */}
-              <p className="mb-4 line-clamp-5 text-xs sm:text-base leading-relaxed text-[#0c0c0c]">
-                {issue?.description ?? content.issueDescription}
-              </p>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
-                <Link
-                  href="/issues"
-                  className={`${button} max-[700px]:px-2.5 max-[700px]:py-1.5 max-[700px]:text-[10px] max-[700px]:min-h-0 max-[700px]:w-fit`}
-                >
-                  {content.viewIssueButton}
-                </Link>
-                <small className="text-xs leading-tight text-[#666]">
-                  {issn.online}
-                  <br />
-                  {issn.print}
-                </small>
+          {issue ? (
+            <div className="grid min-h-[440px] grid-cols-[385px_1fr] max-[1200px]:grid-cols-[333px_1fr] items-center gap-6 sm:gap-8 p-6 sm:p-8 max-[700px]:grid-cols-[135px_1fr] max-[700px]:gap-3.5 max-[700px]:p-3.5 max-[700px]:min-h-0">
+              <div className="relative h-[240px] sm:h-[389px] lg:h-[450px] overflow-hidden rounded-lg">
+                <Image
+                  className="object-contain transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
+                  src={coverSrc(issue.cover)}
+                  alt={issue.coverAlt}
+                  fill
+                  sizes="(max-width: 700px) 135px, (max-width: 1200px) 333px, 385px"
+                />
+              </div>
+              <div className="flex flex-col justify-center">
+                <p className={kicker}>{content.issueKicker}</p>
+                <h3 className="mt-2 mb-2 font-sans text-base sm:text-[26px] font-bold leading-tight text-[#0c0c0c] [overflow-wrap:anywhere]">
+                  {issue.volumeTitle}
+                </h3>
+                <h4 className="mb-2 text-base sm:text-2xl font-semibold leading-tight text-[#07868f]">
+                  {issue.publishMonth}
+                </h4>
+                {/* OJS descriptions run long; cut them off at five lines. */}
+                <p className="mb-4 line-clamp-5 text-xs sm:text-base leading-relaxed text-[#0c0c0c]">
+                  {issue.description}
+                </p>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+                  <Link
+                    href="/issues"
+                    className={`${button} max-[700px]:px-2.5 max-[700px]:py-1.5 max-[700px]:text-[10px] max-[700px]:min-h-0 max-[700px]:w-fit`}
+                  >
+                    {content.viewIssueButton}
+                  </Link>
+                  <small className="text-xs leading-tight text-[#666]">
+                    {issn.online}
+                    <br />
+                    {issn.print}
+                  </small>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex min-h-[440px] flex-col items-center justify-center p-6 sm:p-8 text-center max-[700px]:min-h-[300px]">
+              <span className="flex size-16 items-center justify-center rounded-full bg-[#e8f4f4] text-[#07868f]">
+                <BookOpen className="size-8" />
+              </span>
+              <p className={`${kicker} mt-6`}>{content.issueKicker}</p>
+              <h3 className="mt-2 font-sans text-xl sm:text-[26px] font-bold leading-tight text-[#0c0c0c]">
+                {content.emptyIssue.title}
+              </h3>
+              <p className="mt-3 max-w-[420px] text-sm sm:text-base leading-relaxed text-[#4a4a4a]">
+                {content.emptyIssue.text}
+              </p>
+              <Link href="/submission" className={`${button} mt-6`}>
+                {content.emptyIssue.submitButton}
+              </Link>
+            </div>
+          )}
           <div className="flex min-h-[64px] sm:min-h-[92px] items-center justify-between gap-4 border-t border-[#d5e0e2] bg-white px-6 sm:px-8 py-4 sm:py-5 max-[700px]:gap-2 max-[700px]:px-4 max-[700px]:py-3">
             <span className="flex items-center gap-3 sm:gap-6 text-xs sm:text-sm font-semibold text-[#07868f]">
               <Image

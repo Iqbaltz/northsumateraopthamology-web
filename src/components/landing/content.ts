@@ -3,7 +3,6 @@ import { announcementsPath } from "@/components/announcements/path";
 import { contactPath } from "@/components/contact/path";
 import { editorialPath } from "@/components/editorial/path";
 import { ethicsPath } from "@/components/ethics/anchors";
-import { articlePath } from "@/components/issues/journal";
 import { policiesPath } from "@/components/policies/anchors";
 import { privacyPath } from "@/components/privacy/path";
 import { manuscriptTemplateHref, submissionAnchors } from "@/components/submission/content";
@@ -136,15 +135,16 @@ export const landingContent = {
       "Ethical Publishing – Transparency and integrity",
     ],
     issueKicker: "NEW ISSUE",
-    volumeTitle: "Vol. 12 No. 1 (2026): JONSON: Journal of North Sumatera Ophthalmology Nexus",
-    publishDate: "June 2026",
-    issueDescription:
-      "Explore the latest research on retinal diseases, glaucoma, corneal disorders and advanced ophthalmic surgical techniques.",
     viewIssueButton: "VIEW ISSUE",
+    /** Shown in place of the issue while OJS has nothing published. */
+    emptyIssue: {
+      title: "No issue published yet",
+      text: "The latest issue of JONSON will appear here as soon as it is published. Manuscripts are welcome in the meantime.",
+      submitButton: "SUBMIT A MANUSCRIPT",
+    },
     submitBanner: "Submit your journal with us",
     downloadTemplate: "Download Jonson Journal Template",
     templateHref: manuscriptTemplateHref,
-    coverAlt: "JONSON Journal Volume 12 Issue 1 Cover",
   },
   indexing: {
     title: "Indexing Partners:",
@@ -152,35 +152,8 @@ export const landingContent = {
   articlesSection: {
     title: "LATEST ARTICLES",
     viewAll: "VIEW ALL ARTICLES",
-    // Each links to its page by title, so these must match an issue article's title.
-    items: (
-      [
-        {
-          tag: "Case Study",
-          title: "Efficacy of Artificial Intelligence in Diabetic Retinopathy Screening",
-          author: "Sarah Johnson, MD, Michael Lee, PhD, Priya Shah, MD",
-          date: "May 26, 2024",
-        },
-        {
-          tag: "Literature Review",
-          title: "Advancements in Machine Learning for Early Cancer Detection",
-          author: "David Kim, PhD, Amina Yusuf, MD",
-          date: "April 15, 2024",
-        },
-        {
-          tag: "Original Research",
-          title: "Impact of Virtual Reality Therapy on PTSD Recovery Rates",
-          author: "Liam O’Connor, MD, Sofia Martinez, PhD",
-          date: "June 10, 2024",
-        },
-        {
-          tag: "Case Study",
-          title: "Telemedicine Adoption in Rural Healthcare Facilities during COVID-19",
-          author: "Chen Wei, MD, Fatima Al-Mansouri, MPH",
-          date: "April 15, 2024",
-        },
-      ] as Omit<ArticlePreview, "href">[]
-    ).map((item) => ({ ...item, href: articlePath(item.title) })),
+    /** Shown in place of the article cards while OJS has nothing published. */
+    empty: "No articles have been published yet. New articles will appear here once an issue is published.",
   },
   scope: {
     kicker: "AIMS & SCOPE",
