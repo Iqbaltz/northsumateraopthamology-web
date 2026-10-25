@@ -12,12 +12,16 @@
  * browser to show the signed-in user's menu in its header.
  *
  * Signing out of OJS itself also lands on the branded site's login page rather
- * than OJS's own.
+ * than OJS's own, and the activation link in a new account's confirmation email
+ * opens the branded site's activation page.
  */
 
 namespace APP\plugins\generic\jonsonSession;
 
 use APP\core\Application;
+use APP\facades\Repo;
+use PKP\core\PKPRequest;
+use PKP\invitation\invitations\registrationAccess\RegistrationAccessInvite;
 use PKP\plugins\GenericPlugin;
 use PKP\plugins\Hook;
 
@@ -39,6 +43,9 @@ class JonsonSessionPlugin extends GenericPlugin
     /** Where OJS's own sign-out (login/signOut) sends people. */
     public const SIGNED_OUT_URL = 'https://www.northsumateraophthalmology.com/login';
 
+    /** Where a new account's activation link opens, carrying its `id` and `key`. */
+    public const ACTIVATE_URL = 'https://www.northsumateraophthalmology.com/register/activate';
+
     /**
      * @copydoc Plugin::register()
      *
@@ -53,9 +60,61 @@ class JonsonSessionPlugin extends GenericPlugin
 
         if ($success && $this->getEnabled($mainContextId)) {
             Hook::add('LoadHandler', $this->setPageHandler(...));
+            Hook::add('LoadHandler', $this->redirectActivationLink(...));
             Hook::add('Request::redirect', $this->redirectSignOut(...));
         }
         return $success;
+    }
+
+    /**
+     * Open a new account's activation link (invitation/accept?id=…&key=…, from
+     * the confirmation email) on the branded site instead of OJS's confirmation
+     * page. The site then activates it through JonsonSessionHandler::activation().
+     *
+     * Every other invitation link (editors, reviewers and so on) uses the same
+     * URL and is left to OJS.
+     */
+    public function redirectActivationLink(string $hookName, array $args): bool
+    {
+        [$page, $op] = $args;
+        if ($page !== 'invitation' || $op !== 'accept') {
+            return Hook::CONTINUE;
+        }
+
+        $request = Application::get()->getRequest();
+        $id = (int) $request->getUserVar('id');
+        if (!$id || !(Repo::invitation()->getById($id) instanceof RegistrationAccessInvite)) {
+            return Hook::CONTINUE;
+        }
+
+        // The site checks the key, so a mangled one gets its "link not valid" page.
+        $request->redirectUrl(self::ACTIVATE_URL . '?' . http_build_query([
+            'id' => $id,
+            'key' => (string) $request->getUserVar('key'),
+        ]));
+        // Only reached when another plugin cancels the redirect: OJS shows its own page.
+        return Hook::CONTINUE;
+    }
+
+    /**
+     * The new-account invitation that the request's `id` and `key` belong to,
+     * whatever its status; null when they match none.
+     */
+    public static function registrationInvitation(PKPRequest $request): ?RegistrationAccessInvite
+    {
+        $id = (int) $request->getUserVar('id');
+        $key = (string) $request->getUserVar('key');
+        if (!$id || $key === '') {
+            return null;
+        }
+
+        $invitation = Repo::invitation()->getById($id);
+        if (!$invitation instanceof RegistrationAccessInvite
+            || !password_verify($key, $invitation->invitationModel->keyHash)
+        ) {
+            return null;
+        }
+        return $invitation;
     }
 
     /**

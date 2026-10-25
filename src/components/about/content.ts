@@ -101,7 +101,7 @@ export const aboutContent = {
       { label: "License", value: `CC-${license.badge}`, href: license.href },
       {
         label: "Article Types",
-        value: "Original Research, Review, Case Report",
+        value: "Original Articles, Reviews, Case Reports",
         href: `/submission#${submissionAnchors.articleTypes}`,
       },
     ] as JournalFact[],

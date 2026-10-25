@@ -1,58 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { CalendarBlank, UserCircle, XMark } from "@/components/icons";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState, type SubmitEvent } from "react";
+import { UserCircle, XMark } from "@/components/icons";
 import { landingContent } from "@/components/landing/content";
 import { shell } from "@/components/landing/styles";
-import { dateFieldNames, dateFieldValues, ojsLinks } from "@/lib/links";
-
-const fieldClass =
-  "flex h-12 items-center gap-2.5 rounded-lg border border-[#dbe2e6] bg-white px-3.5 transition-[border-color,box-shadow] duration-200 focus-within:border-[#07868f] focus-within:shadow-[0_0_0_3px_rgb(7_134_143/0.12)]";
-
-const inputClass =
-  "w-full min-w-0 bg-transparent text-sm text-[#0c0c0c] outline-none placeholder:text-[#9aa5ab]";
-
-/**
- * A date bound shows the designed placeholder while empty, then becomes a real
- * date picker on focus. The value is submitted as OJS's year/month/day trio.
- */
-function DateField({
-  name,
-  placeholder,
-  value,
-  onChange,
-}: {
-  name: "dateFrom" | "dateTo";
-  placeholder: string;
-  value: string;
-  onChange: (value: string) => void;
-}) {
-  const [focused, setFocused] = useState(false);
-  const parts = dateFieldValues(value);
-
-  return (
-    <div className={fieldClass}>
-      <CalendarBlank className="text-[#07868f]" />
-      <input
-        type={focused || value ? "date" : "text"}
-        className={inputClass}
-        placeholder={placeholder}
-        aria-label={placeholder}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-      />
-      {parts &&
-        dateFieldNames(name).map((fieldName, index) => (
-          <input key={fieldName} type="hidden" name={fieldName} value={parts[index]} />
-        ))}
-    </div>
-  );
-}
+import { DateField, fieldClass, inputClass, SearchButton } from "@/components/search/fields";
+import { parseSearchValues, searchPath } from "@/components/search/path";
 
 export function SearchDeck({ open, onClose }: { open: boolean; onClose: () => void }) {
   const content = landingContent.header.search;
+  const router = useRouter();
   const queryRef = useRef<HTMLInputElement>(null);
   const [publishedAfter, setPublishedAfter] = useState("");
   const [publishedBefore, setPublishedBefore] = useState("");
@@ -69,6 +27,25 @@ export function SearchDeck({ open, onClose }: { open: boolean; onClose: () => vo
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [open, onClose]);
 
+  // Without JavaScript the form still lands on /search, just with empty fields in the URL.
+  const onSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const text = (name: string) => String(data.get(name) ?? "");
+
+    router.push(
+      searchPath(
+        parseSearchValues({
+          query: text("query"),
+          authors: text("authors"),
+          publishedAfter,
+          publishedBefore,
+        }),
+      ),
+    );
+    onClose();
+  };
+
   return (
     <div
       className={`grid border-[#e3eaef] bg-white transition-[grid-template-rows,opacity,border-color] duration-300 ease-out ${
@@ -77,9 +54,9 @@ export function SearchDeck({ open, onClose }: { open: boolean; onClose: () => vo
     >
       <div className="min-h-0 overflow-hidden" inert={!open}>
         <form
-          action={ojsLinks.searchAction}
-          method="get"
+          action="/search"
           role="search"
+          onSubmit={onSubmit}
           className={`${shell} flex items-center gap-4 py-5 transition-transform duration-300 ease-out max-[1200px]:flex-wrap max-[700px]:gap-3 ${
             open ? "translate-y-0" : "-translate-y-2"
           }`}
@@ -101,16 +78,17 @@ export function SearchDeck({ open, onClose }: { open: boolean; onClose: () => vo
                 placeholder={content.query}
                 aria-label={content.query}
               />
+              <SearchButton label={content.submit} />
             </div>
 
             <DateField
-              name="dateFrom"
+              name="publishedAfter"
               placeholder={content.publishedAfter}
               value={publishedAfter}
               onChange={setPublishedAfter}
             />
             <DateField
-              name="dateTo"
+              name="publishedBefore"
               placeholder={content.publishedBefore}
               value={publishedBefore}
               onChange={setPublishedBefore}
@@ -127,13 +105,6 @@ export function SearchDeck({ open, onClose }: { open: boolean; onClose: () => vo
               />
             </div>
           </div>
-
-          <button
-            type="submit"
-            className="sr-only focus:not-sr-only focus:rounded-lg focus:border focus:border-[#07868f] focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-[#07868f]"
-          >
-            {content.submit}
-          </button>
 
           <button
             type="button"

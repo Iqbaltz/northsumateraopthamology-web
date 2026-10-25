@@ -7,8 +7,11 @@ import {
   OJS_SESSION_COOKIE_NAME,
   OJS_SESSION_LIFETIME_DAYS,
 } from "@/lib/config";
+import { activateAccount } from "@/lib/ojs/activation";
 import { register, signIn, type OjsSession } from "@/lib/ojs/auth";
 import {
+  ACTIVATED_LOGIN_PATH,
+  activationPath,
   CHECK_EMAIL_PATH,
   REGISTERED_EMAIL_COOKIE,
   REGISTERED_EMAIL_MAX_AGE,
@@ -132,4 +135,22 @@ export async function registerAction(
   // page. Returned instead of redirect(): an in-app redirect is a client-side
   // navigation, so the header would keep its signed-out state.
   return { registered: true };
+}
+
+/** The Activate Account button on the page the confirmation email opens. */
+export async function activateAction(
+  _previous: AuthFormState,
+  formData: FormData,
+): Promise<AuthFormState> {
+  const link = { id: String(formData.get("id") ?? ""), key: String(formData.get("key") ?? "") };
+
+  const status = await activateAccount(link);
+  if (!status) {
+    return { error: "Your account could not be activated right now. Please try again shortly." };
+  }
+
+  // Replace, so Back doesn't return to a used link. redirect() throws: keep it out of try/catch.
+  if (status === "activated") redirect(ACTIVATED_LOGIN_PATH, RedirectType.replace);
+  // Expired or no longer valid: the page, opened again, explains which.
+  redirect(activationPath(link), RedirectType.replace);
 }

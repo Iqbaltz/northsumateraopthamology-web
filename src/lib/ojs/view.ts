@@ -31,7 +31,9 @@ import {
   type MonthlyDownloads,
 } from "@/components/article/content";
 import type { IssueHero } from "@/components/issues/IssueSections";
-import type { DoiObject, Issue, Publication } from "./types";
+import type { ArticleType } from "@/components/search/content";
+import type { SearchRecord } from "../search";
+import type { DoiObject, Issue, Publication, Section } from "./types";
 
 /** Resolvable link for a DOI assigned in OJS, or "" while there is none. */
 function doiUrl(doi?: DoiObject | null): string {
@@ -365,6 +367,88 @@ export async function getAllArticles(): Promise<IssueArticle[]> {
     return results;
   } catch {
     return [];
+  }
+}
+
+// --- Search ---
+
+/** One published article for the search page, with the text it is matched on. */
+async function toSearchRecord(
+  issue: Issue,
+  raw: NonNullable<Issue["articles"]>[number],
+): Promise<SearchRecord> {
+  const article = toIssueArticle(issue, raw);
+  const view = articleView(raw);
+  // The table of contents ships a summary only; abstract, keywords and the DOI
+  // need the full publication record.
+  const full = view.publication?.id ? await getPublication(raw.id, view.publication.id) : undefined;
+  const publication = full ?? view.publication;
+  const abstract = toAbstract(localize(publication?.abstract));
+  const byline = article.authors[0]?.name ?? "";
+
+  return {
+    result: {
+      slug: article.slug,
+      tag: article.tag,
+      issue: issueTitle(issue),
+      title: article.title,
+      href: article.href,
+      authors: byline,
+      abstract: abstract[0],
+      date: article.date,
+      doi: doiUrl(publication?.doiObject),
+      format: article.format,
+      downloadHref: article.downloadHref,
+    },
+    sectionId: view.sectionId,
+    publishedOn: (view.publication?.datePublished ?? issue.datePublished ?? "").slice(0, 10),
+    text: {
+      title: article.title,
+      // The byline can abbreviate given names; the contributor records spell them out.
+      authors: [byline, ...toAuthors(publication?.authors, "").map((author) => author.name)].join(" "),
+      abstract: abstract.map((part) => `${part.label} ${part.text}`).join(" "),
+      keywords: toKeywords(publication?.keywords).join(" "),
+    },
+  };
+}
+
+export type SearchIndex = {
+  records: SearchRecord[];
+  /** The OJS sections the published articles fall under, in the journal's order. */
+  articleTypes: ArticleType[];
+};
+
+/**
+ * Every published article, ready to search, with the article types to filter
+ * by. Responses are cached, so this costs one round trip per issue and article
+ * per revalidation window.
+ */
+export async function getSearchIndex(): Promise<SearchIndex> {
+  try {
+    const issues = await Promise.all(
+      (await getIssues()).map(async (summary) => (await getIssue(summary.id)) ?? summary),
+    );
+    const records = await Promise.all(
+      issues.flatMap((issue) =>
+        (issue.articles ?? []).map((article) => toSearchRecord(issue, article)),
+      ),
+    );
+
+    const used = new Set(records.map((record) => record.sectionId));
+    const sections = new Map<number, Section>();
+    for (const section of issues.flatMap((issue) => issue.sections ?? [])) {
+      if (used.has(section.id) && !sections.has(section.id)) sections.set(section.id, section);
+    }
+
+    return {
+      records,
+      articleTypes: [...sections.values()]
+        .sort((a, b) => (a.seq ?? 0) - (b.seq ?? 0))
+        .map((section) => ({ id: section.id, label: localize(section.title) }))
+        .filter((type) => type.label),
+    };
+  } catch {
+    return { records: [], articleTypes: [] };
   }
 }
 

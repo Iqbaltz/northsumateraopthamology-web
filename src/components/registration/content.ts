@@ -1,8 +1,9 @@
 import type { BreadcrumbItem } from "@/components/Breadcrumb";
 import { contactPath } from "@/components/contact/path";
 import { journal } from "@/components/issues/journal";
+import { landingContent } from "@/components/landing/content";
 import { submissionAnchors } from "@/components/submission/content";
-import { CHECK_EMAIL_PATH } from "@/lib/auth/registration";
+import { ACTIVATE_PATH, type ActivationStatus, CHECK_EMAIL_PATH } from "@/lib/auth/registration";
 
 /** One "what next" row: a title and line on the left, a teal call to action on the right. */
 export type NextStep = {
@@ -60,4 +61,41 @@ export const checkEmailContent = {
   ] as NextStep[],
   closing:
     "Thank you for joining our academic community. We look forward to supporting your contribution to ophthalmic research.",
+};
+
+/** What the activation page says for a link that can't be used (any status but `pending`). */
+export type ActivationOutcome = {
+  title: string;
+  text: string;
+  cta: { label: string; href: string };
+};
+
+export const activateContent = {
+  breadcrumb: [
+    { label: "Homepage", href: "/" },
+    { label: "Registration Confirmation", href: ACTIVATE_PATH },
+  ] as BreadcrumbItem[],
+  title: "Confirm and activate your account",
+  submit: "Activate Account",
+  submitting: "Activating…",
+  outcomes: {
+    activated: {
+      title: "Your account is already active",
+      text: "This activation link has already been used, so there is nothing more to do. Sign in with the username and password you registered with.",
+      cta: { label: "Sign in", href: "/login" },
+    },
+    expired: {
+      title: "This activation link has expired",
+      text: "Activation links are only valid for a limited time. Contact the editorial office and we will activate your account for you.",
+      cta: { label: "Contact us", href: contactPath },
+    },
+    invalid: {
+      title: "This activation link doesn't work",
+      text: "Part of the link may be missing; some email apps break long links. Open it again straight from your confirmation email, or contact the editorial office for help.",
+      cta: { label: "Contact us", href: contactPath },
+    },
+  } satisfies Record<Exclude<ActivationStatus, "pending">, ActivationOutcome>,
+  /** Followed by the editorial office's address. */
+  assistance: "If you need assistance, please contact",
+  email: landingContent.header.email,
 };

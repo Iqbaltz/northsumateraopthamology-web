@@ -54,7 +54,7 @@ export const journal = {
     title: "Open Access",
     text: "Freely available to readers worldwide",
   },
-  articlesFactText: "Original research, reviews, and clinical reports",
+  articlesFactText: "Original articles, reviews, and case reports",
 };
 
 /** URL-safe slug for an article title: "Use of VR in X" -> "use-of-vr-in-x". */

@@ -5,7 +5,8 @@
  *
  * @class JonsonSessionHandler
  *
- * @brief Serves {journal}/whoami and {journal}/whoami/signOut.
+ * @brief Serves {journal}/whoami, {journal}/whoami/signOut and
+ *   {journal}/whoami/activation.
  */
 
 namespace APP\plugins\generic\jonsonSession;
@@ -14,6 +15,8 @@ use APP\facades\Repo;
 use APP\file\PublicFileManager;
 use APP\handler\Handler;
 use PKP\core\PKPRequest;
+use PKP\invitation\core\enums\InvitationStatus;
+use PKP\invitation\invitations\registrationAccess\RegistrationAccessInvite;
 use PKP\security\Validation;
 use PKP\user\User;
 use PKP\userGroup\UserGroup;
@@ -88,6 +91,56 @@ class JonsonSessionHandler extends Handler
         }
 
         $request->redirectUrl($returnTo);
+    }
+
+    /**
+     * GET  {journal}/whoami/activation?id=…&key=… — where a new account's
+     *      activation link stands.
+     * POST {journal}/whoami/activation (id, key) — activate the account first,
+     *      as OJS's own user/activateUser would.
+     *
+     * Answers `{"status": …}`: `pending` (ready to activate), `activated`,
+     * `expired` or `invalid`. The id and key from the confirmation email are the
+     * whole credential, exactly as for OJS's own link, so no session or CSRF
+     * token is involved: the branded site calls this from its server.
+     *
+     * @param array $args
+     * @param PKPRequest $request
+     */
+    public function activation($args, $request)
+    {
+        header('Cache-Control: no-store, private');
+        header('Content-Type: application/json');
+
+        $invitation = JonsonSessionPlugin::registrationInvitation($request);
+        $status = $invitation ? $this->activationStatus($invitation) : 'invalid';
+
+        if ($status === 'pending' && $request->isPost()) {
+            // Enables the account and marks the link used.
+            $invitation->finalize();
+            $status = 'activated';
+        }
+
+        return json_encode(['status' => $status]);
+    }
+
+    private function activationStatus(RegistrationAccessInvite $invitation): string
+    {
+        $user = Repo::user()->get($invitation->getUserId(), true);
+        if (!$user) {
+            return 'invalid';
+        }
+        // Also covers an account an editor enabled by hand while the link was out.
+        if ($user->getDateValidated() !== null) {
+            return 'activated';
+        }
+        if ($invitation->getStatus() !== InvitationStatus::PENDING) {
+            return 'invalid';
+        }
+
+        // OJS treats a link without an expiry date as still valid.
+        $expiryDate = $invitation->invitationModel->expiryDate;
+        return $expiryDate && $expiryDate->isPast() ? 'expired' : 'pending';
     }
 
     /**

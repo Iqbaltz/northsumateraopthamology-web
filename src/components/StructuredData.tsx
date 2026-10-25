@@ -28,7 +28,7 @@ export async function StructuredData() {
       url: "https://jonson.org",
       potentialAction: {
         "@type": "SearchAction",
-        target: "https://jonson.org/issues?q={search_term_string}",
+        target: "https://jonson.org/search?query={search_term_string}",
         "query-input": "required name=search_term_string",
       },
     },
